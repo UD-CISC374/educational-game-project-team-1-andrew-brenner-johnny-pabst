@@ -12,7 +12,6 @@
 	- Explanation: While tracking and predicting movement of this invasive species, a great deal was learned about the harmful effects of this insect due to its recent and unprecedented arrival to the U.S.
 
 
-
 ## Core Gameplay Mechanics (Brief)
 
 *Give a very high-level description of any core gameplay mechanics*
