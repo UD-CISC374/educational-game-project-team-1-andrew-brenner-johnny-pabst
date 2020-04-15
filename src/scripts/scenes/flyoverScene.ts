@@ -1,10 +1,10 @@
 import ExampleObject from '../objects/exampleObject';
 
-export default class MainScene extends Phaser.Scene {
+export default class flyoverScene extends Phaser.Scene {
   private exampleObject: ExampleObject;
 
   constructor() {
-    super({ key: 'MainScene' });
+    super({ key: 'flyoverScene' });
   }
 
   create() {
