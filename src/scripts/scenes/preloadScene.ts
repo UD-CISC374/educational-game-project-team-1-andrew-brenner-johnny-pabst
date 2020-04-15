@@ -39,7 +39,7 @@ export default class PreloadScene extends Phaser.Scene {
    */
   create_spritesheets(){
     this.anims.create({
-      key: "player",
+      key: "playerFly",
       frames: this.anims.generateFrameNumbers("player", {
         start: 0,
         end: 1

@@ -16,8 +16,8 @@ export default class flyoverScene extends Phaser.Scene {
     this.background.setOrigin(0,0);
     
     // create player
-    this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "player");
-    this.player.play("player");
+    this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "playerFly");
+    this.player.play("playerFly");
 
 
 
