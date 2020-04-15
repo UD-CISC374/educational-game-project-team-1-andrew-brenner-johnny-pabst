@@ -4,8 +4,8 @@ import PreloadScene from './scenes/preloadScene';
 import GameConfig = Phaser.Types.Core.GameConfig;
 import flyoverScene from './scenes/flyoverScene';
 
-const DEFAULT_WIDTH = 400;
-const DEFAULT_HEIGHT = 400;
+const DEFAULT_WIDTH = 600;
+const DEFAULT_HEIGHT = 600;
 
 
 const config: GameConfig = {

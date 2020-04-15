@@ -4,6 +4,7 @@ export default class PreloadScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image("flyoverBackground", "assets/images/farmBG.jpg");
   }
 
   create() {
