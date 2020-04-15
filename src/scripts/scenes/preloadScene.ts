@@ -34,13 +34,13 @@ export default class PreloadScene extends Phaser.Scene {
     this.scene.start('flyoverScene');
   }
 
-   /**
+  /**
    * Creates all the spritesheets necessary for application
    */
   create_spritesheets(){
     this.anims.create({
       key: "player",
-      frames: this.anims.generateFrameNumbers("power-up", {
+      frames: this.anims.generateFrameNumbers("player", {
         start: 0,
         end: 1
       }),
