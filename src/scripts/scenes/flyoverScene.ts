@@ -11,7 +11,7 @@ export default class flyoverScene extends Phaser.Scene {
   create() {
     this.background = this.add.image(0,0,"flyoverBackground");
     this.background.setOrigin(0,0);
-
+    
   }
 
   update() {
