@@ -7,6 +7,9 @@ import flyoverScene from './scenes/flyoverScene';
 const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 800;
 
+export const gameSettings = {
+    playerSpeed: 200,
+}
 
 const config: GameConfig = {
     backgroundColor: '#ffffff',

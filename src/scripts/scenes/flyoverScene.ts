@@ -1,4 +1,6 @@
 import ExampleObject from '../objects/exampleObject';
+import { gameSettings } from "../game";
+
 
 export default class flyoverScene extends Phaser.Scene {
   private exampleObject: ExampleObject;
@@ -23,36 +25,31 @@ export default class flyoverScene extends Phaser.Scene {
 
 
     // setup keyboard input
-    this.cursorKeys = this.input.keyboard.createCursorKeys()
+    this.cursorKeys = this.input.keyboard.createCursorKeys();
 
   }
 
   update() {
-
+    this.player.setVelocity(0);
     this.movePlayerManager();
 
 
   }
 
   movePlayerManager(){
-    if(this.cursorKeys.left !== undefined &&
-      this.cursorKeys.right !== undefined &&
-      this.cursorKeys.up !== undefined &&
-      this.cursorKeys.down !== undefined){
-    
-      if (this.cursorKeys.left.isDown){
-        this.player.setVelocityX(-200);
-        this.player.setVelocityY(0);
-      } else if(this.cursorKeys.right.isDown){
-        this.player.setVelocityX(200);
-        this.player.setVelocityY(0);
-      } else if(this.cursorKeys.up.isDown){
-        this.player.setVelocityY(-200);
-        this.player.setVelocityX(0);
-      } else if(this.cursorKeys.down.isDown){
-        this.player.setVelocityY(200);
-        this.player.setVelocityX(0);
-      }
+    if(this.cursorKeys.left?.isDown){
+      this.player.setVelocityX(-gameSettings.playerSpeed);
+      console.log();
+    } else if(this.cursorKeys.right?.isDown){
+      this.player.setVelocityX(gameSettings.playerSpeed);
+      console.log("right");
+    }
+    if(this.cursorKeys.up?.isDown){
+      this.player.setVelocityY(-gameSettings.playerSpeed);
+      console.log("up");
+    } else if(this.cursorKeys.down?.isDown){
+      this.player.setVelocityY(gameSettings.playerSpeed);
+      this.player.setVelocityY(gameSettings.playerSpeed);console.log("down");
     }
   }
 }
