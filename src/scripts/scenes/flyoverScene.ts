@@ -19,6 +19,8 @@ export default class flyoverScene extends Phaser.Scene {
     // create player
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "playerFly");
     this.player.play("playerFly");
+    this.player.setCollideWorldBounds(true);
+
 
     // setup keyboard input
     this.cursorKeys = this.input.keyboard.createCursorKeys()
@@ -32,24 +34,25 @@ export default class flyoverScene extends Phaser.Scene {
 
   }
 
-movePlayerManager(): void{
-  if(this.cursorKeys.left !== undefined &&
-    this.cursorKeys.right !== undefined &&
-    this.cursorKeys.up !== undefined &&
-    this.cursorKeys.down !== undefined){
+  movePlayerManager(){
+    if(this.cursorKeys.left !== undefined &&
+      this.cursorKeys.right !== undefined &&
+      this.cursorKeys.up !== undefined &&
+      this.cursorKeys.down !== undefined){
     
-    if (this.cursorKeys.left.isDown){
-      this.player.setVelocityX(-200);
-      this.player.setVelocityY(0);
-    } else if(this.cursorKeys.right.isDown){
-      this.player.setVelocityX(200);
-      this.player.setVelocityY(0);
-    } else if(this.cursorKeys.up.isDown){
-      this.player.setVelocityY(-200);
-      this.player.setVelocityX(0);
-    } else if(this.cursorKeys.down.isDown){
-      this.player.setVelocityY(200);
-      this.player.setVelocityX(0);
+      if (this.cursorKeys.left.isDown){
+        this.player.setVelocityX(-200);
+        this.player.setVelocityY(0);
+      } else if(this.cursorKeys.right.isDown){
+        this.player.setVelocityX(200);
+        this.player.setVelocityY(0);
+      } else if(this.cursorKeys.up.isDown){
+        this.player.setVelocityY(-200);
+        this.player.setVelocityX(0);
+      } else if(this.cursorKeys.down.isDown){
+        this.player.setVelocityY(200);
+        this.player.setVelocityX(0);
+      }
     }
   }
 }
