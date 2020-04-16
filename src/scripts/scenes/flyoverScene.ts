@@ -7,6 +7,8 @@ export default class flyoverScene extends Phaser.Scene {
   background: Phaser.GameObjects.Image;
   player: Phaser.Physics.Arcade.Sprite;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
+  appleTree: Phaser.GameObjects.Image;
+  treeTwo: Phaser.GameObjects.Image;
 
   constructor() {
     super({ key: 'flyoverScene' });
@@ -23,7 +25,10 @@ export default class flyoverScene extends Phaser.Scene {
     this.player.play("playerFly");
     this.player.setCollideWorldBounds(true);
 
-
+    //create flyover trees
+    this.appleTree = this.add.image(100,100,"appleTree");
+    this.treeTwo = this.add.image(300,350,"treeTwo");
+    
     // setup keyboard input
     this.cursorKeys = this.input.keyboard.createCursorKeys();
 
