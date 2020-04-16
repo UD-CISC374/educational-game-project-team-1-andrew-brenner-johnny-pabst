@@ -30,26 +30,42 @@ export default class flyoverScene extends Phaser.Scene {
   }
 
   update() {
-    this.player.setVelocity(0);
     this.movePlayerManager();
 
 
   }
 
+
+  /**
+   * Keyboard logic to move the player
+   * Allows diagonal movement
+   */
   movePlayerManager(){
-    if(this.cursorKeys.left?.isDown){
-      this.player.setVelocityX(-gameSettings.playerSpeed);
-      console.log();
-    } else if(this.cursorKeys.right?.isDown){
-      this.player.setVelocityX(gameSettings.playerSpeed);
-      console.log("right");
-    }
-    if(this.cursorKeys.up?.isDown){
-      this.player.setVelocityY(-gameSettings.playerSpeed);
-      console.log("up");
-    } else if(this.cursorKeys.down?.isDown){
-      this.player.setVelocityY(gameSettings.playerSpeed);
-      this.player.setVelocityY(gameSettings.playerSpeed);console.log("down");
+    // avoid 'Object possibly undefined' errors
+    if(this.cursorKeys.left !== undefined &&
+      this.cursorKeys.right !== undefined &&
+      this.cursorKeys.up !== undefined &&
+      this.cursorKeys.down !== undefined){
+    
+      if(this.cursorKeys.left.isDown){
+        this.player.setVelocityX(-gameSettings.playerSpeed);
+        console.log("left");
+      } else if(this.cursorKeys.right.isDown){
+        this.player.setVelocityX(gameSettings.playerSpeed);
+        console.log("right");
+      } else {
+        this.player.setVelocityX(0); // stop movement when key is released
+      }
+
+      if(this.cursorKeys.up.isDown){
+        this.player.setVelocityY(-gameSettings.playerSpeed);
+        console.log("up");
+      } else if(this.cursorKeys.down.isDown){
+        this.player.setVelocityY(gameSettings.playerSpeed);
+        console.log("down");
+      } else{
+        this.player.setVelocityY(0); // stop movement when key is released
+      }
     }
   }
 }
