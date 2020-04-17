@@ -4,16 +4,13 @@ export default class bugrunScene extends Phaser.Scene {
   background: Phaser.GameObjects.TileSprite;
   player: Phaser.Physics.Arcade.Sprite;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
+    mantis: Phaser.GameObjects.Sprite;
 
   constructor() {
     super({ key: 'bugrunScene' });
   }
 
   create() {
-
-    this.add.text(50,50, "loading...", {font: "32px Arial", fill: "black"});
-
-    /*
     // create background
     this.background = this.add.tileSprite(0,0, this.scale.width, this.scale.height, "bugrunBackground");
     this.background.setOrigin(0,0);
@@ -25,16 +22,27 @@ export default class bugrunScene extends Phaser.Scene {
 
     // setup keyboard input
     this.cursorKeys = this.input.keyboard.createCursorKeys();
-    */
+    
+
+    // spawn prayingMantis
+    this.mantis = this.add.sprite(10, 50, "mantisMoveRight");
+    this.mantis.play("mantisMoveRight");
   }
 
 
-/*
+
   update() {
-    //this.background.tilePositionY -= 0.5; // scroll background
-    //this.movePlayerManager(); // listen for player movement
-  }
-*/  
+    this.background.tilePositionY -= 2; // scroll background
+    this.movePlayerManager(); // listen for player movement
+    this.moveMantis();
+  } 
+
+
+  // Controls movemnt of the pray mantis object
+    moveMantis() {
+        this.mantis.setX(this.mantis.x + 5);
+        this.mantis.setY(this.mantis.y + 2)
+    }
 
 
 
@@ -42,7 +50,6 @@ export default class bugrunScene extends Phaser.Scene {
    * Keyboard logic to move the player
    * Allows diagonal movement
    */
-  /*
   movePlayerManager(){
     // avoid 'Object possibly undefined' errors
     if(this.cursorKeys.left !== undefined &&
@@ -50,6 +57,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.cursorKeys.up !== undefined &&
       this.cursorKeys.down !== undefined){
     
+        // left and right
       if(this.cursorKeys.left.isDown){
         this.player.setVelocityX(-gameSettings.playerSpeed);
         console.log("left");
@@ -60,6 +68,7 @@ export default class bugrunScene extends Phaser.Scene {
         this.player.setVelocityX(0); // stop movement when key is released
       }
 
+      // up and down
       if(this.cursorKeys.up.isDown){
         this.player.setVelocityY(-gameSettings.playerSpeed);
         console.log("up");
@@ -70,6 +79,8 @@ export default class bugrunScene extends Phaser.Scene {
         this.player.setVelocityY(0); // stop movement when key is released
       }
     }
-  }
-*/
+  } 
+
+
+
 }

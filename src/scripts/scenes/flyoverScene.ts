@@ -30,11 +30,8 @@ export default class flyoverScene extends Phaser.Scene {
     this.hosts = this.physics.add.group();
     this.hosts.add(this.appleTree);
     this.hosts.add(this.treeTwo);
-    
-    this.appleTree.setInteractive();
-    this.treeTwo.setInteractive();
 
-    
+
     // setup keyboard input
     this.cursorKeys = this.input.keyboard.createCursorKeys();
 

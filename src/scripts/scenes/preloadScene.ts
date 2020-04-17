@@ -14,14 +14,12 @@ export default class PreloadScene extends Phaser.Scene {
         frameWidth: 100,
         frameHeight: 50
       });
-      this.load.spritesheet("appleTree", "assets/images/appleTree.png",{
-        frameWidth: 176,
-        frameHeight: 216
+    this.load.spritesheet("prayingMantisRight", "assets/spritesheets/prayingMantisRight.png",{
+      frameWidth: 200,
+      frameHeight: 200
     });
-    this.load.spritesheet("treeTwo", "assets/images/treeTwo.png",{
-      frameWidth: 120,
-      frameHeight: 126
-    });
+
+
   }
 
   
@@ -39,8 +37,6 @@ export default class PreloadScene extends Phaser.Scene {
 
   create() {
     this.create_spritesheets();
-    this.add.text(0,0, "loading...", {font: "32px Arial", fill: "black"});
-
     this.scene.start('flyoverScene');
     //this.scene.start('bugrunScene');
   }
@@ -53,6 +49,15 @@ export default class PreloadScene extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers("player", {
         start: 0,
         end: 1
+      }),
+      frameRate: 20,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "mantisMoveRight",
+      frames: this.anims.generateFrameNumbers("prayingMantisRight", {
+        start: 0,
+        end: 9
       }),
       frameRate: 20,
       repeat: -1
