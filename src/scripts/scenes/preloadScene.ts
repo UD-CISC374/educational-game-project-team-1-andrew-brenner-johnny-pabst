@@ -16,6 +16,14 @@ export default class PreloadScene extends Phaser.Scene {
         frameWidth: 100,
         frameHeight: 50
       });
+    this.load.spritesheet("appleTree", "assets/images/appleTree.png",{
+        frameWidth: 176,
+        frameHeight: 216
+    });
+    this.load.spritesheet("treeTwo", "assets/images/treeTwo.png",{
+      frameWidth: 120,
+      frameHeight: 126
+    });
   }
 
   /**
@@ -23,8 +31,6 @@ export default class PreloadScene extends Phaser.Scene {
    */
   load_images(){
     this.load.image("flyoverBackground", "assets/images/farmBG.jpg");
-    this.load.image("appleTree", "assets/images/appleTree.png");
-    this.load.image("treeTwo", "assets/images/treeTwo.png");
   }
 
 
