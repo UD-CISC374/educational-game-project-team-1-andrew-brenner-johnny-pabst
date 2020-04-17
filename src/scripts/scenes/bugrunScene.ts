@@ -1,6 +1,6 @@
 import { gameSettings } from "../game";
 
-class bugrunScene extends Phaser.Scene {
+export default class bugrunScene extends Phaser.Scene {
   background: Phaser.GameObjects.TileSprite;
   player: Phaser.Physics.Arcade.Sprite;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;

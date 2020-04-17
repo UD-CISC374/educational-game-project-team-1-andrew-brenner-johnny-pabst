@@ -1,8 +1,8 @@
 import 'phaser';
-import MainScene from './scenes/flyoverScene';
 import PreloadScene from './scenes/preloadScene';
 import GameConfig = Phaser.Types.Core.GameConfig;
 import flyoverScene from './scenes/flyoverScene';
+import bugrunScene from './scenes/bugrunScene';
 
 const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 800;
@@ -20,7 +20,7 @@ const config: GameConfig = {
         width: DEFAULT_WIDTH,
         height: DEFAULT_HEIGHT
     },
-    scene: [PreloadScene, flyoverScene],
+    scene: [PreloadScene, flyoverScene, bugrunScene],
     physics: {
         default: 'arcade',
         arcade: {

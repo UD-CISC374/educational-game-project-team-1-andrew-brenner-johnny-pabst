@@ -1,9 +1,7 @@
-import ExampleObject from '../objects/exampleObject';
 import { gameSettings } from "../game";
 
 
 export default class flyoverScene extends Phaser.Scene {
-  private exampleObject: ExampleObject;
   background: Phaser.GameObjects.Image;
   player: Phaser.Physics.Arcade.Sprite;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
