@@ -6,6 +6,9 @@ export default class bugrunScene extends Phaser.Scene {
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
   mantis: Phaser.GameObjects.Sprite;
   obstacles: Phaser.Physics.Arcade.Group;
+  timeInSeconds: number;
+  timeText: Phaser.GameObjects.Text;
+  timeNum: number;
 
   constructor() {
     super({ key: 'bugrunScene' });
@@ -15,6 +18,10 @@ export default class bugrunScene extends Phaser.Scene {
     // create background
     this.background = this.add.tileSprite(0,0, this.scale.width, this.scale.height, "bugrunBackground");
     this.background.setOrigin(0,0);
+    
+    //create timer
+    this.timeNum = 120;
+    this.timeText = this.add.text(10, 7, 'Time Remaining: 120', { font: "64px Arial", fill: "#ffffff", align: "center" });
 
     // create player
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "playerFly");
@@ -36,6 +43,8 @@ export default class bugrunScene extends Phaser.Scene {
     // praying Mantis collides into player
     this.physics.add.overlap(this.player, this.obstacles, this.killBug, undefined, this);
 
+    //timer
+    this.updateTime();
   }
 
 
@@ -44,6 +53,7 @@ export default class bugrunScene extends Phaser.Scene {
     this.background.tilePositionY -= 2; // scroll background
     this.movePlayerManager(); // listen for player movement
     this.moveMantis();
+
   } 
 
 
@@ -51,6 +61,27 @@ export default class bugrunScene extends Phaser.Scene {
   moveMantis() {
       this.mantis.setX(this.mantis.x + 5);
       this.mantis.setY(this.mantis.y + 2)
+  }
+
+  updateTime(){
+    console.log("BRUH");
+    this.time.addEvent({
+      delay:1000,
+      callback:this.updateTimeText,
+      callbackScope:this,
+      loop: true
+    })
+  }
+
+  updateTimeText(){
+    console.log(this.timeNum);
+    if (this.timeNum > 0) {
+      this.timeNum--;
+      this.timeText.text = "Time Remaining: " + this.timeNum;
+    }
+    else{
+      this.scene.start("flyoverScene");
+    }
   }
 
   //despawn bug and delay before reset
