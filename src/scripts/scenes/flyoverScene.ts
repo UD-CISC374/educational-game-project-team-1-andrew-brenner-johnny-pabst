@@ -7,8 +7,9 @@ export default class flyoverScene extends Phaser.Scene {
   background: Phaser.GameObjects.Image;
   player: Phaser.Physics.Arcade.Sprite;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
-  appleTree: Phaser.GameObjects.Image;
-  treeTwo: Phaser.GameObjects.Image;
+  appleTree: Phaser.GameObjects.Sprite;
+  treeTwo: Phaser.GameObjects.Sprite;
+  hosts: Phaser.Physics.Arcade.Group;
 
   constructor() {
     super({ key: 'flyoverScene' });
@@ -26,18 +27,30 @@ export default class flyoverScene extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
 
     //create flyover trees
-    this.appleTree = this.add.image(100,100,"appleTree");
-    this.treeTwo = this.add.image(300,350,"treeTwo");
+    this.appleTree = this.add.sprite(100,500,"appleTree");
+    this.treeTwo = this.add.sprite(570,350,"treeTwo");
+    this.hosts = this.physics.add.group();
+    this.hosts.add(this.appleTree);
+    this.hosts.add(this.treeTwo);
+    
+    this.appleTree.setInteractive();
+    this.treeTwo.setInteractive();
+
     
     // setup keyboard input
     this.cursorKeys = this.input.keyboard.createCursorKeys();
 
+    //switch to bugrun upon collision
+    this.physics.add.overlap(this.player, this.hosts, this.enterRunScene, undefined, this);
+
+  }
+
+  enterRunScene() {
+    this.scene.start('bugrunScene');
   }
 
   update() {
     this.movePlayerManager();
-
-
   }
 
 
