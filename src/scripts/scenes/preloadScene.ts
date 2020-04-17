@@ -8,15 +8,13 @@ export default class PreloadScene extends Phaser.Scene {
     this.load_spritesheets();
   }
 
-  /**
-   * Loads all the spritesheets necessary for application
-   */
+  // Loads all the spritesheets necessary for application 
   load_spritesheets(){
     this.load.spritesheet("player", "assets/spritesheets/fly-animation.png", {
         frameWidth: 100,
         frameHeight: 50
       });
-    this.load.spritesheet("appleTree", "assets/images/appleTree.png",{
+      this.load.spritesheet("appleTree", "assets/images/appleTree.png",{
         frameWidth: 176,
         frameHeight: 216
     });
@@ -26,11 +24,13 @@ export default class PreloadScene extends Phaser.Scene {
     });
   }
 
-  /**
-   * Loads all the spritesheets necessary for application
-   */
+  
+  //Loads all the images necessary for application
   load_images(){
     this.load.image("flyoverBackground", "assets/images/farmBG.jpg");
+    this.load.image("bugrunBackground", "assets/images/treeBark.jpg");
+    this.load.image("appleTree", "assets/images/appleTree.png");
+    this.load.image("treeTwo", "assets/images/treeTwo.png");
   }
 
 
@@ -39,12 +39,14 @@ export default class PreloadScene extends Phaser.Scene {
 
   create() {
     this.create_spritesheets();
+    this.add.text(0,0, "loading...", {font: "32px Arial", fill: "black"});
+
     this.scene.start('flyoverScene');
+    //this.scene.start('bugrunScene');
   }
 
-  /**
-   * Creates all the spritesheets necessary for application
-   */
+
+  // Creates all the spritesheets necessary for application
   create_spritesheets(){
     this.anims.create({
       key: "playerFly",
