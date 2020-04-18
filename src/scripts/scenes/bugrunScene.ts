@@ -12,6 +12,7 @@ export default class bugrunScene extends Phaser.Scene {
   feedSpots: Phaser.Physics.Arcade.Group;
   feedSpot: Phaser.GameObjects.Sprite;
   spacebar: Phaser.Input.Keyboard.Key;
+  eggGroup: Phaser.Physics.Arcade.Group;
 
   constructor() {
     super({ key: 'bugrunScene' });
@@ -52,6 +53,8 @@ export default class bugrunScene extends Phaser.Scene {
       loop: true
     })
 
+    //add egg group for spawning
+    this.eggGroup = this.physics.add.group();
 
     // praying Mantis collides into player
     this.physics.add.overlap(this.player, this.obstacles, this.killBug, undefined, this);
@@ -128,6 +131,12 @@ export default class bugrunScene extends Phaser.Scene {
     if (Phaser.Input.Keyboard.JustDown(this.spacebar)){
       if(this.player.active){
         console.log("EGG");
+        for (var i =0; i<= 3; i++){
+          var egg = this.physics.add.sprite(22,30,"egg");
+          this.eggGroup.add(egg);
+          egg.setRandomPosition(0,this.player.y,this.player.x, 0);
+          egg.setVelocity(0,120);
+        }
       }
     }
   }

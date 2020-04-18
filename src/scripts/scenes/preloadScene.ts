@@ -22,7 +22,10 @@ export default class PreloadScene extends Phaser.Scene {
       frameWidth: 100,
       frameHeight: 105
     });
-
+    this.load.spritesheet("egg","assets/spritesheets/egg.png",{
+      frameWidth: 22,
+      frameHeight: 30
+    });
   }
 
   
