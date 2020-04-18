@@ -13,6 +13,7 @@ export default class bugrunScene extends Phaser.Scene {
   feedSpot: Phaser.GameObjects.Sprite;
   spacebar: Phaser.Input.Keyboard.Key;
   eggGroup: Phaser.Physics.Arcade.Group;
+  otherFlies: Phaser.Physics.Arcade.Group;
 
   constructor() {
     super({ key: 'bugrunScene' });
@@ -56,11 +57,23 @@ export default class bugrunScene extends Phaser.Scene {
     //add egg group for spawning
     this.eggGroup = this.physics.add.group();
 
+    //add other flies
+    this.otherFlies = this.physics.add.group();
+
+    this.time.addEvent({
+      delay:1000,
+      callback:this.spawnFlies,
+      callbackScope:this,
+      loop: true
+    })
+
+
     // praying Mantis collides into player
     this.physics.add.overlap(this.player, this.obstacles, this.killBug, undefined, this);
 
     //player lays eggs on feed spot
     this.physics.add.overlap(this.player, this.feedSpots, this.layEggs, undefined, this);
+
 
     //timer
     this.updateTime();
@@ -73,6 +86,7 @@ export default class bugrunScene extends Phaser.Scene {
     this.movePlayerManager(); // listen for player movement
     this.moveMantis();
 
+    this.physics.add.collider(this.player, this.otherFlies);
   } 
 
 
@@ -93,8 +107,21 @@ export default class bugrunScene extends Phaser.Scene {
     }
   }
 
+  //flyspawner
+  spawnFlies(){
+    var feedSpotCount = 1;
+    for (var i =0; i<= feedSpotCount; i++){
+      var fly = this.physics.add.sprite(100,105,"player");
+      this.otherFlies.add(fly);
+      fly.setRandomPosition(0,0,this.scale.width, 0);
+      fly.setVelocity(0,120);
+      
+	    fly.body.immovable = true;
+    }
+  }
+
+  //timer function/delay
   updateTime(){
-    console.log("BRUH");
     this.time.addEvent({
       delay:1000,
       callback:this.updateTimeText,
@@ -103,6 +130,7 @@ export default class bugrunScene extends Phaser.Scene {
     })
   }
 
+  //updates actual timer
   updateTimeText(){
     console.log(this.timeNum);
     if (this.timeNum > 0) {
