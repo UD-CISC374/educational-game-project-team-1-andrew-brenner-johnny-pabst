@@ -14,6 +14,8 @@ export default class bugrunScene extends Phaser.Scene {
   spacebar: Phaser.Input.Keyboard.Key;
   eggGroup: Phaser.Physics.Arcade.Group;
   otherFlies: Phaser.Physics.Arcade.Group;
+  score: number;
+  scoreText: Phaser.GameObjects.Text;
 
   constructor() {
     super({ key: 'bugrunScene' });
@@ -27,6 +29,10 @@ export default class bugrunScene extends Phaser.Scene {
     //create timer
     this.timeNum = 120;
     this.timeText = this.add.text(10, 7, 'Time Remaining: 120', { font: "64px Arial", fill: "#ffffff", align: "center" });
+
+    //create score
+    this.score = 0;
+    this.scoreText = this.add.text(this.scale.width / 2, this.scale.height - 50, 'Score: 0', { font: "32px Arial", fill: "#ffffff", align: "center" });
 
     // create player
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "playerFly");
@@ -142,6 +148,11 @@ export default class bugrunScene extends Phaser.Scene {
     }
   }
 
+  updateScore(num){
+    this.score += num;
+    this.scoreText.text = "Score: " + this.score;
+  }
+
   //despawn bug and delay before reset
   killBug(){
     this.player.disableBody(true, true);
@@ -159,6 +170,7 @@ export default class bugrunScene extends Phaser.Scene {
     if (Phaser.Input.Keyboard.JustDown(this.spacebar)){
       if(this.player.active){
         console.log("EGG");
+        this.updateScore(12);
         for (var i =0; i<= 3; i++){
           var egg = this.physics.add.sprite(22,30,"egg");
           this.eggGroup.add(egg);
