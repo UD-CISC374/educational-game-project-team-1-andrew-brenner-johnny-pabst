@@ -11,6 +11,7 @@ export default class bugrunScene extends Phaser.Scene {
   timeNum: number;
   feedSpots: Phaser.Physics.Arcade.Group;
   feedSpot: Phaser.GameObjects.Sprite;
+  spacebar: Phaser.Input.Keyboard.Key;
 
   constructor() {
     super({ key: 'bugrunScene' });
@@ -32,7 +33,7 @@ export default class bugrunScene extends Phaser.Scene {
 
     // setup keyboard input
     this.cursorKeys = this.input.keyboard.createCursorKeys();
-    
+    this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     // spawn prayingMantis
     this.mantis = this.add.sprite(10, 50, "mantisMoveRight");
@@ -54,6 +55,9 @@ export default class bugrunScene extends Phaser.Scene {
 
     // praying Mantis collides into player
     this.physics.add.overlap(this.player, this.obstacles, this.killBug, undefined, this);
+
+    //player lays eggs on feed spot
+    this.physics.add.overlap(this.player, this.feedSpots, this.layEggs, undefined, this);
 
     //timer
     this.updateTime();
@@ -117,6 +121,15 @@ export default class bugrunScene extends Phaser.Scene {
       callbackScope: this,
       loop: false
     });
+  }
+
+  //lays eggs when in feed zone
+  layEggs(){
+    if (Phaser.Input.Keyboard.JustDown(this.spacebar)){
+      if(this.player.active){
+        console.log("EGG");
+      }
+    }
   }
 
   //reset player position
