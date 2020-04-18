@@ -9,6 +9,8 @@ export default class bugrunScene extends Phaser.Scene {
   timeInSeconds: number;
   timeText: Phaser.GameObjects.Text;
   timeNum: number;
+  feedSpots: Phaser.Physics.Arcade.Group;
+  feedSpot: Phaser.GameObjects.Sprite;
 
   constructor() {
     super({ key: 'bugrunScene' });
@@ -40,6 +42,16 @@ export default class bugrunScene extends Phaser.Scene {
     this.obstacles = this.physics.add.group();
     this.obstacles.add(this.mantis);
 
+    //add feedSpots in every 15 seconds
+    this.feedSpots = this.physics.add.group();
+    this.time.addEvent({
+      delay:15000,
+      callback:this.spawnFeedSpot,
+      callbackScope:this,
+      loop: true
+    })
+
+
     // praying Mantis collides into player
     this.physics.add.overlap(this.player, this.obstacles, this.killBug, undefined, this);
 
@@ -61,6 +73,17 @@ export default class bugrunScene extends Phaser.Scene {
   moveMantis() {
       this.mantis.setX(this.mantis.x + 5);
       this.mantis.setY(this.mantis.y + 2)
+  }
+
+  //spawn in feed spot randomly
+  spawnFeedSpot(){
+    var feedSpotCount = 1;
+    for (var i =0; i<= feedSpotCount; i++){
+      var feedSpot = this.physics.add.sprite(100,105,"feedSpot");
+      this.feedSpots.add(feedSpot);
+      feedSpot.setRandomPosition(0,0,this.scale.width, 0);
+      feedSpot.setVelocity(0,120);
+    }
   }
 
   updateTime(){
