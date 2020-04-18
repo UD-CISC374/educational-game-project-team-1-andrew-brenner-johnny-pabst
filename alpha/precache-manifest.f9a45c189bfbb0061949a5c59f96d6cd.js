@@ -68,15 +68,15 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/alphafavicon.ico"
   },
   {
-    "revision": "52a91f68149633a2e830",
-    "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/alphagen.main.dc55586cb6f306090508.bundle.js"
+    "revision": "ab2a1e687357470b916c",
+    "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/alphagen.main.a2c4c8c917c94cee0df4.bundle.js"
   },
   {
     "revision": "2dd9b972cd7ff40a7108",
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/alphagen.vendors.e9a39a55bc69a303f73d.bundle.js"
   },
   {
-    "revision": "f865729a8194a04d267ded380523b30c",
+    "revision": "978c1c486dbd7e00280a10f74a03f960",
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/alphaindex.html"
   },
   {
