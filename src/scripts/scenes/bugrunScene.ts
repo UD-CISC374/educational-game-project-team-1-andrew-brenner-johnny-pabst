@@ -16,6 +16,7 @@ export default class bugrunScene extends Phaser.Scene {
   otherFlies: Phaser.Physics.Arcade.Group;
   score: number;
   scoreText: Phaser.GameObjects.Text;
+  OBSTACLE_VELOCITY: number = 40;
 
   constructor() {
     super({ key: 'bugrunScene' });
@@ -43,29 +44,32 @@ export default class bugrunScene extends Phaser.Scene {
     this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-    // spawn prayingMantis
-    this.mantis = this.add.sprite(10, 50, "mantisMoveRight");
-    this.mantis.play("mantisMoveRight");
-
-    //add mantis to enemy group
+    //create group for enemy obstacles
     this.obstacles = this.physics.add.group();
-    this.obstacles.add(this.mantis);
-
-    //add feedSpots in every 15 seconds
+    //create group for other flies
+    this.otherFlies = this.physics.add.group();
+    //create group for feedspots
     this.feedSpots = this.physics.add.group();
+    //create group for eggs
+    this.eggGroup = this.physics.add.group();
+    
+
+    // ** TIMED EVENTS **
+    //timer
+    this.time.addEvent({
+      delay:1000,
+      callback:this.updateTimeText,
+      callbackScope:this,
+      loop: true
+    })
+    // spawning feed spots
     this.time.addEvent({
       delay:15000,
       callback:this.spawnFeedSpot,
       callbackScope:this,
       loop: true
     })
-
-    //add egg group for spawning
-    this.eggGroup = this.physics.add.group();
-
-    //add other flies
-    this.otherFlies = this.physics.add.group();
-
+    // spawning other flies
     this.time.addEvent({
       delay:1000,
       callback:this.spawnFlies,
@@ -76,65 +80,73 @@ export default class bugrunScene extends Phaser.Scene {
 
     // praying Mantis collides into player
     this.physics.add.overlap(this.player, this.obstacles, this.killBug, undefined, this);
-
     //player lays eggs on feed spot
     this.physics.add.overlap(this.player, this.feedSpots, this.layEggs, undefined, this);
-
-
-    //timer
-    this.updateTime();
   }
 
 
 
   update() {
-    this.background.tilePositionY -= 2; // scroll background
+    this.background.tilePositionY -= 5; // scroll background
     this.movePlayerManager(); // listen for player movement
-    this.moveMantis();
+    //this.moveMantis();
 
     this.physics.add.collider(this.player, this.otherFlies);
   } 
 
 
   // Controls movemnt of the pray mantis object
+  /*
   moveMantis() {
       this.mantis.setX(this.mantis.x + 5);
-      this.mantis.setY(this.mantis.y + 2)
+      this.mantis.setY(this.mantis.y + 3)
   }
+  */
+
+  /* ex. +20
+  gainpoints(points: number){
+    this.add.text();
+  }
+*/
 
   //spawn in feed spot randomly
   spawnFeedSpot(){
     var feedSpotCount = 1;
-    for (var i =0; i<= feedSpotCount; i++){
+    for (var i = 0; i <= feedSpotCount; i++){
       var feedSpot = this.physics.add.sprite(100,105,"feedSpot");
       this.feedSpots.add(feedSpot);
       feedSpot.setRandomPosition(0,0,this.scale.width, 0);
-      feedSpot.setVelocity(0,120);
+      feedSpot.setVelocity(0,this.OBSTACLE_VELOCITY);
     }
   }
 
   //flyspawner
   spawnFlies(){
-    var feedSpotCount = 1;
-    for (var i =0; i<= feedSpotCount; i++){
+    var flyCount = 1;
+    for (var i =0; i<= flyCount; i++){
       var fly = this.physics.add.sprite(100,105,"player");
       this.otherFlies.add(fly);
       fly.setRandomPosition(0,0,this.scale.width, 0);
-      fly.setVelocity(0,120);
+      fly.setVelocity(0,this.OBSTACLE_VELOCITY);
       
 	    fly.body.immovable = true;
     }
   }
 
-  //timer function/delay
-  updateTime(){
-    this.time.addEvent({
-      delay:1000,
-      callback:this.updateTimeText,
-      callbackScope:this,
-      loop: true
-    })
+  /*
+  //spawns praying mantis
+  spawnMantis(){
+    var feedSpotCount = 1;
+    for (var i =0; i<= feedSpotCount; i++){
+      var fly = this.physics.add.sprite(100,105,"player");
+      this.otherFlies.add(fly);
+      fly.setRandomPosition(0,0,this.scale.width, 0);
+      fly.setVelocity(0,this.OBSTACLE_VELOCITY);
+      
+	    fly.body.immovable = true;
+    }
   }
+  */
 
   //updates actual timer
   updateTimeText(){
@@ -148,7 +160,7 @@ export default class bugrunScene extends Phaser.Scene {
     }
   }
 
-  updateScore(num){
+  updateScore(num: number){
     this.score += num;
     this.scoreText.text = "Score: " + this.score;
   }
@@ -167,16 +179,14 @@ export default class bugrunScene extends Phaser.Scene {
 
   //lays eggs when in feed zone
   layEggs(){
-    if (Phaser.Input.Keyboard.JustDown(this.spacebar)){
-      if(this.player.active){
-        console.log("EGG");
-        this.updateScore(12);
-        for (var i =0; i<= 3; i++){
-          var egg = this.physics.add.sprite(22,30,"egg");
-          this.eggGroup.add(egg);
-          egg.setRandomPosition(0,this.player.y,this.player.x, 0);
-          egg.setVelocity(0,120);
-        }
+    if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active){
+      console.log("EGG");
+      this.updateScore(12);
+      for (var i = 0; i <= 3; i++){
+        var egg = this.physics.add.sprite(22, 30, "egg");
+        this.eggGroup.add(egg);
+        egg.setRandomPosition(this.player.x, this.player.y, 40, 41);
+        egg.setVelocity(0, this.OBSTACLE_VELOCITY);
       }
     }
   }

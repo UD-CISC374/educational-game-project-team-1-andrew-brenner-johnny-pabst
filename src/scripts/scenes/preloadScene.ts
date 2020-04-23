@@ -10,19 +10,19 @@ export default class PreloadScene extends Phaser.Scene {
 
   // Loads all the spritesheets necessary for application 
   load_spritesheets(){
-    this.load.spritesheet("player", "assets/spritesheets/fly-animation2.png", {
+    this.load.spritesheet("player", "./assets/spritesheets/fly-animation2.png", {
         frameWidth: 40,
         frameHeight: 41
       });
-    this.load.spritesheet("prayingMantisRight", "assets/spritesheets/prayingMantisRight.png",{
+    this.load.spritesheet("prayingMantisRight", "./assets/spritesheets/prayingMantisRight.png",{
       frameWidth: 200,
       frameHeight: 200
     });
-    this.load.spritesheet("feedSpot","assets/spritesheets/feedSpot.png",{
+    this.load.spritesheet("feedSpot","./assets/spritesheets/feedSpot.png",{
       frameWidth: 100,
       frameHeight: 105
     });
-    this.load.spritesheet("egg","assets/spritesheets/egg.png",{
+    this.load.spritesheet("egg","./assets/spritesheets/egg.png",{
       frameWidth: 22,
       frameHeight: 30
     });
@@ -31,10 +31,10 @@ export default class PreloadScene extends Phaser.Scene {
   
   //Loads all the images necessary for application
   load_images(){
-    this.load.image("flyoverBackground", "assets/images/farmBG.jpg");
-    this.load.image("bugrunBackground", "assets/images/treeBark.jpg");
-    this.load.image("appleTree", "assets/images/appleTree.png");
-    this.load.image("treeTwo", "assets/images/treeTwo.png");
+    this.load.image("flyoverBackground", "./assets/images/farmBG.jpg");
+    this.load.image("bugrunBackground", "./assets/images/treeBark.jpg");
+    this.load.image("appleTree", "./assets/images/appleTree.png");
+    this.load.image("treeTwo", "./assets/images/treeTwo.png");
   }
 
 
@@ -43,8 +43,8 @@ export default class PreloadScene extends Phaser.Scene {
 
   create() {
     this.create_spritesheets();
-    this.scene.start('flyoverScene');
-    //this.scene.start('bugrunScene');
+    //this.scene.start('flyoverScene');
+    this.scene.start('bugrunScene');
   }
 
 
