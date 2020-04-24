@@ -8,6 +8,10 @@ export default class flyoverScene extends Phaser.Scene {
   appleTree: Phaser.GameObjects.Sprite;
   treeTwo: Phaser.GameObjects.Sprite;
   hosts: Phaser.Physics.Arcade.Group;
+  messageBox: Phaser.GameObjects.Sprite;
+  closeButton: Phaser.GameObjects.Sprite;
+  tutorialMsg: Phaser.GameObjects.Text;
+  tutorialBox: Phaser.Physics.Arcade.Group;
 
   constructor() {
     super({ key: 'flyoverScene' });
@@ -31,14 +35,35 @@ export default class flyoverScene extends Phaser.Scene {
     this.hosts.add(this.appleTree);
     this.hosts.add(this.treeTwo);
 
-
     // setup keyboard input
     this.cursorKeys = this.input.keyboard.createCursorKeys();
 
     //switch to bugrun upon collision
     this.physics.add.overlap(this.player, this.hosts, this.enterRunScene, undefined, this);
 
+    //create popup
+    this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
+    this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
+    this.tutorialMsg = this.add.text(this.scale.width / 6 , this.scale.height / 3, 'Infest the area!\n Use the arrow keys to fly over to a tree.', { font: "30px Arial", fill: "#000000", align: "center" });
+    this.tutorialBox = this.physics.add.group();
+    this.closeButton.setInteractive();
+    this.closeButton.on('pointerdown', this.destroyTutorial, this);
+    this.closeButton.on('pointerup', this.mouseFix, this);
+    this.closeButton.on('pointerout', this.mouseFix, this);
+
+
   }
+
+  //close tutorial box
+  destroyTutorial(){
+    console.log("tutorial done");
+    this.tutorialMsg.destroy();
+    this.messageBox.destroy();
+    this.closeButton.destroy();
+  }
+  //fixes click event crash
+  mouseFix(){}
+  
 
   enterRunScene() {
     this.scene.start('bugrunScene');

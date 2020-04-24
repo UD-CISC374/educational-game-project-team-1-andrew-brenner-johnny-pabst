@@ -51,11 +51,10 @@ export default class bugrunScene extends Phaser.Scene {
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     //create popup
-    this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height /2, "messageBox");
+    this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
     this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-    this.tutorialMsg = this.add.text(80, 260, 'Rack up points by infesting the area!\nPress Spacebar over feedspots to lay eggs.\nKeep up and avoid pesticide and predators', { font: "30px Arial", fill: "#000000", align: "center" });
+    this.tutorialMsg = this.add.text(this.scale.width / 8 , this.scale.height / 3, 'Rack up points by infesting the area!\nPress Spacebar over feedspots to lay eggs.\nKeep up and avoid pesticide and predators', { font: "30px Arial", fill: "#000000", align: "center" });
     this.tutorialBox = this.physics.add.group();
-
     this.closeButton.setInteractive();
     this.closeButton.on('pointerdown', this.destroyTutorial, this);
     this.closeButton.on('pointerup', this.mouseFix, this);
@@ -98,6 +97,8 @@ export default class bugrunScene extends Phaser.Scene {
 
 
 
+    // player collides with other flies
+    this.physics.add.collider(this.player, this.otherFlies);
     // praying Mantis collides into player
     this.physics.add.overlap(this.player, this.obstacles, this.killBug, undefined, this);
     //player lays eggs on feed spot
@@ -128,19 +129,7 @@ export default class bugrunScene extends Phaser.Scene {
   update() {
     this.background.tilePositionY -= 5; // scroll background
     this.movePlayerManager(); // listen for player movement
-    //this.moveMantis();
-
-    this.physics.add.collider(this.player, this.otherFlies);
   } 
-
-
-  // Controls movemnt of the pray mantis object
-  /*
-  moveMantis() {
-      this.mantis.setX(this.mantis.x + 5);
-      this.mantis.setY(this.mantis.y + 3)
-  }
-  */
 
   /* ex. +20
   gainpoints(points: number){
@@ -200,9 +189,8 @@ export default class bugrunScene extends Phaser.Scene {
   }
 
   //fixes click event crash
-  mouseFix(){
-
-  }
+  mouseFix(){}
+  
 
   //updates actual timer
   updateTimeText(){
