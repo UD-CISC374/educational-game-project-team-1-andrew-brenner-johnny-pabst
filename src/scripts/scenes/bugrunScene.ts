@@ -93,6 +93,13 @@ export default class bugrunScene extends Phaser.Scene {
       callbackScope:this,
       loop: true
     })
+        // spawning praying mantis
+    this.time.addEvent({
+      delay:10000,
+      callback:this.spawnMantis,
+      callbackScope:this,
+      loop: true
+    })
 
 
 
@@ -105,7 +112,7 @@ export default class bugrunScene extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.feedSpots, this.layEggs, undefined, this);
 
     // adding bottom bounds
-    this.bottomBounds = this.physics.add.image(0, this.scale.height + 100, "bottomBounds");
+    this.bottomBounds = this.physics.add.image(0, this.scale.height + 200, "bottomBounds");
     this.bottomBounds.setImmovable(true);
     // Colliders for obstacles and bottomBounds
     this.physics.add.collider(this.bottomBounds, this.otherFlies, function(bottomBounds, fly){
@@ -116,6 +123,9 @@ export default class bugrunScene extends Phaser.Scene {
     }, undefined, this);
     this.physics.add.collider(this.bottomBounds, this.eggGroup, function(bottomBounds, egg){
       egg.destroy();
+    }, undefined, this);
+    this.physics.add.collider(this.bottomBounds, this.obstacles, function(bottomBounds, obstacle){
+      obstacle.destroy();
     }, undefined, this);
     
     // bottom bounds specifically for player
@@ -142,42 +152,41 @@ export default class bugrunScene extends Phaser.Scene {
 
   //spawn in feed spot randomly
   spawnFeedSpot(){
-    var feedSpotCount = 1;
-    for (var i = 0; i <= feedSpotCount; i++){
+    var feedSpotCount = 2;
+    for (var i = 0; i < feedSpotCount; i++){
       var feedSpot = this.physics.add.sprite(100,105,"feedSpot");
       this.feedSpots.add(feedSpot);
-      feedSpot.setRandomPosition(0,0,this.scale.width, 0);
+      feedSpot.setRandomPosition(-50,-50,this.scale.width, 0);
       feedSpot.setVelocity(0,this.OBSTACLE_VELOCITY);
     }
   }
 
   //flyspawner
   spawnFlies(){
-    var flyCount = 1;
-    for (var i =0; i<= flyCount; i++){
+    var flyCount = 3;
+    for (var i =0; i < flyCount; i++){
       var fly = this.physics.add.sprite(100,105,"player");
       this.otherFlies.add(fly);
-      fly.setRandomPosition(0,0,this.scale.width, 0);
+      fly.setRandomPosition(-50,-50,this.scale.width, 0);
       fly.setVelocity(0,this.OBSTACLE_VELOCITY);
       
 	    fly.body.immovable = true;
     }
   }
 
-  /*
+
   //spawns praying mantis
   spawnMantis(){
-    var feedSpotCount = 1;
-    for (var i =0; i<= feedSpotCount; i++){
-      var fly = this.physics.add.sprite(100,105,"player");
-      this.otherFlies.add(fly);
-      fly.setRandomPosition(0,0,this.scale.width, 0);
-      fly.setVelocity(0,this.OBSTACLE_VELOCITY);
-      
-	    fly.body.immovable = true;
+    var mantisCount = 1;
+    for (var i =0; i < mantisCount; i++){
+      var mantis = this.physics.add.sprite(100,105,"mantisMoveRight");
+      mantis.play("mantisMoveRight");
+      this.obstacles.add(mantis);
+      mantis.setRandomPosition(-50,-50,this.scale.width / 2, 0);
+      mantis.setVelocity(50,this.OBSTACLE_VELOCITY);
+      mantis.body.setSize(200,200);
     }
   }
-  */
 
 
   //close tutorial box
