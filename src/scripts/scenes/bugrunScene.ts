@@ -4,19 +4,21 @@ export default class bugrunScene extends Phaser.Scene {
   background: Phaser.GameObjects.TileSprite;
   player: Phaser.Physics.Arcade.Sprite;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
-  mantis: Phaser.GameObjects.Sprite;
+  spacebar: Phaser.Input.Keyboard.Key;
+  //mantis: Phaser.GameObjects.Sprite;
   obstacles: Phaser.Physics.Arcade.Group;
+  //feedSpot: Phaser.GameObjects.Sprite;
+  feedSpots: Phaser.Physics.Arcade.Group;
+  eggGroup: Phaser.Physics.Arcade.Group;
+  otherFlies: Phaser.Physics.Arcade.Group;
   timeInSeconds: number;
   timeText: Phaser.GameObjects.Text;
   timeNum: number;
-  feedSpots: Phaser.Physics.Arcade.Group;
-  feedSpot: Phaser.GameObjects.Sprite;
-  spacebar: Phaser.Input.Keyboard.Key;
-  eggGroup: Phaser.Physics.Arcade.Group;
-  otherFlies: Phaser.Physics.Arcade.Group;
   score: number;
   scoreText: Phaser.GameObjects.Text;
-  OBSTACLE_VELOCITY: number = 40;
+  OBSTACLE_VELOCITY: number = 120;
+  bottomBounds: Phaser.Physics.Arcade.Image;
+  playerBottomBounds: Phaser.Physics.Arcade.Image;
 
   constructor() {
     super({ key: 'bugrunScene' });
@@ -53,6 +55,7 @@ export default class bugrunScene extends Phaser.Scene {
     //create group for eggs
     this.eggGroup = this.physics.add.group();
     
+    
 
     // ** TIMED EVENTS **
     //timer
@@ -78,10 +81,31 @@ export default class bugrunScene extends Phaser.Scene {
     })
 
 
+
+
     // praying Mantis collides into player
     this.physics.add.overlap(this.player, this.obstacles, this.killBug, undefined, this);
     //player lays eggs on feed spot
     this.physics.add.overlap(this.player, this.feedSpots, this.layEggs, undefined, this);
+
+    // adding bottom bounds
+    this.bottomBounds = this.physics.add.image(0, this.scale.height + 100, "bottomBounds");
+    this.bottomBounds.setImmovable(true);
+    // Colliders for obstacles and bottomBounds
+    this.physics.add.collider(this.bottomBounds, this.otherFlies, function(bottomBounds, fly){
+      fly.destroy();
+    }, undefined, this);
+    this.physics.add.collider(this.bottomBounds, this.feedSpots, function(bottomBounds, feedSpot){
+      feedSpot.destroy();
+    }, undefined, this);
+    this.physics.add.collider(this.bottomBounds, this.eggGroup, function(bottomBounds, egg){
+      egg.destroy();
+    }, undefined, this);
+    
+    // bottom bounds specifically for player
+    this.playerBottomBounds = this.physics.add.image(0, this.scale.height, "bottomBounds");
+    this.playerBottomBounds.setImmovable(true);
+    this.physics.add.collider(this.playerBottomBounds, this.player, this.killBug, undefined, this);
   }
 
 
@@ -108,6 +132,9 @@ export default class bugrunScene extends Phaser.Scene {
     this.add.text();
   }
 */
+  
+
+
 
   //spawn in feed spot randomly
   spawnFeedSpot(){
