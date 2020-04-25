@@ -1,17 +1,20 @@
 import { gameSettings } from "../game";
+import { flags } from "../game";
 
 
 export default class flyoverScene extends Phaser.Scene {
   background: Phaser.GameObjects.Image;
   player: Phaser.Physics.Arcade.Sprite;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
-  appleTree: Phaser.GameObjects.Sprite;
-  treeTwo: Phaser.GameObjects.Sprite;
+  appleTree: Phaser.GameObjects.Image;
+  treeTwo: Phaser.GameObjects.Image;
   hosts: Phaser.Physics.Arcade.Group;
   messageBox: Phaser.GameObjects.Sprite;
   closeButton: Phaser.GameObjects.Sprite;
   tutorialMsg: Phaser.GameObjects.Text;
   tutorialBox: Phaser.Physics.Arcade.Group;
+  treeTwoCheckMark: Phaser.GameObjects.Image;
+  appleTreeCheckMark: Phaser.GameObjects.Image;
 
   constructor() {
     super({ key: 'flyoverScene' });
@@ -29,17 +32,47 @@ export default class flyoverScene extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
 
     //create flyover trees
-    this.appleTree = this.add.sprite(100,500,"appleTree");
-    this.treeTwo = this.add.sprite(570,350,"treeTwo");
     this.hosts = this.physics.add.group();
-    this.hosts.add(this.appleTree);
-    this.hosts.add(this.treeTwo);
+    if(flags.appleTreeDead){
+      this.appleTree = this.add.image(100,500,"deadTree2");
+      this.appleTreeCheckMark = this.add.image(150,450, "checkMark");
+    } else{
+      this.appleTree = this.add.image(100,500,"appleTree");
+      this.hosts.add(this.appleTree);
+    } 
+    if(flags.treeTwoDead){
+      this.treeTwo = this.add.image(570,350,"deadTree3");
+      this.treeTwoCheckMark = this.add.image(600,300, "checkMark");
+    } else{
+      this.treeTwo = this.add.image(570,350,"treeTwo");
+      this.hosts.add(this.treeTwo);
+    }
+    this.appleTree.name = "appleTree";
+    this.treeTwo.name = "treeTwo";
+
+    //switch to bugrun upon collision
+    //this.physics.add.overlap(this.player, this.hosts, this.enterRunScene, undefined, this);
+    this.physics.add.collider(this.player, this.hosts, this.enterRunScene , function(player, host){
+      switch(host.name) { 
+        case "appleTree": { 
+           flags.appleTreeDead = true; 
+           return flags.appleTreeDead; 
+        } 
+        case "treeTwo": { 
+           flags.treeTwoDead = true; 
+           return flags.treeTwoDead 
+        } 
+        default: { 
+           console.log("host plant images unchanged"); 
+           return false; 
+        } 
+     }
+    }, this);
+
+
 
     // setup keyboard input
     this.cursorKeys = this.input.keyboard.createCursorKeys();
-
-    //switch to bugrun upon collision
-    this.physics.add.overlap(this.player, this.hosts, this.enterRunScene, undefined, this);
 
     //create popup
     this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
@@ -71,6 +104,7 @@ export default class flyoverScene extends Phaser.Scene {
 
   update() {
     this.movePlayerManager();
+    
   }
 
 

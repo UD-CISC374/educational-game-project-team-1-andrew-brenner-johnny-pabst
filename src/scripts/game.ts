@@ -7,8 +7,15 @@ import bugrunScene from './scenes/bugrunScene';
 const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 800;
 
+
+
 export const gameSettings = {
     playerSpeed: 200,
+}
+
+export var flags = {
+    appleTreeDead: false,
+    treeTwoDead: false
 }
 
 const config: GameConfig = {
@@ -34,4 +41,4 @@ window.addEventListener('load', () => {
     window['game'] = new Phaser.Game(config);
 });
 
-//
+
