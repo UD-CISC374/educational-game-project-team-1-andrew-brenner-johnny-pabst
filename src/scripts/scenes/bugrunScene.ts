@@ -204,7 +204,7 @@ export default class bugrunScene extends Phaser.Scene {
   //updates actual timer
   updateTimeText(){
     console.log(this.timeNum);
-    if (this.timeNum > 0) {
+    if (this.timeNum > 115) {
       this.timeNum--;
       this.timeText.text = "Time Remaining: " + this.timeNum;
     }
