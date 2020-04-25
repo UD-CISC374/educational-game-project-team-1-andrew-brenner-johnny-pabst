@@ -57,7 +57,7 @@ export default class bugrunScene extends Phaser.Scene {
       //create popup
       this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
       this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-      this.tutorialMsg = this.add.text(this.scale.width / 8 , this.scale.height / 3, 'Rack up points by infesting the area!\nPress Spacebar over feedspots to lay eggs.\nKeep up and avoid pesticide and predators', { font: "30px Arial", fill: "#000000", align: "center" });
+      this.tutorialMsg = this.add.text(this.scale.width / 17 , this.scale.height / 3, 'Rack up points by infesting the area!\nPress Spacebar over orange spots to lay eggs.\nPress Spacebar over green spots to feed on the tree.\nKeep up and avoid pesticide and predators', { font: "30px Arial", fill: "#000000", align: "center" });
       this.tutorialBox = this.physics.add.group();
       this.closeButton.setInteractive();
       this.closeButton.on('pointerdown', this.destroyTutorial, this);
