@@ -23,6 +23,7 @@ export default class bugrunScene extends Phaser.Scene {
   closeButton: Phaser.GameObjects.Sprite;
   tutorialMsg: Phaser.GameObjects.Text;
   tutorialBox: Phaser.Physics.Arcade.Group;
+  //pesticide: Phaser.GameObjects.Sprite;
 
   constructor() {
     super({ key: 'bugrunScene' });
@@ -100,6 +101,13 @@ export default class bugrunScene extends Phaser.Scene {
       callbackScope:this,
       loop: true
     })
+    //spawn pesticide
+    this.time.addEvent({
+      delay:9000,
+      callback:this.spawnPesticide,
+      callbackScope:this,
+      loop: true
+    })
 
 
 
@@ -137,7 +145,7 @@ export default class bugrunScene extends Phaser.Scene {
 
 
   update() {
-    this.background.tilePositionY -= 5; // scroll background
+    this.background.tilePositionY -= 2; // scroll background
     this.movePlayerManager(); // listen for player movement
   } 
 
@@ -188,6 +196,30 @@ export default class bugrunScene extends Phaser.Scene {
     }
   }
 
+  //spawn pesticide
+  spawnPesticide(){
+    var pesticideCount = 1;
+    for (var i =0; i < pesticideCount; i++){
+      var pesticide = this.physics.add.sprite(0,0,"pesticideWarning");
+      pesticide.play("pesticideWarning");
+      //this.obstacles.add(pesticide);
+      pesticide.setRandomPosition(0,0,this.scale.width, this.scale.height / 3);
+      pesticide.setVelocity(0,this.OBSTACLE_VELOCITY);
+      this.time.addEvent({
+        delay:1500,
+        callback:this.pesticideSwitch,
+        args: [pesticide],
+        callbackScope:this,
+        loop: false
+      })
+      
+    }
+  }
+  pesticideSwitch(pesticide){
+    pesticide.play("pesticideZone");
+    this.obstacles.add(pesticide);
+    pesticide.setVelocity(0,this.OBSTACLE_VELOCITY);
+  }
 
   //close tutorial box
   destroyTutorial(){
@@ -214,14 +246,39 @@ export default class bugrunScene extends Phaser.Scene {
   }
 
   updateScore(num: number){
-    this.score += num;
-    this.scoreText.text = "Score: " + this.score;
+    if (num < 0){
+      var pointsPopup = this.add.text(this.player.x, this.player.y - 50, num.toString(), { font: "50px Arial", fill: "#ff0000", align: "center" });
+      this.time.addEvent({
+        delay:1000,
+        callback: this.pointDestroy,
+        args: [pointsPopup],
+        callbackScope: this,
+        loop: false
+      });
+    } else {
+      var pointsPopup = this.add.text(this.player.x, this.player.y - 50, "+" + num.toString(), { font: "50px Arial", fill: "#00ff00", align: "center" });
+      this.time.addEvent({
+        delay:1000,
+        callback: this.pointDestroy,
+        args: [pointsPopup],
+        callbackScope: this,
+        loop: false
+      });
+    }
+    if (this.score + num >= 0){
+      this.score += num;
+      this.scoreText.text = "Score: " + this.score;
+    }
+  }
+  pointDestroy(pointsPopup){
+    pointsPopup.destroy();
   }
 
   //despawn bug and delay before reset
   killBug(){
     this.player.disableBody(true, true);
     console.log("collision");
+    this.updateScore(-15);
     this.time.addEvent({
       delay:1000,
       callback: this.resetPlayer,
@@ -234,7 +291,7 @@ export default class bugrunScene extends Phaser.Scene {
   layEggs(){
     if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active){
       console.log("EGG");
-      this.updateScore(12);
+      this.updateScore(20);
       for (var i = 0; i <= 3; i++){
         var egg = this.physics.add.sprite(22, 30, "egg");
         this.eggGroup.add(egg);

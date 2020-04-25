@@ -26,6 +26,14 @@ export default class PreloadScene extends Phaser.Scene {
       frameWidth: 22,
       frameHeight: 30
     });
+    this.load.spritesheet("pesticideWarning","./assets/spritesheets/pesticideWarning.png",{
+      frameWidth: 400,
+      frameHeight: 400
+    });
+    this.load.spritesheet("pesticideZone","./assets/spritesheets/pesticideZone.png",{
+      frameWidth: 400,
+      frameHeight: 400
+    });
   }
 
   
@@ -73,6 +81,24 @@ export default class PreloadScene extends Phaser.Scene {
         end: 9
       }),
       frameRate: 20,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "pesticideWarning",
+      frames: this.anims.generateFrameNumbers("pesticideWarning", {
+        start: 0,
+        end: 1
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "pesticideZone",
+      frames: this.anims.generateFrameNumbers("pesticideZone", {
+        start: 0,
+        end: 1
+      }),
+      frameRate: 10,
       repeat: -1
     });
   }
