@@ -23,6 +23,7 @@ export default class bugrunScene extends Phaser.Scene {
   closeButton: Phaser.GameObjects.Sprite;
   tutorialMsg: Phaser.GameObjects.Text;
   tutorialBox: Phaser.Physics.Arcade.Group;
+  //pesticide: Phaser.GameObjects.Sprite;
 
   constructor() {
     super({ key: 'bugrunScene' });
@@ -100,6 +101,13 @@ export default class bugrunScene extends Phaser.Scene {
       callbackScope:this,
       loop: true
     })
+    //spawn pesticide
+    this.time.addEvent({
+      delay:9000,
+      callback:this.spawnPesticide,
+      callbackScope:this,
+      loop: true
+    })
 
 
 
@@ -137,7 +145,7 @@ export default class bugrunScene extends Phaser.Scene {
 
 
   update() {
-    this.background.tilePositionY -= 5; // scroll background
+    this.background.tilePositionY -= 2; // scroll background
     this.movePlayerManager(); // listen for player movement
   } 
 
@@ -188,6 +196,30 @@ export default class bugrunScene extends Phaser.Scene {
     }
   }
 
+  //spawn pesticide
+  spawnPesticide(){
+    var pesticideCount = 1;
+    for (var i =0; i < pesticideCount; i++){
+      var pesticide = this.physics.add.sprite(0,0,"pesticideWarning");
+      pesticide.play("pesticideWarning");
+      //this.obstacles.add(pesticide);
+      pesticide.setRandomPosition(0,0,this.scale.width, this.scale.height / 3);
+      pesticide.setVelocity(0,this.OBSTACLE_VELOCITY);
+      this.time.addEvent({
+        delay:1500,
+        callback:this.pesticideSwitch,
+        args: [pesticide],
+        callbackScope:this,
+        loop: false
+      })
+      
+    }
+  }
+  pesticideSwitch(pesticide){
+    pesticide.play("pesticideZone");
+    this.obstacles.add(pesticide);
+    pesticide.setVelocity(0,this.OBSTACLE_VELOCITY);
+  }
 
   //close tutorial box
   destroyTutorial(){
