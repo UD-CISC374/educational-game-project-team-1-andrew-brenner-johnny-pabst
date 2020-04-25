@@ -246,14 +246,39 @@ export default class bugrunScene extends Phaser.Scene {
   }
 
   updateScore(num: number){
-    this.score += num;
-    this.scoreText.text = "Score: " + this.score;
+    if (num < 0){
+      var pointsPopup = this.add.text(this.player.x, this.player.y - 50, num.toString(), { font: "50px Arial", fill: "#ff0000", align: "center" });
+      this.time.addEvent({
+        delay:1000,
+        callback: this.pointDestroy,
+        args: [pointsPopup],
+        callbackScope: this,
+        loop: false
+      });
+    } else {
+      var pointsPopup = this.add.text(this.player.x, this.player.y - 50, "+" + num.toString(), { font: "50px Arial", fill: "#00ff00", align: "center" });
+      this.time.addEvent({
+        delay:1000,
+        callback: this.pointDestroy,
+        args: [pointsPopup],
+        callbackScope: this,
+        loop: false
+      });
+    }
+    if (this.score + num >= 0){
+      this.score += num;
+      this.scoreText.text = "Score: " + this.score;
+    }
+  }
+  pointDestroy(pointsPopup){
+    pointsPopup.destroy();
   }
 
   //despawn bug and delay before reset
   killBug(){
     this.player.disableBody(true, true);
     console.log("collision");
+    this.updateScore(-15);
     this.time.addEvent({
       delay:1000,
       callback: this.resetPlayer,
@@ -266,7 +291,7 @@ export default class bugrunScene extends Phaser.Scene {
   layEggs(){
     if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active){
       console.log("EGG");
-      this.updateScore(12);
+      this.updateScore(20);
       for (var i = 0; i <= 3; i++){
         var egg = this.physics.add.sprite(22, 30, "egg");
         this.eggGroup.add(egg);
