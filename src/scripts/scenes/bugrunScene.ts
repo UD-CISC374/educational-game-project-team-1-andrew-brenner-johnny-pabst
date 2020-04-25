@@ -7,7 +7,8 @@ export default class bugrunScene extends Phaser.Scene {
   spacebar: Phaser.Input.Keyboard.Key;
   //mantis: Phaser.GameObjects.Sprite;
   obstacles: Phaser.Physics.Arcade.Group;
-  //feedSpot: Phaser.GameObjects.Sprite;
+  //eggZone: Phaser.GameObjects.Sprite;
+  eggZones: Phaser.Physics.Arcade.Group;
   feedSpots: Phaser.Physics.Arcade.Group;
   eggGroup: Phaser.Physics.Arcade.Group;
   otherFlies: Phaser.Physics.Arcade.Group;
@@ -54,7 +55,7 @@ export default class bugrunScene extends Phaser.Scene {
     //create popup
     this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
     this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-    this.tutorialMsg = this.add.text(this.scale.width / 8 , this.scale.height / 3, 'Rack up points by infesting the area!\nPress Spacebar over feedspots to lay eggs.\nKeep up and avoid pesticide and predators', { font: "30px Arial", fill: "#000000", align: "center" });
+    this.tutorialMsg = this.add.text(this.scale.width / 8 , this.scale.height / 3, 'Rack up points by infesting the area!\nPress Spacebar over yellow zones to lay eggs.\n Press spacebar over green food zone\n to latch on and grub!\nKeep up and avoid pesticide and predators!', { font: "30px Arial", fill: "#000000", align: "left" });
     this.tutorialBox = this.physics.add.group();
     this.closeButton.setInteractive();
     this.closeButton.on('pointerdown', this.destroyTutorial, this);
@@ -67,6 +68,8 @@ export default class bugrunScene extends Phaser.Scene {
     this.otherFlies = this.physics.add.group();
     //create group for feedspots
     this.feedSpots = this.physics.add.group();
+    //create group for eggzones
+    this.eggZones = this.physics.add.group();
     //create group for eggs
     this.eggGroup = this.physics.add.group();
     
@@ -82,8 +85,15 @@ export default class bugrunScene extends Phaser.Scene {
     })
     // spawning feed spots
     this.time.addEvent({
+      delay:18000,
+      callback:this.spawnFeedZone,
+      callbackScope:this,
+      loop: true
+    })
+    // spawning feed spots
+    this.time.addEvent({
       delay:15000,
-      callback:this.spawnFeedSpot,
+      callback:this.spawnEggZone,
       callbackScope:this,
       loop: true
     })
@@ -116,8 +126,10 @@ export default class bugrunScene extends Phaser.Scene {
     this.physics.add.collider(this.player, this.otherFlies);
     // praying Mantis collides into player
     this.physics.add.overlap(this.player, this.obstacles, this.killBug, undefined, this);
-    //player lays eggs on feed spot
-    this.physics.add.overlap(this.player, this.feedSpots, this.layEggs, undefined, this);
+    //player latches onto feed spot
+    this.physics.add.overlap(this.player, this.feedSpots, this.eatFood, undefined, this);
+    //player lays eggs on egg zone
+    this.physics.add.overlap(this.player, this.eggZones, this.layEggs, undefined, this);
 
     // adding bottom bounds
     this.bottomBounds = this.physics.add.image(0, this.scale.height + 200, "bottomBounds");
@@ -126,8 +138,8 @@ export default class bugrunScene extends Phaser.Scene {
     this.physics.add.collider(this.bottomBounds, this.otherFlies, function(bottomBounds, fly){
       fly.destroy();
     }, undefined, this);
-    this.physics.add.collider(this.bottomBounds, this.feedSpots, function(bottomBounds, feedSpot){
-      feedSpot.destroy();
+    this.physics.add.collider(this.bottomBounds, this.eggZones, function(bottomBounds, eggZone){
+      eggZone.destroy();
     }, undefined, this);
     this.physics.add.collider(this.bottomBounds, this.eggGroup, function(bottomBounds, egg){
       egg.destroy();
@@ -157,15 +169,24 @@ export default class bugrunScene extends Phaser.Scene {
   
 
 
-
   //spawn in feed spot randomly
-  spawnFeedSpot(){
+  spawnFeedZone(){
     var feedSpotCount = 2;
     for (var i = 0; i < feedSpotCount; i++){
       var feedSpot = this.physics.add.sprite(100,105,"feedSpot");
       this.feedSpots.add(feedSpot);
       feedSpot.setRandomPosition(-50,-50,this.scale.width, 0);
       feedSpot.setVelocity(0,this.OBSTACLE_VELOCITY);
+    }
+  }
+  //spawn in egg zone randomly
+  spawnEggZone(){
+    var eggZoneCount = 1;
+    for (var i = 0; i < eggZoneCount; i++){
+      var eggZone = this.physics.add.sprite(100,105,"eggZone");
+      this.eggZones.add(eggZone);
+      eggZone.setRandomPosition(-50,-50,this.scale.width, 0);
+      eggZone.setVelocity(0,this.OBSTACLE_VELOCITY);
     }
   }
 
@@ -235,7 +256,7 @@ export default class bugrunScene extends Phaser.Scene {
 
   //updates actual timer
   updateTimeText(){
-    console.log(this.timeNum);
+    //console.log(this.timeNum);
     if (this.timeNum > 0) {
       this.timeNum--;
       this.timeText.text = "Time Remaining: " + this.timeNum;
@@ -269,6 +290,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.score += num;
       this.scoreText.text = "Score: " + this.score;
     }
+
   }
   pointDestroy(pointsPopup){
     pointsPopup.destroy();
@@ -277,7 +299,7 @@ export default class bugrunScene extends Phaser.Scene {
   //despawn bug and delay before reset
   killBug(){
     this.player.disableBody(true, true);
-    console.log("collision");
+    //console.log("collision");
     this.updateScore(-15);
     this.time.addEvent({
       delay:1000,
@@ -287,6 +309,23 @@ export default class bugrunScene extends Phaser.Scene {
     });
   }
 
+  //latch onto foodspot when pressed spacebar
+  eatFood(){
+    if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active){
+      console.log("EAT");
+      this.updateScore(100);
+      this.player.disableBody(true,true);
+      var dummy = this.physics.add.sprite(this.player.x, this.player.y, "player");
+      dummy.setVelocityX(0);
+      dummy.setVelocityY(this.OBSTACLE_VELOCITY);
+      this.time.addEvent({
+        delay:1000,
+        callback: this.resetPlayer,
+        callbackScope: this,
+        loop: false
+      })
+    }
+  }
   //lays eggs when in feed zone
   layEggs(){
     if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active){
@@ -336,10 +375,10 @@ export default class bugrunScene extends Phaser.Scene {
         // left and right
       if(this.cursorKeys.left.isDown){
         this.player.setVelocityX(-gameSettings.playerSpeed);
-        console.log("left");
+        //console.log("left");
       } else if(this.cursorKeys.right.isDown){
         this.player.setVelocityX(gameSettings.playerSpeed);
-        console.log("right");
+        // console.log("right");
       } else {
         this.player.setVelocityX(0); // stop movement when key is released
       }
@@ -347,10 +386,10 @@ export default class bugrunScene extends Phaser.Scene {
       // up and down
       if(this.cursorKeys.up.isDown){
         this.player.setVelocityY(-gameSettings.playerSpeed);
-        console.log("up");
+        //console.log("up");
       } else if(this.cursorKeys.down.isDown){
         this.player.setVelocityY(gameSettings.playerSpeed);
-        console.log("down");
+        //console.log("down");
       } else{
         this.player.setVelocityY(0); // stop movement when key is released
       }
