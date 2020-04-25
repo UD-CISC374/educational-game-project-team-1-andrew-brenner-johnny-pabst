@@ -14,6 +14,8 @@ export const gameSettings = {
 }
 
 export var flags = {
+    flyoverTutDone: false,
+    bugRunTutDone: false,
     appleTreeDead: false,
     treeTwoDead: false
 }

@@ -1,4 +1,5 @@
 import { gameSettings } from "../game";
+import { flags } from "../game";
 
 export default class bugrunScene extends Phaser.Scene {
   background: Phaser.GameObjects.TileSprite;
@@ -51,15 +52,18 @@ export default class bugrunScene extends Phaser.Scene {
     this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-    //create popup
-    this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
-    this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-    this.tutorialMsg = this.add.text(this.scale.width / 8 , this.scale.height / 3, 'Rack up points by infesting the area!\nPress Spacebar over feedspots to lay eggs.\nKeep up and avoid pesticide and predators', { font: "30px Arial", fill: "#000000", align: "center" });
-    this.tutorialBox = this.physics.add.group();
-    this.closeButton.setInteractive();
-    this.closeButton.on('pointerdown', this.destroyTutorial, this);
-    this.closeButton.on('pointerup', this.mouseFix, this);
-    this.closeButton.on('pointerout', this.mouseFix, this);
+    if(!flags.bugRunTutDone){
+      //create popup
+      this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
+      this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
+      this.tutorialMsg = this.add.text(this.scale.width / 8 , this.scale.height / 3, 'Rack up points by infesting the area!\nPress Spacebar over feedspots to lay eggs.\nKeep up and avoid pesticide and predators', { font: "30px Arial", fill: "#000000", align: "center" });
+      this.tutorialBox = this.physics.add.group();
+      this.closeButton.setInteractive();
+      this.closeButton.on('pointerdown', this.destroyTutorial, this);
+      this.closeButton.on('pointerup', this.mouseFix, this);
+      this.closeButton.on('pointerout', this.mouseFix, this);
+      flags.bugRunTutDone = true;
+    }
 
     //create group for enemy obstacles
     this.obstacles = this.physics.add.group();
@@ -236,7 +240,7 @@ export default class bugrunScene extends Phaser.Scene {
   //updates actual timer
   updateTimeText(){
     console.log(this.timeNum);
-    if (this.timeNum > 115) {
+    if (this.timeNum > 0) {
       this.timeNum--;
       this.timeText.text = "Time Remaining: " + this.timeNum;
     }
