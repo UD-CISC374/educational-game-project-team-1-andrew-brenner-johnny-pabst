@@ -74,16 +74,19 @@ export default class flyoverScene extends Phaser.Scene {
     // setup keyboard input
     this.cursorKeys = this.input.keyboard.createCursorKeys();
 
-    //create popup
-    this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
-    this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-    this.tutorialMsg = this.add.text(this.scale.width / 6 , this.scale.height / 3, 'Infest the area!\n Use the arrow keys to fly over to a tree.', { font: "30px Arial", fill: "#000000", align: "center" });
-    this.tutorialBox = this.physics.add.group();
-    this.closeButton.setInteractive();
-    this.closeButton.on('pointerdown', this.destroyTutorial, this);
-    this.closeButton.on('pointerup', this.mouseFix, this);
-    this.closeButton.on('pointerout', this.mouseFix, this);
-
+    
+    if(!flags.flyoverTutDone){
+      //create popup
+      this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
+      this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
+      this.tutorialMsg = this.add.text(this.scale.width / 6 , this.scale.height / 3, 'Infest the area!\n Use the arrow keys to fly over to a tree.', { font: "30px Arial", fill: "#000000", align: "center" });
+      this.tutorialBox = this.physics.add.group();
+      this.closeButton.setInteractive();
+      this.closeButton.on('pointerdown', this.destroyTutorial, this);
+      this.closeButton.on('pointerup', this.mouseFix, this);
+      this.closeButton.on('pointerout', this.mouseFix, this);
+      flags.flyoverTutDone = true;
+    }
 
   }
 
