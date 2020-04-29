@@ -24,7 +24,20 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   tutorialMsg: Phaser.GameObjects.Text;
   tutorialBox: Phaser.Physics.Arcade.Group;
   timeTimer: Phaser.Time.TimerEvent;
-  //pesticide: Phaser.GameObjects.Sprite;
+  feedSpotTut: boolean = false;
+  eggZoneTut: boolean = false;
+  feedSpot: Phaser.Physics.Arcade.Sprite;
+  feedSpotSpawned: boolean = false;;
+  arrow: Phaser.Physics.Arcade.Sprite;
+  frozen: boolean = false;
+
+
+
+
+
+
+
+
 
   constructor() {
     super({ key: 'bugrunTutorialScene' });
@@ -53,14 +66,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     // Initial popup
-    this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
-    this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-    this.tutorialMsg = this.add.text(this.scale.width / 17 , this.scale.height / 3, '', { font: "30px Arial", fill: "#000000", align: "center" });
-    this.tutorialBox = this.physics.add.group();
-    this.closeButton.setInteractive();
-    this.closeButton.on('pointerdown', this.destroyTutorial, this);
-    this.closeButton.on('pointerup', this.mouseFix, this);
-    this.closeButton.on('pointerout', this.mouseFix, this);
+    this.createMessageBox("Hey buddy, welcome to your first Bug Run!");
 
 
 
@@ -138,6 +144,8 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     //player lays eggs on egg zone
     this.physics.add.overlap(this.player, this.eggZones, this.layEggs, undefined, this);
 
+
+
     // adding bottom bounds
     this.bottomBounds = this.physics.add.image(0, this.scale.height + 200, "bottomBounds");
     this.bottomBounds.setImmovable(true);
@@ -167,7 +175,36 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     this.background.tilePositionY -= 2; // scroll background
     this.movePlayerManager(); // listen for player movement
 
+    if(!this.feedSpotSpawned){
+      this.feedSpot = this.physics.add.sprite(100,105,"feedSpot");
+      this.feedSpots.add(this.feedSpot);
+      this.feedSpot.setRandomPosition(0,-50,this.scale.width, 0);
+      this.feedSpot.setVelocity(0,this.OBSTACLE_VELOCITY);
+      this.feedSpotSpawned = true;
+    }
+
+    if(this.feedSpot.y > 50 && !this.frozen){
+      this.feedSpot.setVelocityY(0); // freeze feedSpot
+      this.destroyMessageBox();
+      this.createMessageBox('go touch that green thang :p');
+      this.arrow = this.physics.add.sprite(this.feedSpot.x, this.feedSpot.y + this.feedSpot.height, "arrow");
+      this.arrow.play("arrow");
+      this.frozen = true;
+    }
   } 
+
+
+
+  createMessageBox(message: string){
+    this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
+    this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
+    this.tutorialMsg = this.add.text(this.scale.width / 17 , this.scale.height / 3, message, { font: "30px Arial", fill: "#000000", align: "center" });
+    this.tutorialBox = this.physics.add.group();
+    this.closeButton.setInteractive();
+    this.closeButton.on('pointerdown', this.destroyMessageBox, this);
+    this.closeButton.on('pointerup', this.mouseFix, this);
+    this.closeButton.on('pointerout', this.mouseFix, this);
+  }
 
   //spawn in feed spot randomly
   spawnFeedZone(){
@@ -175,7 +212,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     for (var i = 0; i < feedSpotCount; i++){
       var feedSpot = this.physics.add.sprite(100,105,"feedSpot");
       this.feedSpots.add(feedSpot);
-      feedSpot.setRandomPosition(-50,-50,this.scale.width, 0);
+      feedSpot.setRandomPosition(0,-50,this.scale.width, 0);
       feedSpot.setVelocity(0,this.OBSTACLE_VELOCITY);
     }
   }
@@ -185,7 +222,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     for (var i = 0; i < eggZoneCount; i++){
       var eggZone = this.physics.add.sprite(100,105,"eggZone");
       this.eggZones.add(eggZone);
-      eggZone.setRandomPosition(-50,-50,this.scale.width, 0);
+      eggZone.setRandomPosition(0,-50,this.scale.width, 0);
       eggZone.setVelocity(0,this.OBSTACLE_VELOCITY);
     }
   }
@@ -196,7 +233,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     for (var i =0; i < flyCount; i++){
       var fly = this.physics.add.sprite(100,105,"player");
       this.otherFlies.add(fly);
-      fly.setRandomPosition(-50,-50,this.scale.width, 0);
+      fly.setRandomPosition(0,-50,this.scale.width, 0);
       fly.setVelocity(0,this.OBSTACLE_VELOCITY);
       
 	    fly.body.immovable = true;
@@ -251,8 +288,8 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   }
 
   //close tutorial box
-  destroyTutorial(){
-    console.log("tutorial done");
+  destroyMessageBox(){
+    console.log("Message box removed");
     this.tutorialMsg.destroy();
     this.messageBox.destroy();
     this.closeButton.destroy();

@@ -23,8 +23,6 @@ export default class bugrunScene extends Phaser.Scene {
   closeButton: Phaser.GameObjects.Sprite;
   tutorialMsg: Phaser.GameObjects.Text;
   tutorialBox: Phaser.Physics.Arcade.Group;
-  timeTimer: Phaser.Time.TimerEvent;
-  //pesticide: Phaser.GameObjects.Sprite;
 
   constructor() {
     super({ key: 'bugrunScene' });
@@ -78,7 +76,7 @@ export default class bugrunScene extends Phaser.Scene {
     
     // ** TIMED EVENTS **
     //timer
-    this.timeTimer = this.time.addEvent({
+    this.time.addEvent({
       delay:1000,
       callback:this.updateTimeText,
       callbackScope:this,
@@ -171,7 +169,7 @@ export default class bugrunScene extends Phaser.Scene {
     for (var i = 0; i < feedSpotCount; i++){
       var feedSpot = this.physics.add.sprite(100,105,"feedSpot");
       this.feedSpots.add(feedSpot);
-      feedSpot.setRandomPosition(-50,-50,this.scale.width, 0);
+      feedSpot.setRandomPosition(0,-50,this.scale.width, 0);
       feedSpot.setVelocity(0,this.OBSTACLE_VELOCITY);
     }
   }
@@ -181,7 +179,7 @@ export default class bugrunScene extends Phaser.Scene {
     for (var i = 0; i < eggZoneCount; i++){
       var eggZone = this.physics.add.sprite(100,105,"eggZone");
       this.eggZones.add(eggZone);
-      eggZone.setRandomPosition(-50,-50,this.scale.width, 0);
+      eggZone.setRandomPosition(0,-50,this.scale.width, 0);
       eggZone.setVelocity(0,this.OBSTACLE_VELOCITY);
     }
   }
@@ -192,7 +190,7 @@ export default class bugrunScene extends Phaser.Scene {
     for (var i =0; i < flyCount; i++){
       var fly = this.physics.add.sprite(100,105,"player");
       this.otherFlies.add(fly);
-      fly.setRandomPosition(-50,-50,this.scale.width, 0);
+      fly.setRandomPosition(0,-50,this.scale.width, 0);
       fly.setVelocity(0,this.OBSTACLE_VELOCITY);
       
 	    fly.body.immovable = true;

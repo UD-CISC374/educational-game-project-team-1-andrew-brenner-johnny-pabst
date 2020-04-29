@@ -42,6 +42,10 @@ export default class PreloadScene extends Phaser.Scene {
       frameWidth: 400,
       frameHeight: 400
     });
+    this.load.spritesheet("arrow", "./assets/spritesheets/arrow.png", {
+      frameWidth: 104,
+      frameHeight: 125
+    });
   }
 
   
@@ -57,7 +61,6 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("deadTree2", "./assets/images/deadTree1.png");
     this.load.image("deadTree3", "./assets/images/deadTree3.png");
     this.load.image("checkMark", "./assets/images/checkMark.png");
-
   }
 
 
@@ -66,9 +69,9 @@ export default class PreloadScene extends Phaser.Scene {
 
   create() {
     this.create_spritesheets();
-    //this.scene.start('flyoverScene');
+    this.scene.start('flyoverScene');
     //this.scene.start('bugrunScene');
-    this.scene.start('bugrunTutorialScene');
+    //this.scene.start('bugrunTutorialScene'); 
   }
 
 
@@ -117,6 +120,15 @@ export default class PreloadScene extends Phaser.Scene {
         end: 1
       }),
       frameRate: 10,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "arrow",
+      frames: this.anims.generateFrameNumbers("arrow", {
+        start: 0,
+        end: 45
+      }),
+      frameRate: 30,
       repeat: -1
     });
   }
