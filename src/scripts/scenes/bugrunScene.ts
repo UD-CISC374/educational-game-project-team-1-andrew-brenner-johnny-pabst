@@ -6,9 +6,7 @@ export default class bugrunScene extends Phaser.Scene {
   player: Phaser.Physics.Arcade.Sprite;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
   spacebar: Phaser.Input.Keyboard.Key;
-  //mantis: Phaser.GameObjects.Sprite;
   obstacles: Phaser.Physics.Arcade.Group;
-  //eggZone: Phaser.GameObjects.Sprite;
   eggZones: Phaser.Physics.Arcade.Group;
   feedSpots: Phaser.Physics.Arcade.Group;
   eggGroup: Phaser.Physics.Arcade.Group;
@@ -25,6 +23,7 @@ export default class bugrunScene extends Phaser.Scene {
   closeButton: Phaser.GameObjects.Sprite;
   tutorialMsg: Phaser.GameObjects.Text;
   tutorialBox: Phaser.Physics.Arcade.Group;
+  timeTimer: Phaser.Time.TimerEvent;
   //pesticide: Phaser.GameObjects.Sprite;
 
   constructor() {
@@ -38,11 +37,11 @@ export default class bugrunScene extends Phaser.Scene {
 
     //create timer
     this.timeNum = 120;
-    this.timeText = this.add.text(10, 7, 'Time Remaining: 120', { font: "64px Arial", fill: "#ffffff", align: "center" });
+    this.timeText = this.add.text(0, this.scale.height - 32, 'Time Remaining: 120', { font: "32px Arial", fill: "#ffffff", align: "left" });
 
     //create score
     this.score = 0;
-    this.scoreText = this.add.text(this.scale.width / 2, this.scale.height - 50, 'Score: 0', { font: "32px Arial", fill: "#ffffff", align: "center" });
+    this.scoreText = this.add.text(0, this.scale.height - 72, 'Score: 0', { font: "32px Arial", fill: "#ffffff", align: "left" });
 
     // create player
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "playerFly");
@@ -77,16 +76,16 @@ export default class bugrunScene extends Phaser.Scene {
     //create group for eggs
     this.eggGroup = this.physics.add.group();
     
-    
-
     // ** TIMED EVENTS **
     //timer
-    this.time.addEvent({
+    this.timeTimer = this.time.addEvent({
       delay:1000,
       callback:this.updateTimeText,
       callbackScope:this,
-      loop: true
+      loop: true,
+      paused: false
     })
+
     // spawning feed spots
     this.time.addEvent({
       delay:18000,
@@ -163,15 +162,8 @@ export default class bugrunScene extends Phaser.Scene {
   update() {
     this.background.tilePositionY -= 2; // scroll background
     this.movePlayerManager(); // listen for player movement
+
   } 
-
-  /* ex. +20
-  gainpoints(points: number){
-    this.add.text();
-  }
-*/
-  
-
 
   //spawn in feed spot randomly
   spawnFeedZone(){
@@ -209,16 +201,24 @@ export default class bugrunScene extends Phaser.Scene {
 
 
   //spawns praying mantis
+  // 50/50 chance it spawns on the left side moving right or vice versa
   spawnMantis(){
-    var mantisCount = 1;
-    for (var i =0; i < mantisCount; i++){
-      var mantis = this.physics.add.sprite(100,105,"mantisMoveRight");
+
+    if(Math.random() < 0.5){
+      var mantis = this.physics.add.sprite(-50, -50, "mantisMoveRight");
       mantis.play("mantisMoveRight");
       this.obstacles.add(mantis);
-      mantis.setRandomPosition(-50,-50,this.scale.width / 2, 0);
-      mantis.setVelocity(50,this.OBSTACLE_VELOCITY);
-      mantis.body.setSize(200,200);
+      //mantis.setRandomPosition(-50, -50, this.scale.width / 2, 0);
+      mantis.setVelocity(50, this.OBSTACLE_VELOCITY);
+
+    } else{
+      var mantis = this.physics.add.sprite(this.scale.width + 50, -50, "mantisMoveLeft");
+      mantis.play("mantisMoveLeft");
+      this.obstacles.add(mantis);
+      mantis.setVelocity(-50, this.OBSTACLE_VELOCITY);
     }
+
+    mantis.body.setSize(200, 200); //adjusts bounding box (hitbox)
   }
 
   //spawn pesticide
