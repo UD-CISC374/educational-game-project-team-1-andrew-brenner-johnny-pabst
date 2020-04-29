@@ -61,6 +61,9 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("deadTree2", "./assets/images/deadTree1.png");
     this.load.image("deadTree3", "./assets/images/deadTree3.png");
     this.load.image("checkMark", "./assets/images/checkMark.png");
+    this.load.image("eggZone", "./assets/images/eggZone.png");
+    this.load.image("feedSpot", "./assets/images/feedSpot.png");
+
   }
 
 
@@ -69,9 +72,9 @@ export default class PreloadScene extends Phaser.Scene {
 
   create() {
     this.create_spritesheets();
-    this.scene.start('flyoverScene');
+    //this.scene.start('flyoverScene');
     //this.scene.start('bugrunScene');
-    //this.scene.start('bugrunTutorialScene'); 
+    this.scene.start('bugrunTutorialScene'); 
   }
 
 

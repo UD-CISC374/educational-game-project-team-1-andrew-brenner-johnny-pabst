@@ -22,11 +22,10 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   messageBox: Phaser.GameObjects.Sprite;
   closeButton: Phaser.GameObjects.Sprite;
   tutorialMsg: Phaser.GameObjects.Text;
-  tutorialBox: Phaser.Physics.Arcade.Group;
   timeTimer: Phaser.Time.TimerEvent;
   feedSpotTut: boolean = false;
   eggZoneTut: boolean = false;
-  feedSpot: Phaser.Physics.Arcade.Sprite;
+  feedSpot: Phaser.Physics.Arcade.Image;
   feedSpotSpawned: boolean = false;;
   arrow: Phaser.Physics.Arcade.Sprite;
   frozen: boolean = false;
@@ -66,7 +65,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     // Initial popup
-    this.createMessageBox("Hey buddy, welcome to your first Bug Run!");
+    this.createMessageBox("Welcome to your first Bug Run!\nNow that you're on the tree, it's time to EAT!");
 
 
 
@@ -134,7 +133,6 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     
 
 
-
     // player collides with other flies
     this.physics.add.collider(this.player, this.otherFlies);
     // praying Mantis collides into player
@@ -176,7 +174,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     this.movePlayerManager(); // listen for player movement
 
     if(!this.feedSpotSpawned){
-      this.feedSpot = this.physics.add.sprite(100,105,"feedSpot");
+      this.feedSpot = this.physics.add.image(100,105,"feedSpot");
       this.feedSpots.add(this.feedSpot);
       this.feedSpot.setRandomPosition(0,-50,this.scale.width, 0);
       this.feedSpot.setVelocity(0,this.OBSTACLE_VELOCITY);
@@ -186,7 +184,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     if(this.feedSpot.y > 50 && !this.frozen){
       this.feedSpot.setVelocityY(0); // freeze feedSpot
       this.destroyMessageBox();
-      this.createMessageBox('go touch that green thang :p');
+      this.createMessageBox('See that?\n');
       this.arrow = this.physics.add.sprite(this.feedSpot.x, this.feedSpot.y + this.feedSpot.height, "arrow");
       this.arrow.play("arrow");
       this.frozen = true;
@@ -194,12 +192,14 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   } 
 
 
-
+/**
+ * Creates a pop-up message box, may need to include paramters for text x,y
+ * message: the text in the pop-up box
+ */
   createMessageBox(message: string){
     this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
     this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
     this.tutorialMsg = this.add.text(this.scale.width / 17 , this.scale.height / 3, message, { font: "30px Arial", fill: "#000000", align: "center" });
-    this.tutorialBox = this.physics.add.group();
     this.closeButton.setInteractive();
     this.closeButton.on('pointerdown', this.destroyMessageBox, this);
     this.closeButton.on('pointerup', this.mouseFix, this);
@@ -210,7 +210,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   spawnFeedZone(){
     var feedSpotCount = 2;
     for (var i = 0; i < feedSpotCount; i++){
-      var feedSpot = this.physics.add.sprite(100,105,"feedSpot");
+      var feedSpot = this.physics.add.image(100,105,"feedSpot");
       this.feedSpots.add(feedSpot);
       feedSpot.setRandomPosition(0,-50,this.scale.width, 0);
       feedSpot.setVelocity(0,this.OBSTACLE_VELOCITY);
@@ -220,7 +220,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   spawnEggZone(){
     var eggZoneCount = 1;
     for (var i = 0; i < eggZoneCount; i++){
-      var eggZone = this.physics.add.sprite(100,105,"eggZone");
+      var eggZone = this.physics.add.image(100,105,"eggZone");
       this.eggZones.add(eggZone);
       eggZone.setRandomPosition(0,-50,this.scale.width, 0);
       eggZone.setVelocity(0,this.OBSTACLE_VELOCITY);

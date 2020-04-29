@@ -167,7 +167,7 @@ export default class bugrunScene extends Phaser.Scene {
   spawnFeedZone(){
     var feedSpotCount = 2;
     for (var i = 0; i < feedSpotCount; i++){
-      var feedSpot = this.physics.add.sprite(100,105,"feedSpot");
+      var feedSpot = this.physics.add.image(100,105,"feedSpot");
       this.feedSpots.add(feedSpot);
       feedSpot.setRandomPosition(0,-50,this.scale.width, 0);
       feedSpot.setVelocity(0,this.OBSTACLE_VELOCITY);
@@ -177,7 +177,7 @@ export default class bugrunScene extends Phaser.Scene {
   spawnEggZone(){
     var eggZoneCount = 1;
     for (var i = 0; i < eggZoneCount; i++){
-      var eggZone = this.physics.add.sprite(100,105,"eggZone");
+      var eggZone = this.physics.add.image(100,105,"eggZone");
       this.eggZones.add(eggZone);
       eggZone.setRandomPosition(0,-50,this.scale.width, 0);
       eggZone.setVelocity(0,this.OBSTACLE_VELOCITY);
