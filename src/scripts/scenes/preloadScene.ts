@@ -67,7 +67,8 @@ export default class PreloadScene extends Phaser.Scene {
   create() {
     this.create_spritesheets();
     //this.scene.start('flyoverScene');
-    this.scene.start('bugrunScene');
+    //this.scene.start('bugrunScene');
+    this.scene.start('bugrunTutorialScene');
   }
 
 
