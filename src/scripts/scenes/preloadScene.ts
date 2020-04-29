@@ -18,6 +18,10 @@ export default class PreloadScene extends Phaser.Scene {
       frameWidth: 200,
       frameHeight: 200
     });
+    this.load.spritesheet("prayingMantisLeft", "./assets/spritesheets/prayingMantisLeft.png",{
+      frameWidth: 200,
+      frameHeight: 200
+    });
     this.load.spritesheet("eggZone","./assets/spritesheets/eggZone.png",{
       frameWidth: 100,
       frameHeight: 105
@@ -81,6 +85,15 @@ export default class PreloadScene extends Phaser.Scene {
     this.anims.create({
       key: "mantisMoveRight",
       frames: this.anims.generateFrameNumbers("prayingMantisRight", {
+        start: 0,
+        end: 9
+      }),
+      frameRate: 20,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "mantisMoveLeft",
+      frames: this.anims.generateFrameNumbers("prayingMantisLeft", {
         start: 0,
         end: 9
       }),
