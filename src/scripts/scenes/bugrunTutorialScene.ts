@@ -24,14 +24,18 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   tutorialMsg: Phaser.GameObjects.Text;
   timeTimer: Phaser.Time.TimerEvent;
   messageRead: boolean = false;
-  feedSpotTut: boolean = false;
-  eggZoneTut: boolean = false;
+  feedSpotTutCompleted: boolean = false;
+  eggZoneTutCompleted: boolean = false;
   feedSpot: Phaser.Physics.Arcade.Image;
-  feedSpotSpawned: boolean = false;;
+  feedSpotSpawned: boolean = false;
+  eggZoneSpawned: boolean = false;
   arrow: Phaser.Physics.Arcade.Sprite;
-  frozen: boolean = false;
+  feedSpotFrozen: boolean = false;
+  eggZoneFrozen: boolean = false;
   feedSpotMoving: boolean = false;
+  eggZoneMoving: boolean = false;
   feedSpotRetryTut: boolean = true;
+  eggZone: Phaser.Physics.Arcade.Image;
 
 
 
@@ -130,51 +134,94 @@ export default class bugrunTutorialScene extends Phaser.Scene {
       this.background.tilePositionY -= 2; // scroll background
       this.movePlayerManager(); // listen for player movement
       
-      if(!this.feedSpotTut){ /// has not completed the feedSpot tutorial yet
-
-        // Part 1
-        if(!this.feedSpotSpawned){ 
-          // Spawn feedSpot
-          this.feedSpot = this.physics.add.image(100,105,"feedSpot");
-          this.feedSpots.add(this.feedSpot);
-          this.feedSpot.setRandomPosition(0,-50,this.scale.width, 0);
-          this.feedSpot.setVelocity(0,this.OBSTACLE_VELOCITY);
-          this.feedSpotSpawned = true;
-
-        // Part 2
-        } else if(this.feedSpot.y > 50 && !this.frozen){
-          // freeze feedSpot and show message
-          this.feedSpot.setVelocityY(0); // freeze feedSpot
-          this.createMessageBox('See that sap spot?\nPress the SPACE key to eat it before crawling past it!');
-          this.arrow = this.physics.add.sprite(this.feedSpot.x, this.feedSpot.y + this.feedSpot.height, "arrow");
-          this.arrow.play("arrow");
-          this.frozen = true;
-
-        // Part 3
-        } else if(this.frozen && !this.feedSpotMoving){
-          //feedSpot was frozen and NOW should now be moving
-          this.arrow.setAlpha(0); // arrow disappears
-          this.feedSpot.setVelocity(0, this.OBSTACLE_VELOCITY); // feedSpot now moving
-          this.feedSpotMoving = true;
-        
-        // Part 4
-        } else if(this.feedSpot.y > 900){
-        // Keep spawning feedSpot until they get the eat it
-          this.feedSpot.setRandomPosition(0,-50,this.scale.width, 0);
-          this.feedSpot.setVelocity(0,this.OBSTACLE_VELOCITY);
-        }
-      } 
+      if(!this.feedSpotTutCompleted){ /// has not yet completed the feedSpot tutorial 
+        this.feedSpotTut();
+      } else if(!this.eggZoneTutCompleted){ // has not yet completed the eggZone tutorial
+        this.eggZoneTut();
+      }
     
-
-
-
-
 
 
     } else{ // message box is open
       this.player.setVelocity(0,0);
     }
   } 
+
+
+  /**
+   * creates the messages and objects for the feed spot tutorial
+   */
+  feedSpotTut(){
+    // Part 1
+    if(!this.feedSpotSpawned){ 
+      // Spawn feedSpot
+      this.feedSpot = this.physics.add.image(100,105,"feedSpot");
+      this.feedSpots.add(this.feedSpot);
+      this.feedSpot.setRandomPosition(0,-50,this.scale.width - 50, 0);
+      this.feedSpot.setVelocity(0,this.OBSTACLE_VELOCITY);
+      this.feedSpotSpawned = true;
+
+    // Part 2
+    } else if(this.feedSpot.y > 50 && !this.feedSpotFrozen){
+      // freeze feedSpot and show message
+      this.feedSpot.setVelocityY(0); // freeze feedSpot
+      this.createMessageBox('See that sap spot?\nCrawl on it and press SPACEBAR to eat the sap!');
+      this.arrow = this.physics.add.sprite(this.feedSpot.x, this.feedSpot.y + this.feedSpot.height, "arrow");
+      this.arrow.play("arrow");
+      this.feedSpotFrozen = true;
+
+    // Part 3
+    } else if(this.feedSpotFrozen && !this.feedSpotMoving){
+      //feedSpot was frozen and NOW should now be moving
+      this.arrow.setAlpha(0); // arrow disappears
+      this.feedSpot.setVelocity(0, this.OBSTACLE_VELOCITY); // feedSpot now moving
+      this.feedSpotMoving = true;
+    
+    // Part 4
+    } else if(this.feedSpot.y > 900){
+      // Keep spawning feedSpot until they get the eat it
+      this.feedSpot.setRandomPosition(0,-50,this.scale.width - 50, 0);
+      this.feedSpot.setVelocity(0,this.OBSTACLE_VELOCITY);
+    }
+  }
+
+  /**
+   * creates the messages and objects for the egg zone tutorial
+   */
+  eggZoneTut(){
+
+    // Part 1
+    if(!this.eggZoneSpawned){ 
+      // Spawn feedSpot
+      this.eggZone = this.physics.add.image(100,105,"eggZone");
+      this.eggZones.add(this.eggZone);
+      this.eggZone.setRandomPosition(0,-50,this.scale.width - 50, 0);
+      this.eggZone.setVelocity(0,this.OBSTACLE_VELOCITY);
+      this.eggZoneSpawned = true;
+
+    // Part 2
+    } else if(this.eggZone.y > 50 && !this.eggZoneFrozen){
+      // freeze feedSpot and show message
+      this.eggZone.setVelocityY(0); // freeze feedSpot
+      this.createMessageBox('Now, see that green area?\nCrawl on it and press SPACEBAR to lay eggs!');
+      this.arrow = this.physics.add.sprite(this.eggZone.x, this.eggZone.y + this.eggZone.height + 10, "arrow");
+      this.arrow.play("arrow");
+      this.eggZoneFrozen = true;
+
+    // Part 3
+    } else if(this.eggZoneFrozen && !this.eggZoneMoving){
+      //feedSpot was frozen and NOW should now be moving
+      this.arrow.setAlpha(0); // arrow disappears
+      this.eggZone.setVelocity(0, this.OBSTACLE_VELOCITY); // feedSpot now moving
+      this.eggZoneMoving = true;
+    
+    // Part 4
+    } else if(this.eggZone.y > 900){
+    // Keep spawning feedSpot until they get the eat it
+      this.eggZone.setRandomPosition(0,-50,this.scale.width, 0);
+      this.eggZone.setVelocity(0,this.OBSTACLE_VELOCITY);
+    }
+  }
 
 
 /**
@@ -345,7 +392,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   eatFood(){
     if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active){
       console.log("EAT");
-      this.feedSpotTut = true;
+      this.feedSpotTutCompleted = true;
       this.updateScore(100);
       this.player.disableBody(true,true);
       var dummy = this.physics.add.sprite(this.player.x, this.player.y, "player");
@@ -369,6 +416,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
         this.eggGroup.add(egg);
         egg.setRandomPosition(this.player.x, this.player.y, 40, 41);
         egg.setVelocity(0, this.OBSTACLE_VELOCITY);
+        this.eggZoneTutCompleted = true;
       }
     }
   }
