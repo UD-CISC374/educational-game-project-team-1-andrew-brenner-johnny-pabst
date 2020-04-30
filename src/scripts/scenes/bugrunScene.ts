@@ -19,10 +19,6 @@ export default class bugrunScene extends Phaser.Scene {
   OBSTACLE_VELOCITY: number = 120;
   bottomBounds: Phaser.Physics.Arcade.Image;
   playerBottomBounds: Phaser.Physics.Arcade.Image;
-  messageBox: Phaser.GameObjects.Sprite;
-  closeButton: Phaser.GameObjects.Sprite;
-  tutorialMsg: Phaser.GameObjects.Text;
-  tutorialBox: Phaser.Physics.Arcade.Group;
 
   constructor() {
     super({ key: 'bugrunScene' });
@@ -49,19 +45,6 @@ export default class bugrunScene extends Phaser.Scene {
     // setup keyboard input
     this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
-    if(!flags.bugRunTutDone){
-      //create popup
-      this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
-      this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-      this.tutorialMsg = this.add.text(this.scale.width / 17 , this.scale.height / 3, 'Rack up points by infesting the area!\nPress Spacebar over orange spots to lay eggs.\nPress Spacebar over green spots to feed on the tree.\nKeep up and avoid pesticide and predators', { font: "30px Arial", fill: "#000000", align: "center" });
-      this.tutorialBox = this.physics.add.group();
-      this.closeButton.setInteractive();
-      this.closeButton.on('pointerdown', this.destroyTutorial, this);
-      this.closeButton.on('pointerup', this.mouseFix, this);
-      this.closeButton.on('pointerout', this.mouseFix, this);
-      flags.bugRunTutDone = true;
-    }
 
     //create group for enemy obstacles
     this.obstacles = this.physics.add.group();
@@ -246,18 +229,6 @@ export default class bugrunScene extends Phaser.Scene {
     this.obstacles.add(pesticide);
     pesticide.setVelocity(0,this.OBSTACLE_VELOCITY);
   }
-
-  //close tutorial box
-  destroyTutorial(){
-    console.log("tutorial done");
-    this.tutorialMsg.destroy();
-    this.messageBox.destroy();
-    this.closeButton.destroy();
-  }
-
-  //fixes click event crash
-  mouseFix(){}
-  
 
   //updates actual timer
   updateTimeText(){

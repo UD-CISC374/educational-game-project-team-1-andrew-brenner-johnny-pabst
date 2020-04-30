@@ -27,12 +27,18 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   arrow: Phaser.Physics.Arcade.Sprite;
   eggZone: Phaser.Physics.Arcade.Image;
   mantis: Phaser.Physics.Arcade.Sprite;
+  pesticide: Phaser.Physics.Arcade.Sprite;
+  spawnFliesTimer: Phaser.Time.TimerEvent;
+  otherFliesCount: number = 0;
+
+
 
   // FLAGS for tutorial Stages
   messageRead: boolean = false;
-  feedSpotTutCompleted: boolean = true;
-  eggZoneTutCompleted: boolean = true;
+  feedSpotTutCompleted: boolean = false;
+  eggZoneTutCompleted: boolean = false;
   mantisTutCompleted: boolean = false;
+  pesticideTutCompleted: boolean = false;
   feedSpotSpawned: boolean = false;
   eggZoneSpawned: boolean = false;
   feedSpotFrozen: boolean = false;
@@ -44,7 +50,12 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   mantisMsgRead: boolean = false;
   mantisSpawned: boolean = false;
   mantisFrozen: boolean = false;
-  mantisMoving: any;
+  mantisMoving: boolean = false;
+  pesticideSpawned: boolean = false;
+  pesticideMoving: boolean = false;
+  otherFliesTutCompleted: boolean = false;
+  otherFliesMsgRead: boolean = false;
+  otherFliesSpawning: boolean = false;
 
 
 
@@ -148,6 +159,12 @@ export default class bugrunTutorialScene extends Phaser.Scene {
         this.eggZoneTut();
       } else if(!this.mantisTutCompleted){
         this.mantisTut();
+      } else if(!this.pesticideTutCompleted){
+        this.pesticideTut();
+      } else if(!this.otherFliesTutCompleted){
+        this.otherFliesTut();
+      } else if(this.otherFliesTutCompleted){
+        this.scene.start('bugrunScene');
       }
     
 
@@ -273,9 +290,75 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     } else if(this.mantis.y > 850){
       // mantis is gone, start next tutorial
       this.mantisTutCompleted = true;
-      this.createMessageBox("BE AWARE,\nHumans have created a \nsuper weapon called pesticide.\nIt's very deadly and smells kind of funny.");
+      this.createMessageBox("BEWARE,\nHumans have created a \nsuper weapon called pesticide.\nIt's very deadly and smells kind of funny.");
     }
   }
+
+
+  /**
+   * creates the messages and objects for the pesticide tutorial
+   */
+  pesticideTut(){
+    // Part 1
+    if(!this.pesticideSpawned){ 
+      // Spawn Pesticide
+      this.pesticide = this.physics.add.sprite(0,0,"pesticideWarning");
+      this.pesticide.play("pesticideWarning");
+      this.obstacles.add(this.pesticide);
+      this.pesticide.setRandomPosition(0,0,this.scale.width, this.scale.height / 3);
+      //this.pesticide.setVelocity(0,this.OBSTACLE_VELOCITY);
+      this.pesticideSpawned = true;
+      this.createMessageBox("Incoming!\nWhen you see this warning,\nhumans are about to spray pesticide there!");
+
+
+    // Part 2
+    } else {
+      if(!this.pesticideMoving) {
+        // set pesticide velocity to normal and "spray"
+        this.pesticide.setVelocity(0, this.OBSTACLE_VELOCITY);
+        this.time.addEvent({
+          delay:1500,
+          callback:this.pesticideSwitch,
+          args: [this.pesticide],
+          callbackScope:this,
+          loop: false
+        })
+        this.pesticideMoving = true;
+      } else if(this.pesticide.y > 750) {
+        this.pesticideTutCompleted = true;
+      } 
+    }
+  } // end of pesticide tutorial
+  
+
+  otherFliesTut(){
+    if(!this.otherFliesMsgRead){
+      this.createMessageBox("Lastly, crawl around the others still eating.\nIf you can't keep up, you'll get left behind!");
+      this.otherFliesMsgRead = true;
+    } else if (!this.otherFliesSpawning){
+       // spawning other flies
+      this.spawnFliesTimer = this.time.addEvent({
+        delay:1000,
+        callback:this.spawnFlies,
+        callbackScope:this,
+        loop: true
+      })
+      this.otherFliesSpawning = true;
+      
+      // Stop spawning flies after ~15 seconds
+    } else{
+      if(this.otherFliesCount > 45){
+        this.spawnFliesTimer.remove();
+        this.otherFliesTutCompleted = true;
+        this.createMessageBox("Okay, you're ready for the Bug Run!\nLet's FEAST!");
+      }
+    }
+  }
+
+
+  
+
+
 
 
 /**
@@ -322,8 +405,8 @@ export default class bugrunTutorialScene extends Phaser.Scene {
       this.otherFlies.add(fly);
       fly.setRandomPosition(0,-50,this.scale.width, 0);
       fly.setVelocity(0,this.OBSTACLE_VELOCITY);
-      
-	    fly.body.immovable = true;
+      fly.body.immovable = true;
+      this.otherFliesCount += 1;
     }
   }
 
