@@ -35,7 +35,7 @@ export default class bugrunScene extends Phaser.Scene {
 
     //create timer
     this.timeNum = 120;
-    this.timeText = this.add.text(0, this.scale.height - 32, 'Time Remaining: 120', { font: "32px Arial", fill: "#ffffff", align: "left" });
+    this.timeText = this.add.text(0, this.scale.height - 36, 'Time Remaining: 120', { font: "32px Arial", fill: "#ffffff", align: "left" });
 
     //create score
     this.score = 0;

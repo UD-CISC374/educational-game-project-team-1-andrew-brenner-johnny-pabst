@@ -23,20 +23,28 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   closeButton: Phaser.GameObjects.Sprite;
   tutorialMsg: Phaser.GameObjects.Text;
   timeTimer: Phaser.Time.TimerEvent;
-  messageRead: boolean = false;
-  feedSpotTutCompleted: boolean = false;
-  eggZoneTutCompleted: boolean = false;
   feedSpot: Phaser.Physics.Arcade.Image;
+  arrow: Phaser.Physics.Arcade.Sprite;
+  eggZone: Phaser.Physics.Arcade.Image;
+  mantis: Phaser.Physics.Arcade.Sprite;
+
+  // FLAGS for tutorial Stages
+  messageRead: boolean = false;
+  feedSpotTutCompleted: boolean = true;
+  eggZoneTutCompleted: boolean = true;
+  mantisTutCompleted: boolean = false;
   feedSpotSpawned: boolean = false;
   eggZoneSpawned: boolean = false;
-  arrow: Phaser.Physics.Arcade.Sprite;
   feedSpotFrozen: boolean = false;
   eggZoneFrozen: boolean = false;
   feedSpotMoving: boolean = false;
   eggZoneMoving: boolean = false;
-  feedSpotRetryTut: boolean = true;
-  eggZone: Phaser.Physics.Arcade.Image;
-
+  newFlyMsgRead: boolean = false;
+  eggZoneCongratsMsgRead: boolean = false;
+  mantisMsgRead: boolean = false;
+  mantisSpawned: boolean = false;
+  mantisFrozen: boolean = false;
+  mantisMoving: any;
 
 
 
@@ -56,7 +64,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
 
     //create timer
     this.timeNum = 120;
-    this.timeText = this.add.text(0, this.scale.height - 32, 'Time Remaining: 120', { font: "32px Arial", fill: "#ffffff", align: "left" });
+    this.timeText = this.add.text(0, this.scale.height - 36, 'Time Remaining: \u221e', { font: "32px Arial", fill: "#ffffff", align: "left" });
 
     //create score
     this.score = 0;
@@ -136,8 +144,10 @@ export default class bugrunTutorialScene extends Phaser.Scene {
       
       if(!this.feedSpotTutCompleted){ /// has not yet completed the feedSpot tutorial 
         this.feedSpotTut();
-      } else if(!this.eggZoneTutCompleted){ // has not yet completed the eggZone tutorial
+      } else if(!this.eggZoneTutCompleted) { // has not yet completed the eggZone tutorial
         this.eggZoneTut();
+      } else if(!this.mantisTutCompleted){
+        this.mantisTut();
       }
     
 
@@ -165,7 +175,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     } else if(this.feedSpot.y > 50 && !this.feedSpotFrozen){
       // freeze feedSpot and show message
       this.feedSpot.setVelocityY(0); // freeze feedSpot
-      this.createMessageBox('See that sap spot?\nCrawl on it and press SPACEBAR to eat the sap!');
+      this.createMessageBox('See that sap spot?\nCrawl on it and press SPACEBAR\nTo start eating the sap!');
       this.arrow = this.physics.add.sprite(this.feedSpot.x, this.feedSpot.y + this.feedSpot.height, "arrow");
       this.arrow.play("arrow");
       this.feedSpotFrozen = true;
@@ -189,9 +199,12 @@ export default class bugrunTutorialScene extends Phaser.Scene {
    * creates the messages and objects for the egg zone tutorial
    */
   eggZoneTut(){
-
+    // pop-up immediatedly after feedZone tut is completed
+    if(!this.newFlyMsgRead){
+      this.createMessageBox("Nice!\nWhile that one feeds on the tree,\nTake control of another Spotted Lanternfly!");
+      this.newFlyMsgRead = true;
     // Part 1
-    if(!this.eggZoneSpawned){ 
+    } else if(!this.eggZoneSpawned){ 
       // Spawn feedSpot
       this.eggZone = this.physics.add.image(100,105,"eggZone");
       this.eggZones.add(this.eggZone);
@@ -202,7 +215,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     // Part 2
     } else if(this.eggZone.y > 50 && !this.eggZoneFrozen){
       // freeze feedSpot and show message
-      this.eggZone.setVelocityY(0); // freeze feedSpot
+      this.eggZone.setVelocityY(0); // freeze eggZone
       this.createMessageBox('Now, see that green area?\nCrawl on it and press SPACEBAR to lay eggs!');
       this.arrow = this.physics.add.sprite(this.eggZone.x, this.eggZone.y + this.eggZone.height + 10, "arrow");
       this.arrow.play("arrow");
@@ -212,14 +225,55 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     } else if(this.eggZoneFrozen && !this.eggZoneMoving){
       //feedSpot was frozen and NOW should now be moving
       this.arrow.setAlpha(0); // arrow disappears
-      this.eggZone.setVelocity(0, this.OBSTACLE_VELOCITY); // feedSpot now moving
+      this.eggZone.setVelocity(0, this.OBSTACLE_VELOCITY); // eggZone now moving
       this.eggZoneMoving = true;
     
     // Part 4
     } else if(this.eggZone.y > 900){
-    // Keep spawning feedSpot until they get the eat it
+    // Keep spawning eggZone until they lay eggs on it
       this.eggZone.setRandomPosition(0,-50,this.scale.width, 0);
       this.eggZone.setVelocity(0,this.OBSTACLE_VELOCITY);
+    }
+  }
+
+  /**
+   * creates the messages and objects for the praying mantis tutorial
+   */
+  mantisTut(){
+    if(!this.eggZoneCongratsMsgRead){
+      this.createMessageBox("Great job!\nThe more eggs the better!\n");
+      this.eggZoneCongratsMsgRead = true;
+
+    // Part 1
+    }else if(!this.mantisSpawned){ 
+      // Spawn praying mantis
+      this.mantis = this.physics.add.sprite(-50,-50,"mantisMoveRight");
+      this.mantis.play("mantisMoveRight");
+      this.mantis.body.setSize(200, 200); //adjusts bounding box (hitbox)
+      this.obstacles.add(this.mantis);
+      this.mantis.setVelocity(50, this.OBSTACLE_VELOCITY)
+      this.mantisSpawned = true;
+
+    // Part 2
+    } else if(this.mantis.y > 50 && !this.mantisFrozen){
+      // freeze mantis and show message
+      this.mantis.setVelocity(0,0); // freeze mantis
+      this.createMessageBox("Woah, look out for that Praying Mantis!\nThey'll eat almost anything.");
+      this.arrow = this.physics.add.sprite(this.mantis.x + 10, this.mantis.y + this.mantis.height - 50, "arrow");
+      this.arrow.play("arrow");
+      this.mantisFrozen = true;
+    // Part 3
+    } else if(this.mantisFrozen && !this.mantisMoving){
+      //mantis was frozen and NOW should now be moving
+      this.arrow.setAlpha(0); // arrow disappears
+      this.mantis.setVelocity(50, this.OBSTACLE_VELOCITY); // mantis now moving
+      this.mantisMoving = true;
+    
+    // Part 4
+    } else if(this.mantis.y > 850){
+      // mantis is gone, start next tutorial
+      this.mantisTutCompleted = true;
+      this.createMessageBox("BE AWARE,\nHumans have created a \nsuper weapon called pesticide.\nIt's very deadly and smells kind of funny.");
     }
   }
 
@@ -410,6 +464,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   layEggs(){
     if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active){
       console.log("EGG");
+      this.eggZoneTutCompleted = true;
       this.updateScore(20);
       for (var i = 0; i <= 3; i++){
         var egg = this.physics.add.sprite(22, 30, "egg");
