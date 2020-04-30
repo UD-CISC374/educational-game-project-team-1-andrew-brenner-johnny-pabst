@@ -142,6 +142,9 @@ export default class bugrunScene extends Phaser.Scene {
     this.physics.add.collider(this.bottomBounds, this.eggZones, function(bottomBounds, eggZone){
       eggZone.destroy();
     }, undefined, this);
+    this.physics.add.collider(this.bottomBounds, this.feedSpots, function(bottomBounds, feedSpot){
+      feedSpot.destroy();
+    }, undefined, this);
     this.physics.add.collider(this.bottomBounds, this.eggGroup, function(bottomBounds, egg){
       egg.destroy();
     }, undefined, this);
