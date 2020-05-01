@@ -350,6 +350,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
       if(this.otherFliesCount > 45){
         this.spawnFliesTimer.remove();
         this.otherFliesTutCompleted = true;
+        flags.bugRunTutDone = true; 
         this.createMessageBox("Okay, you're ready for the Bug Run!\nLet's FEAST!");
       }
     }
