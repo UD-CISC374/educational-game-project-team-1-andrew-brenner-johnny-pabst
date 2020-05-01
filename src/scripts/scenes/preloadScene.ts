@@ -59,7 +59,6 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("checkMark", "./assets/images/checkMark.png");
     this.load.image("eggZone", "./assets/images/eggZone.png");
     this.load.image("feedSpot", "./assets/images/feedSpot.png");
-
   }
 
 
@@ -68,9 +67,9 @@ export default class PreloadScene extends Phaser.Scene {
 
   create() {
     this.create_spritesheets();
-    //this.scene.start('flyoverScene');
+    this.scene.start('flyoverScene');
     //this.scene.start('bugrunScene');
-    this.scene.start('bugrunTutorialScene'); 
+    //this.scene.start('bugrunTutorialScene'); 
   }
 
 
@@ -127,7 +126,7 @@ export default class PreloadScene extends Phaser.Scene {
         start: 0,
         end: 45
       }),
-      frameRate: 30,
+      frameRate: 90,
       repeat: -1
     });
   }
