@@ -38,7 +38,7 @@ export default class bugrunScene extends Phaser.Scene {
     this.scoreText = this.add.text(0, this.scale.height - 72, 'Score: 0', { font: "32px Arial", fill: "#ffffff", align: "left" });
 
     // create player
-    this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "playerFly");
+    this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "player");
     this.player.play("playerFly");
     this.player.setCollideWorldBounds(true);
 
