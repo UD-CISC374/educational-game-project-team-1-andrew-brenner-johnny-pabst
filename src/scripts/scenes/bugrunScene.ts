@@ -115,6 +115,11 @@ export default class bugrunScene extends Phaser.Scene {
     //player lays eggs on egg zone
     this.physics.add.overlap(this.player, this.eggZones, this.layEggs, undefined, this);
 
+    //obstacles destroy other flies
+    this.physics.add.collider(this.obstacles, this.otherFlies, function(bottomBounds, fly){
+      fly.destroy();
+    }, undefined, this);
+
     // adding bottom bounds
     this.bottomBounds = this.physics.add.image(0, this.scale.height + 200, "bottomBounds");
     this.bottomBounds.setImmovable(true);
