@@ -10,9 +10,9 @@ export default class PreloadScene extends Phaser.Scene {
 
   // Loads all the spritesheets necessary for application 
   load_spritesheets(){
-    this.load.spritesheet("player", "./assets/spritesheets/fly-animation2.png", {
-        frameWidth: 40,
-        frameHeight: 41
+    this.load.spritesheet("player", "./assets/spritesheets/flyAnimationREAL.png", {
+        frameWidth: 92,
+        frameHeight: 61
       });
     this.load.spritesheet("prayingMantisRight", "./assets/spritesheets/prayingMantisRight.png",{
       frameWidth: 200,
@@ -77,7 +77,7 @@ export default class PreloadScene extends Phaser.Scene {
         start: 0,
         end: 1
       }),
-      frameRate: 20,
+      frameRate: 25,
       repeat: -1
     });
     this.anims.create({
