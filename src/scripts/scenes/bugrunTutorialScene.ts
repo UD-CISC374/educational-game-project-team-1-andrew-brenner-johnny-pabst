@@ -82,7 +82,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     this.scoreText = this.add.text(0, this.scale.height - 72, 'Score: 0', { font: "32px Arial", fill: "#ffffff", align: "left" });
 
     // create player
-    this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "playerFly");
+    this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "player");
     this.player.play("playerFly");
     this.player.setCollideWorldBounds(true);
 
@@ -401,7 +401,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   spawnFlies(){
     var flyCount = 3;
     for (var i =0; i < flyCount; i++){
-      var fly = this.physics.add.sprite(100,105,"player");
+      var fly = this.physics.add.sprite(100,105,"dummy");
       this.otherFlies.add(fly);
       fly.setRandomPosition(0,-50,this.scale.width, 0);
       fly.setVelocity(0,this.OBSTACLE_VELOCITY);
@@ -532,7 +532,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
       this.feedSpotTutCompleted = true;
       this.updateScore(100);
       this.player.disableBody(true,true);
-      var dummy = this.physics.add.sprite(this.player.x, this.player.y, "player");
+      var dummy = this.physics.add.sprite(this.player.x, this.player.y, "dummy");
       dummy.setVelocityX(0);
       dummy.setVelocityY(this.OBSTACLE_VELOCITY);
       this.time.addEvent({
@@ -562,7 +562,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   //reset player position
   resetPlayer(){
     let x = this.scale.width - 400;
-    let y = this.scale.height;
+    let y = this.scale.height - 30;
     this.player.enableBody(true,x,y,true,true);
 
     this.player.alpha = 0.5;
