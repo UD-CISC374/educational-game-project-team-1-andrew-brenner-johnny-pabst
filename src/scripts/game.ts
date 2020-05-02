@@ -18,7 +18,8 @@ export var flags = {
     flyoverTutDone: false,
     bugRunTutDone: false,
     appleTreeDead: false,
-    treeTwoDead: false
+    cherryTreeDead: false,
+    grapeVineDead: false
 }
 
 const config: GameConfig = {
@@ -30,7 +31,7 @@ const config: GameConfig = {
         width: DEFAULT_WIDTH,
         height: DEFAULT_HEIGHT
     },
-    scene: [PreloadScene, flyoverScene, bugrunScene, bugrunTutorialScene​​],
+    scene: [PreloadScene, flyoverScene, bugrunScene, bugrunTutorialScene],
     physics: {
         default: 'arcade',
         arcade: {
