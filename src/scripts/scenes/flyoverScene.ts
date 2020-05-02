@@ -100,14 +100,22 @@ export default class flyoverScene extends Phaser.Scene {
   //fixes click event crash
   mouseFix(){}
   
-
+  /**
+   * enterRunScene called when user collides with a tree
+   * If they have not completed the tutorial they will do so now
+   * Otherwise, start normal bugrun
+   */
   enterRunScene() {
-    this.scene.start('bugrunScene');
+    if(!flags.bugRunTutDone){ // tutorial has not yet been completed
+      this.scene.start('bugrunTutorialScene');
+    } else {
+      this.scene.start('bugrunScene');
+    }
   }
+
 
   update() {
     this.movePlayerManager();
-    
   }
 
 
