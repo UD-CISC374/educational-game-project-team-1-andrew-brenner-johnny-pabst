@@ -20,6 +20,7 @@ export default class flyoverScene extends Phaser.Scene {
   cherryTree: Phaser.GameObjects.Image;
   cherryTreeDead: Phaser.GameObjects.Image;
   cherryTreeCheckMark: Phaser.GameObjects.Image;
+  music: Phaser.Sound.BaseSound;
 
   constructor() {
     super({ key: 'flyoverScene' });
@@ -30,6 +31,20 @@ export default class flyoverScene extends Phaser.Scene {
     // create background
     this.background = this.add.image(0,0,"flyoverBackground");
     this.background.setOrigin(0,0);
+
+    //load in music
+    this.music = this.sound.add("farmSounds");
+    var musicConfig = {
+      mute: false,
+      volume: 1,
+      rate:1,
+      detune:0,
+      seek:0,
+      loop: false,
+      delay: 0
+    }
+    
+    this.music.play(musicConfig);
     
     // create player
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "playerFly");
@@ -126,6 +141,7 @@ export default class flyoverScene extends Phaser.Scene {
    * Otherwise, start normal bugrun
    */
   enterRunScene() {
+    this.sound.remove(this.music);
     if(!flags.bugRunTutDone){ // tutorial has not yet been completed
       this.scene.start('bugrunTutorialScene');
     } else {

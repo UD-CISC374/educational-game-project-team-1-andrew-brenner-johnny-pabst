@@ -29,6 +29,11 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   mantis: Phaser.Physics.Arcade.Sprite;
   pesticide: Phaser.Physics.Arcade.Sprite;
   spawnFliesTimer: Phaser.Time.TimerEvent;
+  music: Phaser.Sound.BaseSound;
+  pop: Phaser.Sound.BaseSound;
+  spray: Phaser.Sound.BaseSound;
+  munch: Phaser.Sound.BaseSound;
+  death: Phaser.Sound.BaseSound;
   otherFliesCount: number = 0;
 
 
@@ -56,6 +61,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   otherFliesTutCompleted: boolean = false;
   otherFliesMsgRead: boolean = false;
   otherFliesSpawning: boolean = false;
+  
 
 
 
@@ -72,6 +78,26 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     // create background
     this.background = this.add.tileSprite(0,0, this.scale.width, this.scale.height, "bugrunBackground");
     this.background.setOrigin(0,0);
+
+    //load in music
+    this.music = this.sound.add("tutorialJam");
+    var musicConfig = {
+      mute: false,
+      volume: 1,
+      rate:1,
+      detune:0,
+      seek:0,
+      loop: false,
+      delay: 0
+    }
+    
+    this.music.play(musicConfig);
+
+    //initialize sounds effects
+    this.pop = this.sound.add("pop");
+    this.munch = this.sound.add("munch");
+    this.spray = this.sound.add("spray");
+    this.death = this.sound.add("death");
 
     //create timer
     this.timeNum = 120;
@@ -164,6 +190,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
       } else if(!this.otherFliesTutCompleted){
         this.otherFliesTut();
       } else if(this.otherFliesTutCompleted){
+        this.sound.remove(this.music);
         this.scene.start('bugrunScene');
       }
     
@@ -454,6 +481,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   }
   pesticideSwitch(pesticide){
     pesticide.play("pesticideZone");
+    this.spray.play();
     this.obstacles.add(pesticide);
     pesticide.setVelocity(0,this.OBSTACLE_VELOCITY);
   }
@@ -516,6 +544,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   //despawn bug and delay before reset
   killBug(){
     this.player.disableBody(true, true);
+    this.death.play();
     //console.log("collision");
     this.updateScore(-15);
     this.time.addEvent({
@@ -533,6 +562,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
       this.feedSpotTutCompleted = true;
       this.updateScore(100);
       this.player.disableBody(true,true);
+      this.munch.play();
       var dummy = this.physics.add.sprite(this.player.x, this.player.y, "dummy");
       dummy.setVelocityX(0);
       dummy.setVelocityY(this.OBSTACLE_VELOCITY);
@@ -549,6 +579,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active){
       console.log("EGG");
       this.eggZoneTutCompleted = true;
+      this.pop.play();
       this.updateScore(20);
       for (var i = 0; i <= 3; i++){
         var egg = this.physics.add.sprite(22, 30, "egg");

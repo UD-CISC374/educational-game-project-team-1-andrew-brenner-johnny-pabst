@@ -6,6 +6,7 @@ export default class PreloadScene extends Phaser.Scene {
   preload() {
     this.load_images();
     this.load_spritesheets();
+    this.load_audio();
   }
 
   // Loads all the spritesheets necessary for application 
@@ -68,8 +69,16 @@ export default class PreloadScene extends Phaser.Scene {
 
   }
 
-
-
+  //loads all sound effects and background music
+  load_audio(){
+    this.load.audio("bugBoogie", "./assets/sounds/bumbleBoogie.mp3");
+    this.load.audio("tutorialJam", "./assets/sounds/tutorialJam.ogg");
+    this.load.audio("farmSounds", "./assets/sounds/farmSounds.ogg");
+    this.load.audio("pop", "./assets/sounds/pop.ogg");
+    this.load.audio("spray", "./assets/sounds/spray.ogg");
+    this.load.audio("munch", "./assets/sounds/munch.ogg");
+    this.load.audio("death", "./assets/sounds/death.ogg")
+  }
 
 
   create() {
