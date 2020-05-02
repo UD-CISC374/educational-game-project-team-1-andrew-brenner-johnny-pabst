@@ -19,6 +19,12 @@ export default class bugrunScene extends Phaser.Scene {
   OBSTACLE_VELOCITY: number = 120;
   bottomBounds: Phaser.Physics.Arcade.Image;
   playerBottomBounds: Phaser.Physics.Arcade.Image;
+  music: Phaser.Sound.BaseSound;
+  pop: Phaser.Sound.BaseSound;
+  spray: Phaser.Sound.BaseSound;
+  munch: Phaser.Sound.BaseSound;
+  death: Phaser.Sound.BaseSound;
+
 
   constructor() {
     super({ key: 'bugrunScene' });
@@ -28,6 +34,27 @@ export default class bugrunScene extends Phaser.Scene {
     // create background
     this.background = this.add.tileSprite(0,0, this.scale.width, this.scale.height, "bugrunBackground");
     this.background.setOrigin(0,0);
+
+
+    //load in music
+    this.music = this.sound.add("bugBoogie");
+    var musicConfig = {
+      mute: false,
+      volume: 1,
+      rate:1,
+      detune:0,
+      seek:0,
+      loop: false,
+      delay: 0
+    }
+    
+    this.music.play(musicConfig);
+
+    //initialize sounds effects
+    this.pop = this.sound.add("pop");
+    this.munch = this.sound.add("munch");
+    this.spray = this.sound.add("spray");
+    this.death = this.sound.add("death");
 
     //create timer
     this.timeNum = 120;
@@ -231,6 +258,7 @@ export default class bugrunScene extends Phaser.Scene {
   }
   pesticideSwitch(pesticide){
     pesticide.play("pesticideZone");
+    this.spray.play();
     this.obstacles.add(pesticide);
     pesticide.setVelocity(0,this.OBSTACLE_VELOCITY);
   }
@@ -243,6 +271,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.timeText.text = "Time Remaining: " + this.timeNum;
     }
     else{
+      this.sound.remove(this.music);
       this.scene.start("flyoverScene");
     }
   }
@@ -281,6 +310,7 @@ export default class bugrunScene extends Phaser.Scene {
   killBug(){
     this.player.disableBody(true, true);
     //console.log("collision");
+    this.death.play();
     this.updateScore(-15);
     this.time.addEvent({
       delay:1000,
@@ -294,6 +324,7 @@ export default class bugrunScene extends Phaser.Scene {
   eatFood(){
     if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active){
       console.log("EAT");
+      this.munch.play();
       this.updateScore(100);
       this.player.disableBody(true,true);
       var dummy = this.physics.add.sprite(this.player.x, this.player.y, "dummy");
@@ -311,6 +342,7 @@ export default class bugrunScene extends Phaser.Scene {
   layEggs(){
     if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active){
       console.log("EGG");
+      this.pop.play();
       this.updateScore(20);
       for (var i = 0; i <= 3; i++){
         var egg = this.physics.add.sprite(22, 30, "egg");
