@@ -6,15 +6,20 @@ export default class flyoverScene extends Phaser.Scene {
   background: Phaser.GameObjects.Image;
   player: Phaser.Physics.Arcade.Sprite;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
-  appleTree: Phaser.GameObjects.Image;
-  treeTwo: Phaser.GameObjects.Image;
   hosts: Phaser.Physics.Arcade.Group;
   messageBox: Phaser.GameObjects.Sprite;
   closeButton: Phaser.GameObjects.Sprite;
   tutorialMsg: Phaser.GameObjects.Text;
   tutorialBox: Phaser.Physics.Arcade.Group;
-  treeTwoCheckMark: Phaser.GameObjects.Image;
+  appleTree: Phaser.GameObjects.Sprite;
+  deadAppleTree: Phaser.GameObjects.Image;
   appleTreeCheckMark: Phaser.GameObjects.Image;
+  grapeVine: Phaser.GameObjects.Image;
+  deadGrapeVine: Phaser.GameObjects.Image;
+  grapeVineCheckMark: Phaser.GameObjects.Image;
+  cherryTree: Phaser.GameObjects.Image;
+  cherryTreeDead: Phaser.GameObjects.Image;
+  cherryTreeCheckMark: Phaser.GameObjects.Image;
   music: Phaser.Sound.BaseSound;
   boss: Phaser.GameObjects.Sprite;
 
@@ -49,35 +54,50 @@ export default class flyoverScene extends Phaser.Scene {
 
     //create flyover trees
     this.hosts = this.physics.add.group();
-    if(flags.appleTreeDead){
-      this.appleTree = this.add.image(100,500,"deadTree2");
-      this.appleTreeCheckMark = this.add.image(150,450, "checkMark");
+    if(flags.cherryTreeDead){ // Cherry Tree
+      this.cherryTreeDead = this.add.image(100,500,"cherryTreeDead");
+      this.cherryTreeCheckMark = this.add.image(150,450, "checkMark");
     } else{
-      this.appleTree = this.add.image(100,500,"appleTree");
-      this.hosts.add(this.appleTree);
+      this.cherryTree = this.add.image(100,500,"cherryTree");
+      this.hosts.add(this.cherryTree);
     } 
-    if(flags.treeTwoDead){
-      this.treeTwo = this.add.image(570,350,"deadTree3");
-      this.treeTwoCheckMark = this.add.image(600,300, "checkMark");
+    if(flags.appleTreeDead){ // Apple Tree
+      this.deadAppleTree = this.add.image(570,350,"deadTree3");
+      this.appleTreeCheckMark = this.add.image(600,400, "checkMark");
     } else{
-      this.treeTwo = this.add.image(570,350,"treeTwo");
-      this.hosts.add(this.treeTwo);
+      this.appleTree = this.add.sprite(570, 350, "appleTreeAnim");
+      this.appleTree.play("appleTreeAnim");
+      this.hosts.add(this.appleTree);
     }
+    if(flags.grapeVineDead){ // Grape Vine
+      this.deadGrapeVine = this.add.image(260,285, "deadGrapeVine");
+      this.grapeVineCheckMark = this.add.image(290,335, "checkMark");
+    } else{
+      this.grapeVine = this.add.image(260,285, "grapeVine");
+    }
+    // Set names in order to check collisions later
+    this.cherryTree.name = "cherryTree";
     this.appleTree.name = "appleTree";
-    this.treeTwo.name = "treeTwo";
+    this.grapeVine.name = "grapeVine";
+    
+
 
     //switch to bugrun upon collision
     //this.physics.add.overlap(this.player, this.hosts, this.enterRunScene, undefined, this);
     this.physics.add.collider(this.player, this.hosts, this.enterRunScene , function(player, host){
       switch(host.name) { 
         case "appleTree": { 
-           flags.appleTreeDead = true; 
-           return flags.appleTreeDead; 
+           flags.appleTreeDead = true;
+           return flags.appleTreeDead;
         } 
-        case "treeTwo": { 
-           flags.treeTwoDead = true; 
-           return flags.treeTwoDead 
-        } 
+        case "cherryTree": { 
+           flags.cherryTreeDead = true; 
+           return flags.cherryTreeDead;
+        }
+        case "grapeVine": { 
+          flags.grapeVineDead = true; 
+          return flags.grapeVineDead;
+        }
         default: { 
            console.log("host plant images unchanged"); 
            return false; 

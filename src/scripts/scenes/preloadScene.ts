@@ -43,6 +43,10 @@ export default class PreloadScene extends Phaser.Scene {
       frameWidth: 104,
       frameHeight: 125
     });
+    this.load.spritesheet("appleTreeAnim", "./assets/spritesheets/appleTreeAnim.png", {
+      frameWidth: 194,
+      frameHeight: 156
+    });
   }
 
   
@@ -51,7 +55,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("flyoverBackground", "./assets/images/farmBG.jpg");
     this.load.image("bugrunBackground", "./assets/images/treeBark.jpg");
     this.load.image("bottomBounds", "./assets/images/blackBar.png");
-    this.load.image("appleTree", "./assets/images/appleTree.png");
+    this.load.image("cherryTree", "./assets/images/cherryTree.png");
     this.load.image("treeTwo", "./assets/images/treeTwo.png");
     this.load.image("messageBox", "./assets/images/messageBox.png");
     this.load.image("closeButton", "./assets/images/closeButton.png");
@@ -61,6 +65,9 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("eggZone", "./assets/images/eggZone.png");
     this.load.image("feedSpot", "./assets/images/feedSpot.png");
     this.load.image("buzzCapone", "./assets/images/buzzCapone.png");
+    this.load.image("grapeVine", "./assets/images/grapeVine.png");
+    this.load.image("deadGrapeVine", "./assets/images/deadGrapeVine.png");
+
   }
 
   //loads all sound effects and background music
@@ -137,6 +144,15 @@ export default class PreloadScene extends Phaser.Scene {
         end: 45
       }),
       frameRate: 90,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "appleTreeAnim",
+      frames: this.anims.generateFrameNumbers("appleTreeAnim", {
+        start: 0,
+        end: 7
+      }),
+      frameRate: 20,
       repeat: -1
     });
   }
