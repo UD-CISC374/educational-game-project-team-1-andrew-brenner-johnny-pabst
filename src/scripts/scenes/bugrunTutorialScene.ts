@@ -61,6 +61,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   otherFliesTutCompleted: boolean = false;
   otherFliesMsgRead: boolean = false;
   otherFliesSpawning: boolean = false;
+  boss: Phaser.GameObjects.Sprite;
   
 
 
@@ -117,7 +118,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     // Initial popup
-    this.createMessageBox("Welcome to your first Bug Run!\nNow that you're on the tree, it's time to EAT!");
+    this.createMessageBox("Hey, kid.\nThe gang really likes this host that you picked out.\nNow let\'s have some fun here, shall we?\nNow that you're on the tree, it's time to EAT!\n\n Our goal here is simple:\nTake over this tree with as MANY flies as possible.");
 
 
 
@@ -219,7 +220,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     } else if(this.feedSpot.y > 50 && !this.feedSpotFrozen){
       // freeze feedSpot and show message
       this.feedSpot.setVelocityY(0); // freeze feedSpot
-      this.createMessageBox('See that sap spot?\nCrawl on it and press SPACEBAR\nTo start eating the sap!');
+      this.createMessageBox('See that yellow sap spot?\nCrawl on it and press SPACEBAR\nTo start eating the sap!');
       this.arrow = this.physics.add.sprite(this.feedSpot.x, this.feedSpot.y + this.feedSpot.height, "arrow");
       this.arrow.play("arrow");
       this.feedSpotFrozen = true;
@@ -245,7 +246,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   eggZoneTut(){
     // pop-up immediatedly after feedZone tut is completed
     if(!this.newFlyMsgRead){
-      this.createMessageBox("Nice!\nWhile that one feeds on the tree,\nTake control of another Spotted Lanternfly!");
+      this.createMessageBox("Nice job, kid! This host will be ours in no time!\nWhile that one feeds on the tree,\ntake control of another Spotted Lanternfly!\n\n Let's keep goin\'!");
       this.newFlyMsgRead = true;
     // Part 1
     } else if(!this.eggZoneSpawned){ 
@@ -302,7 +303,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     } else if(this.mantis.y > 50 && !this.mantisFrozen){
       // freeze mantis and show message
       this.mantis.setVelocity(0,0); // freeze mantis
-      this.createMessageBox("Woah, look out for that Praying Mantis!\nThey'll eat almost anything.");
+      this.createMessageBox("Woah, look out for that Praying Mantis!\nThey'll eat almost anything.\n\nRun into one and you\'ll be sleepin\' with the fishes.");
       this.arrow = this.physics.add.sprite(this.mantis.x + 10, this.mantis.y + this.mantis.height - 50, "arrow");
       this.arrow.play("arrow");
       this.mantisFrozen = true;
@@ -378,7 +379,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
         this.spawnFliesTimer.remove();
         this.otherFliesTutCompleted = true;
         flags.bugRunTutDone = true; 
-        this.createMessageBox("Okay, you're ready for the Bug Run!\nLet's FEAST!");
+        this.createMessageBox("Okay, I think you're ready for the Big Leagues, kid!\nLet's FEAST!");
       }
     }
   }
@@ -394,14 +395,23 @@ export default class bugrunTutorialScene extends Phaser.Scene {
  * message: the text in the pop-up box
  */
   createMessageBox(message: string){
+    // this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
+    // this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
+    // this.tutorialMsg = this.add.text(this.scale.width / 17 , this.scale.height / 3, message, { font: "30px Arial", fill: "#000000", align: "center" });
+    // this.closeButton.setInteractive();
+    // this.closeButton.on('pointerdown', this.destroyMessageBox, this);
+    // this.closeButton.on('pointerup', this.mouseFix, this);
+    // this.closeButton.on('pointerout', this.mouseFix, this);
+    // this.messageRead = false;
     this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
-    this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-    this.tutorialMsg = this.add.text(this.scale.width / 17 , this.scale.height / 3, message, { font: "30px Arial", fill: "#000000", align: "center" });
-    this.closeButton.setInteractive();
-    this.closeButton.on('pointerdown', this.destroyMessageBox, this);
-    this.closeButton.on('pointerup', this.mouseFix, this);
-    this.closeButton.on('pointerout', this.mouseFix, this);
-    this.messageRead = false;
+      this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
+      this.boss = this.add.sprite(this.scale.width / 4 - 20, this.scale.height / 2 - 20, "buzzCapone");
+      this.tutorialMsg = this.add.text(this.scale.width / 4 + 75, this.scale.height / 3 + 20, message, { font: "20px Arial", fill: "#000000", align: "left" });
+      this.closeButton.setInteractive();
+      this.closeButton.on('pointerdown', this.destroyMessageBox, this);
+      this.closeButton.on('pointerup', this.mouseFix, this);
+      this.closeButton.on('pointerout', this.mouseFix, this);
+      this.messageRead = false;
   }
 
   //spawn in feed spot randomly
@@ -492,6 +502,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     this.tutorialMsg.destroy();
     this.messageBox.destroy();
     this.closeButton.destroy();
+    this.boss.destroy();
     this.messageRead = true;
   }
 
