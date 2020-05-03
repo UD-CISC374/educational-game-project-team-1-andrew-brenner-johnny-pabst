@@ -22,6 +22,12 @@ export default class flyoverScene extends Phaser.Scene {
   cherryTreeCheckMark: Phaser.GameObjects.Image;
   music: Phaser.Sound.BaseSound;
   boss: Phaser.GameObjects.Sprite;
+  deadTreeOfHeaven: Phaser.GameObjects.Image;
+  treeOfHeavenCheckMark: Phaser.GameObjects.Image;
+  treeOfHeaven: Phaser.GameObjects.Sprite;
+  deadBlackWalnut: Phaser.GameObjects.Image;
+  blackWalnutCheckMark: Phaser.GameObjects.Image;
+  blackWalnut: Phaser.GameObjects.Sprite;
 
   constructor() {
     super({ key: 'flyoverScene' });
@@ -55,30 +61,47 @@ export default class flyoverScene extends Phaser.Scene {
     //create flyover trees
     this.hosts = this.physics.add.group();
     if(flags.cherryTreeDead){ // Cherry Tree
-      this.cherryTreeDead = this.add.image(100,500,"cherryTreeDead");
+      this.cherryTreeDead = this.add.image(100,500,"deadCherryTree");
       this.cherryTreeCheckMark = this.add.image(150,450, "checkMark");
     } else{
       this.cherryTree = this.add.image(100,500,"cherryTree");
+      this.cherryTree.name = "cherryTree";
       this.hosts.add(this.cherryTree);
     } 
     if(flags.appleTreeDead){ // Apple Tree
-      this.deadAppleTree = this.add.image(570,350,"deadTree3");
+      this.deadAppleTree = this.add.image(575,310,"deadTree3");
       this.appleTreeCheckMark = this.add.image(600,400, "checkMark");
     } else{
       this.appleTree = this.add.sprite(570, 350, "appleTreeAnim");
       this.appleTree.play("appleTreeAnim");
+      this.appleTree.name = "appleTree";
       this.hosts.add(this.appleTree);
     }
     if(flags.grapeVineDead){ // Grape Vine
-      this.deadGrapeVine = this.add.image(260,285, "deadGrapeVine");
+      this.deadGrapeVine = this.add.image(260,230, "deadGrapeVine");
       this.grapeVineCheckMark = this.add.image(290,335, "checkMark");
     } else{
       this.grapeVine = this.add.image(260,285, "grapeVine");
+      this.grapeVine.name = "grapeVine";
+      this.hosts.add(this.grapeVine);
     }
-    // Set names in order to check collisions later
-    this.cherryTree.name = "cherryTree";
-    this.appleTree.name = "appleTree";
-    this.grapeVine.name = "grapeVine";
+    if(flags.treeOfHeavenDead){ // Tree of Heaven
+      this.deadTreeOfHeaven = this.add.image(275,550,"deadTreeOfHeaven");
+      this.treeOfHeavenCheckMark = this.add.image(330,580, "checkMark");
+    } else{
+      this.treeOfHeaven = this.add.sprite(285, 570, "treeOfHeaven");
+      this.treeOfHeaven.play("treeOfHeaven");
+      this.treeOfHeaven.name = "treeOfHeaven";
+      this.hosts.add(this.treeOfHeaven);
+    }if(flags.blackWalnutDead){ // Black Walnut Tree
+      this.deadBlackWalnut = this.add.image(720,550,"deadBlackWalnut");
+      this.blackWalnutCheckMark = this.add.image(750,580, "checkMark");
+    } else{
+      this.blackWalnut = this.add.sprite(720, 550, "blackWalnut");
+      this.blackWalnut.play("blackWalnut");
+      this.blackWalnut.name = "blackWalnut";
+      this.hosts.add(this.blackWalnut);
+    }
     
 
 
@@ -98,6 +121,14 @@ export default class flyoverScene extends Phaser.Scene {
           flags.grapeVineDead = true; 
           return flags.grapeVineDead;
         }
+        case "treeOfHeaven": { 
+          flags.treeOfHeavenDead = true; 
+          return flags.treeOfHeavenDead;
+        }
+        case "blackWalnut": { 
+          flags.blackWalnutDead = true; 
+          return flags.blackWalnutDead;
+        }
         default: { 
            console.log("host plant images unchanged"); 
            return false; 
@@ -116,7 +147,7 @@ export default class flyoverScene extends Phaser.Scene {
       this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
       this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
       this.boss = this.add.sprite(this.scale.width / 4 - 20, this.scale.height / 2 - 20, "buzzCapone");
-      this.tutorialMsg = this.add.text(this.scale.width / 4 + 65, this.scale.height / 3 + 20, 'How ya doin, kid. The name is Buzz Capone.\n I\'m a boss of this swarm of Spotted Lanternflies.\n We need some help infesting this here farm, capeesh?\n These fellas like to eat from anything with wood or vines.\n Find us somethin\' good.\n \n Use the arrow keys to move to a host tree', { font: "20px Arial", fill: "#000000", align: "left" });
+      this.tutorialMsg = this.add.text(this.scale.width / 4 + 65, this.scale.height / 3 + 20, 'How ya doin, kid. The name is Buzz Capone.\n I\'m the boss of this swarm of Spotted Lanternflies.\n We need some help infesting this here farm, capeesh?\n These fellas like to eat from anything with wood or vines.\n Find us somethin\' good.\n \n Use the arrow keys to move to a host tree', { font: "20px Arial", fill: "#000000", align: "left" });
       this.tutorialBox = this.physics.add.group();
       this.closeButton.setInteractive();
       this.closeButton.on('pointerdown', this.destroyTutorial, this);

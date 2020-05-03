@@ -19,7 +19,9 @@ export var flags = {
     bugRunTutDone: false,
     appleTreeDead: false,
     cherryTreeDead: false,
-    grapeVineDead: false
+    grapeVineDead: false,
+    treeOfHeavenDead: false,
+    blackWalnutDead: false
 }
 
 const config: GameConfig = {

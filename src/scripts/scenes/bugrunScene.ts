@@ -24,6 +24,10 @@ export default class bugrunScene extends Phaser.Scene {
   spray: Phaser.Sound.BaseSound;
   munch: Phaser.Sound.BaseSound;
   death: Phaser.Sound.BaseSound;
+  messageBox: Phaser.GameObjects.Sprite;
+  closeButton: Phaser.GameObjects.Sprite;
+  boss: Phaser.GameObjects.Sprite;
+  modalMsg: Phaser.GameObjects.Text;
 
 
   constructor() {
@@ -177,8 +181,38 @@ export default class bugrunScene extends Phaser.Scene {
   update() {
     this.background.tilePositionY -= 2; // scroll background
     this.movePlayerManager(); // listen for player movement
-
   } 
+
+  /**
+  * Creates a pop-up message box, may need to include paramters for text x,y
+  * message: the text in the pop-up box
+  */
+  createMessageBox(message: string){
+    this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
+    this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
+    this.boss = this.add.sprite(this.scale.width / 4 - 20, this.scale.height / 2 - 20, "buzzCapone");
+    this.modalMsg = this.add.text(this.scale.width / 4 + 75, this.scale.height / 3 + 20, message, { font: "20px Arial", fill: "#000000", align: "left" });
+    this.closeButton.setInteractive();
+    this.closeButton.on('pointerdown', this.destroyMessageBox, this);
+    this.closeButton.on('pointerup', this.mouseFix, this);
+    this.closeButton.on('pointerout', this.mouseFix, this);
+   }
+
+     //close message box
+  destroyMessageBox(){
+    console.log("Message box removed");
+    this.modalMsg.destroy();
+    this.messageBox.destroy();
+    this.closeButton.destroy();
+    this.boss.destroy();
+    this.scene.start('flyoverScene');
+  }
+
+  //fixes click event crash
+  mouseFix(){}
+
+
+
 
   //spawn in feed spot randomly
   spawnFeedZone(){
@@ -271,7 +305,10 @@ export default class bugrunScene extends Phaser.Scene {
     }
     else{
       this.sound.remove(this.music);
-      this.scene.start("flyoverScene");
+      this.resetPlayer();
+      this.obstacles.destroy(true);
+      this.otherFlies.destroy(true);
+      this.createMessageBox("Way to go kid!\n This tree is just about dead now.\n Let's find a new one.");
     }
   }
 
