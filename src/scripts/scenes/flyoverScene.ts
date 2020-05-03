@@ -21,6 +21,7 @@ export default class flyoverScene extends Phaser.Scene {
   cherryTreeDead: Phaser.GameObjects.Image;
   cherryTreeCheckMark: Phaser.GameObjects.Image;
   music: Phaser.Sound.BaseSound;
+  boss: Phaser.GameObjects.Sprite;
 
   constructor() {
     super({ key: 'flyoverScene' });
@@ -114,7 +115,8 @@ export default class flyoverScene extends Phaser.Scene {
       //create popup
       this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
       this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-      this.tutorialMsg = this.add.text(this.scale.width / 6 , this.scale.height / 3, 'Infest the area!\n Use the arrow keys to fly over to a tree.', { font: "30px Arial", fill: "#000000", align: "center" });
+      this.boss = this.add.sprite(this.scale.width / 4 - 20, this.scale.height / 2 - 20, "buzzCapone");
+      this.tutorialMsg = this.add.text(this.scale.width / 4 + 65, this.scale.height / 3 + 20, 'How ya doin, kid. The name is Buzz Capone.\n I\'m a boss of this swarm of Spotted Lanternflies.\n We need some help infesting this here farm, capeesh?\n These fellas like to eat from anything with wood or vines.\n Find us somethin\' good.\n \n Use the arrow keys to move to a host tree', { font: "20px Arial", fill: "#000000", align: "left" });
       this.tutorialBox = this.physics.add.group();
       this.closeButton.setInteractive();
       this.closeButton.on('pointerdown', this.destroyTutorial, this);
@@ -128,6 +130,7 @@ export default class flyoverScene extends Phaser.Scene {
   //close tutorial box
   destroyTutorial(){
     console.log("tutorial done");
+    this.boss.destroy();
     this.tutorialMsg.destroy();
     this.messageBox.destroy();
     this.closeButton.destroy();
