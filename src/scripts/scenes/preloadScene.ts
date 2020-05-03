@@ -47,6 +47,14 @@ export default class PreloadScene extends Phaser.Scene {
       frameWidth: 194,
       frameHeight: 156
     });
+    this.load.spritesheet("tree-of-heaven", "./assets/spritesheets/tree-of-heaven.png", {
+      frameWidth: 100,
+      frameHeight: 112
+    });
+    this.load.spritesheet("blackWalnut", "./assets/spritesheets/blackWalnut.png", {
+      frameWidth: 163,
+      frameHeight: 158
+    });
   }
 
   
@@ -83,8 +91,8 @@ export default class PreloadScene extends Phaser.Scene {
 
   create() {
     this.create_spritesheets();
-    this.scene.start('flyoverScene');
-    //this.scene.start('bugrunScene');
+    //this.scene.start('flyoverScene');
+    this.scene.start('bugrunScene');
     //this.scene.start('bugrunTutorialScene'); 
   }
 
@@ -150,6 +158,24 @@ export default class PreloadScene extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers("appleTreeAnim", {
         start: 0,
         end: 7
+      }),
+      frameRate: 20,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "tree-of-heaven",
+      frames: this.anims.generateFrameNumbers("tree-of-heaven", {
+        start: 0,
+        end: 4
+      }),
+      frameRate: 20,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "blackWalnut",
+      frames: this.anims.generateFrameNumbers("blackWalnut", {
+        start: 0,
+        end: 5
       }),
       frameRate: 20,
       repeat: -1
