@@ -28,6 +28,8 @@ export default class flyoverScene extends Phaser.Scene {
   deadBlackWalnut: Phaser.GameObjects.Image;
   blackWalnutCheckMark: Phaser.GameObjects.Image;
   blackWalnut: Phaser.GameObjects.Sprite;
+  treeLabel: Phaser.GameObjects.Sprite;
+  labelText: Phaser.GameObjects.Text;
 
   constructor() {
     super({ key: 'flyoverScene' });
@@ -103,6 +105,12 @@ export default class flyoverScene extends Phaser.Scene {
       this.hosts.add(this.blackWalnut);
     }
     
+    //create tree labels
+    this.createTreeLabel(115,545, "   Cherry Tree");
+    this.createTreeLabel(285,580,"Tree of Heaven");
+    this.createTreeLabel(720, 550, "  Black Walnut");
+    this.createTreeLabel(255,290,"   Grape Vine");
+    this.createTreeLabel(570,350, "    Apple Tree");
 
 
     //switch to bugrun upon collision
@@ -156,6 +164,11 @@ export default class flyoverScene extends Phaser.Scene {
       flags.flyoverTutDone = true;
     }
 
+  }
+  //create labels for each tree on overworld
+  createTreeLabel(x: number, y: number, label: string){
+    this.treeLabel = this.add.sprite(x, y +50, "treeLabel");
+    this.labelText = this.add.text(x-50,y+42,label,{ font: "14px Arial", fill: "#000000", align: "center" });
   }
 
   //close tutorial box

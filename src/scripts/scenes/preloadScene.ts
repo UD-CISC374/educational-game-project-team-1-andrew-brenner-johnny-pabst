@@ -78,7 +78,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("deadCherryTree", "./assets/images/deadCherryTree.png");
     this.load.image("deadTreeOfHeaven", "./assets/images/deadTreeOfHeaven.png");
     this.load.image("deadBlackWalnut", "./assets/images/deadBlackWalnut.png");
-
+    this.load.image("treeLabel", "./assets/images/treeLabel.png");
 
 
   }
