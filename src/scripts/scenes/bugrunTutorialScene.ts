@@ -118,7 +118,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     // Initial popup
-    this.createMessageBox("Hey, kid.\nThe gang really likes this host that you picked out.\nNow let\'s have some fun here, shall we?\nNow that you're on the tree, it's time to EAT!\n\n Our goal here is simple:\nTake over this tree with as MANY flies as possible.");
+    this.createMessageBox("Hey, kid.\nThe gang really likes this host that you picked out.\nLet\'s have some fun here, shall we?\nNow that you're on the tree, it's time to EAT!\n\n Our goal here is simple:\nTake over this tree with as MANY flies as possible.");
 
 
 
