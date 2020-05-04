@@ -28,6 +28,12 @@ export default class bugrunScene extends Phaser.Scene {
   closeButton: Phaser.GameObjects.Sprite;
   boss: Phaser.GameObjects.Sprite;
   modalMsg: Phaser.GameObjects.Text;
+  timeTimer: Phaser.Time.TimerEvent;
+  feedZoneTimer: Phaser.Time.TimerEvent;
+  eggZoneTimer: Phaser.Time.TimerEvent;
+  otherFliesTimer: Phaser.Time.TimerEvent;
+  prayingMantisTimer: Phaser.Time.TimerEvent;
+  pesticideTimer: Phaser.Time.TimerEvent;
 
 
   constructor() {
@@ -61,8 +67,8 @@ export default class bugrunScene extends Phaser.Scene {
     this.death = this.sound.add("death");
 
     //create timer
-    this.timeNum = 120;
-    this.timeText = this.add.text(0, this.scale.height - 36, 'Time Remaining: 120', { font: "32px Arial", fill: "#ffffff", align: "left" });
+    this.timeNum = 60;
+    this.timeText = this.add.text(0, this.scale.height - 36, 'Time Remaining: ' + this.timeNum, { font: "32px Arial", fill: "#ffffff", align: "left" });
 
     //create score
     this.score = 0;
@@ -90,7 +96,7 @@ export default class bugrunScene extends Phaser.Scene {
     
     // ** TIMED EVENTS **
     //timer
-    this.time.addEvent({
+    this.timeTimer = this.time.addEvent({
       delay:1000,
       callback:this.updateTimeText,
       callbackScope:this,
@@ -99,35 +105,35 @@ export default class bugrunScene extends Phaser.Scene {
     })
 
     // spawning feed spots
-    this.time.addEvent({
+    this.feedZoneTimer = this.time.addEvent({
       delay:18000,
       callback:this.spawnFeedZone,
       callbackScope:this,
       loop: true
     })
-    // spawning feed spots
-    this.time.addEvent({
+    // spawning egg Zones
+    this.eggZoneTimer = this.time.addEvent({
       delay:15000,
       callback:this.spawnEggZone,
       callbackScope:this,
       loop: true
     })
     // spawning other flies
-    this.time.addEvent({
+    this.otherFliesTimer = this.time.addEvent({
       delay:1000,
       callback:this.spawnFlies,
       callbackScope:this,
       loop: true
     })
         // spawning praying mantis
-    this.time.addEvent({
+    this.prayingMantisTimer = this.time.addEvent({
       delay:10000,
       callback:this.spawnMantis,
       callbackScope:this,
       loop: true
     })
     //spawn pesticide
-    this.time.addEvent({
+    this.pesticideTimer = this.time.addEvent({
       delay:9000,
       callback:this.spawnPesticide,
       callbackScope:this,
@@ -305,12 +311,30 @@ export default class bugrunScene extends Phaser.Scene {
     }
     else{
       this.sound.remove(this.music);
-      this.resetPlayer();
-      this.obstacles.destroy(true);
-      this.otherFlies.destroy(true);
+      this.stopAll();
       this.createMessageBox("Way to go kid!\n This tree is just about dead now.\n Let's find a new one.");
     }
   }
+
+  /**
+   * stopAll
+   * removes all timers spawning obstacles and freezes all obstacles currently on-screen
+   */
+  stopAll(){
+    this.sound.remove(this.music);
+    this.resetPlayer();
+    this.feedZoneTimer.remove();
+    this.eggZoneTimer.remove();
+    this.otherFliesTimer.remove();
+    this.prayingMantisTimer.remove();
+    this.pesticideTimer.remove();
+    this.obstacles.setVelocity(0,0);
+    this.otherFlies.setVelocity(0,0);
+    this.feedSpots.setVelocity(0,0);
+    this.eggZones.setVelocity(0,0);
+    this.eggGroup.setVelocity(0,0);
+  }
+
 
   updateScore(num: number){
     if (num < 0){
