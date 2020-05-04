@@ -100,6 +100,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/betaassets/images/treeBark.jpg"
   },
   {
+    "revision": "b7d75bb0d4c4981885190271379812d1",
+    "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/betaassets/images/treeLabel.png"
+  },
+  {
     "revision": "6ab8805291634f31a0cd2bdd68d4f7a2",
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/betaassets/images/treeTwo.png"
   },
@@ -188,15 +192,15 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/betafavicon.ico"
   },
   {
-    "revision": "63b52a0aa1c3dec62b1d",
-    "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/betagen.main.fe0ee72de21e18e2d21f.bundle.js"
+    "revision": "f8f5c66b095774f80ff3",
+    "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/betagen.main.8470eda5cffb1a695ec0.bundle.js"
   },
   {
     "revision": "9ecf88fe9811c5d77969",
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/betagen.vendors.be91aecff310ec1b870c.bundle.js"
   },
   {
-    "revision": "018a00421b06b80731922c5d206ba6df",
+    "revision": "551916bbdc4761b6aaf40dbdb00db80f",
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/betaindex.html"
   },
   {
