@@ -86,16 +86,16 @@ export default class flyoverScene extends Phaser.Scene {
       this.hosts.add(this.grapeVine);
     }
     if(flags.treeOfHeavenDead){ // Tree of Heaven
-      this.deadTreeOfHeaven = this.add.image(275,550,"deadTreeOfHeaven");
-      this.treeOfHeavenCheckMark = this.add.image(330,580, "checkMark");
+      this.deadTreeOfHeaven = this.add.image(285,570,"deadTreeOfHeaven");
+      this.treeOfHeavenCheckMark = this.add.image(325,580, "checkMark");
     } else{
       this.treeOfHeaven = this.add.sprite(285, 570, "treeOfHeaven");
       this.treeOfHeaven.play("treeOfHeaven");
       this.treeOfHeaven.name = "treeOfHeaven";
       this.hosts.add(this.treeOfHeaven);
     }if(flags.blackWalnutDead){ // Black Walnut Tree
-      this.deadBlackWalnut = this.add.image(720,550,"deadBlackWalnut");
-      this.blackWalnutCheckMark = this.add.image(750,580, "checkMark");
+      this.deadBlackWalnut = this.add.image(680,570,"deadBlackWalnut");
+      this.blackWalnutCheckMark = this.add.image(720,550, "checkMark");
     } else{
       this.blackWalnut = this.add.sprite(720, 550, "blackWalnut");
       this.blackWalnut.play("blackWalnut");
