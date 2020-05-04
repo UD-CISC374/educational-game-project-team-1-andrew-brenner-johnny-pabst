@@ -332,7 +332,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
       // Spawn Pesticide
       this.pesticide = this.physics.add.sprite(0,0,"pesticideWarning");
       this.pesticide.play("pesticideWarning");
-      this.obstacles.add(this.pesticide);
+      //this.obstacles.add(this.pesticide);
       this.pesticide.setRandomPosition(0,0,this.scale.width, this.scale.height / 3);
       //this.pesticide.setVelocity(0,this.OBSTACLE_VELOCITY);
       this.pesticideSpawned = true;
