@@ -31,7 +31,7 @@ export default class flyoverScene extends Phaser.Scene {
   treeLabel: Phaser.GameObjects.Sprite;
   labelText: Phaser.GameObjects.Text;
   sadBird: Phaser.GameObjects.Sprite;
-  msgOpen: boolean = false;
+  endGameLabel: Phaser.GameObjects.BitmapText;
 
   constructor() {
     super({ key: 'flyoverScene' });
@@ -66,15 +66,15 @@ export default class flyoverScene extends Phaser.Scene {
     this.hosts = this.physics.add.group();
     if(flags.cherryTreeDead){ // Cherry Tree
       this.cherryTreeDead = this.add.image(110,525,"deadCherryTree");
-      this.cherryTreeCheckMark = this.add.image(150,450, "checkMark");
+      this.cherryTreeCheckMark = this.add.image(150,565, "checkMark");
     } else{
       this.cherryTree = this.add.image(115,545,"cherryTree");
       this.cherryTree.name = "cherryTree";
       this.hosts.add(this.cherryTree);
     } 
     if(flags.appleTreeDead){ // Apple Tree
-      this.deadAppleTree = this.add.image(575,310,"deadTree3");
-      this.appleTreeCheckMark = this.add.image(600,400, "checkMark");
+      this.deadAppleTree = this.add.image(575,310,"deadAppleTree");
+      this.appleTreeCheckMark = this.add.image(615,375, "checkMark");
     } else{
       this.appleTree = this.add.sprite(570, 350, "appleTreeAnim");
       this.appleTree.play("appleTreeAnim");
@@ -83,7 +83,7 @@ export default class flyoverScene extends Phaser.Scene {
     }
     if(flags.grapeVineDead){ // Grape Vine
       this.deadGrapeVine = this.add.image(260,230, "deadGrapeVine");
-      this.grapeVineCheckMark = this.add.image(290,335, "checkMark");
+      this.grapeVineCheckMark = this.add.image(290,310, "checkMark");
     } else{
       this.grapeVine = this.add.image(255,290, "grapeVine");
       this.grapeVine.name = "grapeVine";
@@ -91,7 +91,7 @@ export default class flyoverScene extends Phaser.Scene {
     }
     if(flags.treeOfHeavenDead){ // Tree of Heaven
       this.deadTreeOfHeaven = this.add.image(285,570,"deadTreeOfHeaven");
-      this.treeOfHeavenCheckMark = this.add.image(325,580, "checkMark");
+      this.treeOfHeavenCheckMark = this.add.image(325,605, "checkMark");
     } else{
       this.treeOfHeaven = this.add.sprite(285, 580, "treeOfHeaven");
       this.treeOfHeaven.play("treeOfHeaven");
@@ -99,7 +99,7 @@ export default class flyoverScene extends Phaser.Scene {
       this.hosts.add(this.treeOfHeaven);
     }if(flags.blackWalnutDead){ // Black Walnut Tree
       this.deadBlackWalnut = this.add.image(680,570,"deadBlackWalnut");
-      this.blackWalnutCheckMark = this.add.image(750,600, "checkMark");
+      this.blackWalnutCheckMark = this.add.image(750,570, "checkMark");
     } else{
       this.blackWalnut = this.add.sprite(720, 550, "blackWalnut");
       this.blackWalnut.play("blackWalnut");
@@ -168,7 +168,6 @@ export default class flyoverScene extends Phaser.Scene {
       this.closeButton.on('pointerdown', this.destroyTutorial, this);
       this.closeButton.on('pointerup', this.mouseFix, this);
       this.closeButton.on('pointerout', this.mouseFix, this);
-      this.msgOpen = true;
       flags.flyoverTutDone = true;
     } else{
       // tutorial has been completed, create pop-up depending on the last bug run completed
@@ -183,7 +182,6 @@ export default class flyoverScene extends Phaser.Scene {
       this.closeButton.on('pointerdown', this.destroyPopUp, this);
       this.closeButton.on('pointerup', this.mouseFix, this);
       this.closeButton.on('pointerout', this.mouseFix, this);
-      this.msgOpen = true;
       let birdMessage: string = "";
       switch(flags.latestHost){
         case "Apple Tree": {
@@ -214,8 +212,15 @@ export default class flyoverScene extends Phaser.Scene {
       this.tutorialMsg = this.add.text(this.scale.width / 4 + 65, this.scale.height / 3 + 20, birdMessage, { font: "20px Arial", fill: "#000000", align: "left" });
     } // end if
 
+    // If all levels are completed -> Game Over
+    if(flags.appleTreeDead && flags.cherryTreeDead && flags.grapeVineDead && flags.treeOfHeavenDead && flags.blackWalnutDead){
+      this.endGame();
+    }
 
-  }
+  } // end create()
+
+
+
   //create labels for each tree on overworld
   createTreeLabel(x: number, y: number, label: string){
     this.treeLabel = this.add.sprite(x, y +50, "treeLabel");
@@ -229,7 +234,6 @@ export default class flyoverScene extends Phaser.Scene {
     this.tutorialMsg.destroy();
     this.messageBox.destroy();
     this.closeButton.destroy();
-    this.msgOpen = false;
   }
   //fixes click event crash
   mouseFix(){}
@@ -240,11 +244,10 @@ export default class flyoverScene extends Phaser.Scene {
     this.tutorialMsg.destroy();
     this.messageBox.destroy();
     this.closeButton.destroy();
-    this.msgOpen = false;
   }
 
   endGame(){
-    
+    this.endGameLabel = this.add.bitmapText(this.scale.width / 5, this.scale.height / 10, "font", "You Win!", 300, 1);
   }
 
 
@@ -266,9 +269,6 @@ export default class flyoverScene extends Phaser.Scene {
 
   update() {
     this.movePlayerManager();
-
-
-
   }
 
 

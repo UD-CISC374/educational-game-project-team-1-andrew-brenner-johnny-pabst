@@ -7,6 +7,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load_images();
     this.load_spritesheets();
     this.load_audio();
+    this.load.bitmapFont("font", "assets/font/font.png", "assets/font/font.fnt");
   }
 
   // Loads all the spritesheets necessary for application 
@@ -68,11 +69,9 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("bugrunBackground", "./assets/images/treeBark.jpg");
     this.load.image("bottomBounds", "./assets/images/blackBar.png");
     this.load.image("cherryTree", "./assets/images/cherryTree.png");
-    this.load.image("treeTwo", "./assets/images/treeTwo.png");
     this.load.image("messageBox", "./assets/images/messageBox.png");
     this.load.image("closeButton", "./assets/images/closeButton.png");
-    this.load.image("deadTree2", "./assets/images/deadTree1.png");
-    this.load.image("deadTree3", "./assets/images/deadTree3.png");
+    this.load.image("deadAppleTree", "./assets/images/deadAppleTree.png");
     this.load.image("checkMark", "./assets/images/checkMark.png");
     this.load.image("eggZone", "./assets/images/eggZone.png");
     this.load.image("feedSpot", "./assets/images/feedSpot.png");
