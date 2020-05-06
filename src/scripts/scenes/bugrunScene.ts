@@ -13,7 +13,7 @@ export default class bugrunScene extends Phaser.Scene {
   otherFlies: Phaser.Physics.Arcade.Group;
   timeInSeconds: number;
   timeText: Phaser.GameObjects.Text;
-  timeNum: number;
+  timeNum: number = 60;
   score: number;
   scoreText: Phaser.GameObjects.Text;
   OBSTACLE_VELOCITY: number = 120;
@@ -67,7 +67,6 @@ export default class bugrunScene extends Phaser.Scene {
     this.death = this.sound.add("death");
 
     //create timer
-    this.timeNum = 15;
     this.timeText = this.add.text(0, this.scale.height - 36, 'Time Remaining: ' + this.timeNum, { font: "32px Arial", fill: "#ffffff", align: "left" });
 
     //create score
@@ -153,7 +152,8 @@ export default class bugrunScene extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.eggZones, this.layEggs, undefined, this);
 
     //obstacles destroy other flies
-    this.physics.add.overlap(this.obstacles, this.otherFlies, function(obstacles, fly){
+    this.physics.add.overlap(this.obstacles, this.otherFlies, function(obstacle, fly){
+      obstacle.removeInteractive();
       fly.destroy();
     }, undefined, this);
     // adding bottom bounds
