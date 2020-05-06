@@ -31,6 +31,7 @@ export default class flyoverScene extends Phaser.Scene {
   treeLabel: Phaser.GameObjects.Sprite;
   labelText: Phaser.GameObjects.Text;
   sadBird: Phaser.GameObjects.Sprite;
+  msgOpen: boolean = false;
 
   constructor() {
     super({ key: 'flyoverScene' });
@@ -167,8 +168,11 @@ export default class flyoverScene extends Phaser.Scene {
       this.closeButton.on('pointerdown', this.destroyTutorial, this);
       this.closeButton.on('pointerup', this.mouseFix, this);
       this.closeButton.on('pointerout', this.mouseFix, this);
+      this.msgOpen = true;
       flags.flyoverTutDone = true;
     } else{
+      // tutorial has been completed, create pop-up depending on the last bug run completed
+
       //create popup
       this.messageBox = this.add.image(this.scale.width / 2, this.scale.height / 2, "messageBox");
       this.closeButton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
@@ -179,18 +183,35 @@ export default class flyoverScene extends Phaser.Scene {
       this.closeButton.on('pointerdown', this.destroyPopUp, this);
       this.closeButton.on('pointerup', this.mouseFix, this);
       this.closeButton.on('pointerout', this.mouseFix, this);
+      this.msgOpen = true;
       let birdMessage: string = "";
       switch(flags.latestHost){
         case "Apple Tree": {
-          birdMessage = "oh my apples";
+          birdMessage = "Oh my!\nNot the Apples!\nThat was just plain evil.";
+          break;
+        }
+        case "Cherry Tree": {
+          birdMessage = "What have you done!?\nNow what am I supposed to\nput on top of my ice cream?"
+          break;
+        }
+        case "Grape Vine": {
+          birdMessage = "No grapes means no more PB&J :("
+          break;
+        }
+        case "Tree of Heaven": {
+          birdMessage = "How could you?\nThe Tree of Heaven was my favorite.";
+          break;
+        }
+        case "Black Walnut Tree": {
+          birdMessage = "Aw nuts!\nNow the Black Walnut Tree!?\n";
           break;
         }
         default: {
-          birdMessage = "oh lawdy";
+          birdMessage = "Oh no!\n ";
+          break;
         }
       }
       this.tutorialMsg = this.add.text(this.scale.width / 4 + 65, this.scale.height / 3 + 20, birdMessage, { font: "20px Arial", fill: "#000000", align: "left" });
-
     } // end if
 
 
@@ -208,6 +229,7 @@ export default class flyoverScene extends Phaser.Scene {
     this.tutorialMsg.destroy();
     this.messageBox.destroy();
     this.closeButton.destroy();
+    this.msgOpen = false;
   }
   //fixes click event crash
   mouseFix(){}
@@ -218,6 +240,11 @@ export default class flyoverScene extends Phaser.Scene {
     this.tutorialMsg.destroy();
     this.messageBox.destroy();
     this.closeButton.destroy();
+    this.msgOpen = false;
+  }
+
+  endGame(){
+    
   }
 
 
@@ -239,6 +266,9 @@ export default class flyoverScene extends Phaser.Scene {
 
   update() {
     this.movePlayerManager();
+
+
+
   }
 
 

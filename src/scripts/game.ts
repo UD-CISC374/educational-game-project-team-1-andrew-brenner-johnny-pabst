@@ -15,14 +15,14 @@ export const gameSettings = {
 }
 
 export var flags = {
-    flyoverTutDone: true,
+    flyoverTutDone: false,
     bugRunTutDone: false,
-    appleTreeDead: true,
+    appleTreeDead: false,
     cherryTreeDead: false,
     grapeVineDead: false,
     treeOfHeavenDead: false,
     blackWalnutDead: false,
-    latestHost: "Apple Tree"
+    latestHost: ""
 }
 
 const config: GameConfig = {

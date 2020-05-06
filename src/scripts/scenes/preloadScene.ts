@@ -56,8 +56,8 @@ export default class PreloadScene extends Phaser.Scene {
       frameHeight: 158
     });
     this.load.spritesheet("sadBird", "./assets/spritesheets/sadBird.png", {
-      frameWidth: 200,
-      frameHeight: 200
+      frameWidth: 300,
+      frameHeight: 300
     });
   }
 
