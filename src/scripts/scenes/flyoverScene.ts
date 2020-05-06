@@ -7,8 +7,8 @@ export default class flyoverScene extends Phaser.Scene {
   player: Phaser.Physics.Arcade.Sprite;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
   hosts: Phaser.Physics.Arcade.Group;
-  messageBox: Phaser.GameObjects.Sprite;
-  closeButton: Phaser.GameObjects.Sprite;
+  messageBox: Phaser.GameObjects.Image;
+  closeButton: Phaser.GameObjects.Image;
   tutorialMsg: Phaser.GameObjects.Text;
   tutorialBox: Phaser.Physics.Arcade.Group;
   appleTree: Phaser.GameObjects.Sprite;
@@ -21,7 +21,7 @@ export default class flyoverScene extends Phaser.Scene {
   cherryTreeDead: Phaser.GameObjects.Image;
   cherryTreeCheckMark: Phaser.GameObjects.Image;
   music: Phaser.Sound.BaseSound;
-  boss: Phaser.GameObjects.Sprite;
+  boss: Phaser.GameObjects.Image;
   deadTreeOfHeaven: Phaser.GameObjects.Image;
   treeOfHeavenCheckMark: Phaser.GameObjects.Image;
   treeOfHeaven: Phaser.GameObjects.Sprite;
@@ -30,6 +30,7 @@ export default class flyoverScene extends Phaser.Scene {
   blackWalnut: Phaser.GameObjects.Sprite;
   treeLabel: Phaser.GameObjects.Sprite;
   labelText: Phaser.GameObjects.Text;
+  sadBird: Phaser.GameObjects.Sprite;
 
   constructor() {
     super({ key: 'flyoverScene' });
@@ -119,22 +120,27 @@ export default class flyoverScene extends Phaser.Scene {
       switch(host.name) { 
         case "appleTree": { 
            flags.appleTreeDead = true;
+           flags.latestHost = "Apple Tree";
            return flags.appleTreeDead;
         } 
         case "cherryTree": { 
            flags.cherryTreeDead = true; 
+           flags.latestHost = "Cherry Tree";
            return flags.cherryTreeDead;
         }
         case "grapeVine": { 
           flags.grapeVineDead = true; 
+          flags.latestHost = "Grape Vine";
           return flags.grapeVineDead;
         }
         case "treeOfHeaven": { 
           flags.treeOfHeavenDead = true; 
+          flags.latestHost = "Tree of Heaven";
           return flags.treeOfHeavenDead;
         }
         case "blackWalnut": { 
           flags.blackWalnutDead = true; 
+          flags.latestHost = "Black Walnut Tree";
           return flags.blackWalnutDead;
         }
         default: { 
@@ -152,9 +158,9 @@ export default class flyoverScene extends Phaser.Scene {
     
     if(!flags.flyoverTutDone){
       //create popup
-      this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
-      this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-      this.boss = this.add.sprite(this.scale.width / 4 - 20, this.scale.height / 2 - 20, "buzzCapone");
+      this.messageBox = this.add.image(this.scale.width / 2, this.scale.height / 2, "messageBox");
+      this.closeButton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
+      this.boss = this.add.image(this.scale.width / 4 - 20, this.scale.height / 2 - 20, "buzzCapone");
       this.tutorialMsg = this.add.text(this.scale.width / 4 + 65, this.scale.height / 3 + 20, 'How ya doin, kid. The name is Buzz Capone.\n I\'m the boss of this swarm of Spotted Lanternflies.\n We need some help infesting this here farm, capeesh?\n These fellas like to eat from anything with wood or vines.\n Find us somethin\' good.\n \n Use the arrow keys to move to a host tree', { font: "20px Arial", fill: "#000000", align: "left" });
       this.tutorialBox = this.physics.add.group();
       this.closeButton.setInteractive();
@@ -162,7 +168,31 @@ export default class flyoverScene extends Phaser.Scene {
       this.closeButton.on('pointerup', this.mouseFix, this);
       this.closeButton.on('pointerout', this.mouseFix, this);
       flags.flyoverTutDone = true;
-    }
+    } else{
+      //create popup
+      this.messageBox = this.add.image(this.scale.width / 2, this.scale.height / 2, "messageBox");
+      this.closeButton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
+      this.sadBird = this.add.sprite(this.scale.width / 4 - 20, this.scale.height / 2 - 20, "sadBird");
+      this.sadBird.play("sadBird");
+      this.tutorialBox = this.physics.add.group();
+      this.closeButton.setInteractive();
+      this.closeButton.on('pointerdown', this.destroyPopUp, this);
+      this.closeButton.on('pointerup', this.mouseFix, this);
+      this.closeButton.on('pointerout', this.mouseFix, this);
+      let birdMessage: string = "";
+      switch(flags.latestHost){
+        case "Apple Tree": {
+          birdMessage = "oh my apples";
+          break;
+        }
+        default: {
+          birdMessage = "oh lawdy";
+        }
+      }
+      this.tutorialMsg = this.add.text(this.scale.width / 4 + 65, this.scale.height / 3 + 20, birdMessage, { font: "20px Arial", fill: "#000000", align: "left" });
+
+    } // end if
+
 
   }
   //create labels for each tree on overworld
@@ -181,6 +211,16 @@ export default class flyoverScene extends Phaser.Scene {
   }
   //fixes click event crash
   mouseFix(){}
+
+  destroyPopUp(){
+    console.log("pop-up gone");
+    this.sadBird.destroy();
+    this.tutorialMsg.destroy();
+    this.messageBox.destroy();
+    this.closeButton.destroy();
+  }
+
+
   
   /**
    * enterRunScene called when user collides with a tree

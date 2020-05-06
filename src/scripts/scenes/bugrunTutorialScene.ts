@@ -19,9 +19,10 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   OBSTACLE_VELOCITY: number = 120;
   bottomBounds: Phaser.Physics.Arcade.Image;
   playerBottomBounds: Phaser.Physics.Arcade.Image;
-  messageBox: Phaser.GameObjects.Sprite;
-  closeButton: Phaser.GameObjects.Sprite;
+  messageBox: Phaser.GameObjects.Image;
+  closeButton: Phaser.GameObjects.Image;
   tutorialMsg: Phaser.GameObjects.Text;
+  boss: Phaser.GameObjects.Image;
   timeTimer: Phaser.Time.TimerEvent;
   feedSpot: Phaser.Physics.Arcade.Image;
   arrow: Phaser.Physics.Arcade.Sprite;
@@ -61,7 +62,6 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   otherFliesTutCompleted: boolean = false;
   otherFliesMsgRead: boolean = false;
   otherFliesSpawning: boolean = false;
-  boss: Phaser.GameObjects.Sprite;
   
 
 
@@ -395,23 +395,15 @@ export default class bugrunTutorialScene extends Phaser.Scene {
  * message: the text in the pop-up box
  */
   createMessageBox(message: string){
-    // this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
-    // this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-    // this.tutorialMsg = this.add.text(this.scale.width / 17 , this.scale.height / 3, message, { font: "30px Arial", fill: "#000000", align: "center" });
-    // this.closeButton.setInteractive();
-    // this.closeButton.on('pointerdown', this.destroyMessageBox, this);
-    // this.closeButton.on('pointerup', this.mouseFix, this);
-    // this.closeButton.on('pointerout', this.mouseFix, this);
-    // this.messageRead = false;
-    this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
-      this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-      this.boss = this.add.sprite(this.scale.width / 4 - 20, this.scale.height / 2 - 20, "buzzCapone");
-      this.tutorialMsg = this.add.text(this.scale.width / 4 + 75, this.scale.height / 3 + 20, message, { font: "20px Arial", fill: "#000000", align: "left" });
-      this.closeButton.setInteractive();
-      this.closeButton.on('pointerdown', this.destroyMessageBox, this);
-      this.closeButton.on('pointerup', this.mouseFix, this);
-      this.closeButton.on('pointerout', this.mouseFix, this);
-      this.messageRead = false;
+    this.messageBox = this.add.image(this.scale.width / 2, this.scale.height / 2, "messageBox");
+    this.closeButton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
+    this.boss = this.add.image(this.scale.width / 4 - 20, this.scale.height / 2 - 20, "buzzCapone");
+    this.tutorialMsg = this.add.text(this.scale.width / 4 + 75, this.scale.height / 3 + 20, message, { font: "20px Arial", fill: "#000000", align: "left" });
+    this.closeButton.setInteractive();
+    this.closeButton.on('pointerdown', this.destroyMessageBox, this);
+    this.closeButton.on('pointerup', this.mouseFix, this);
+    this.closeButton.on('pointerout', this.mouseFix, this);
+    this.messageRead = false;
   }
 
   //spawn in feed spot randomly

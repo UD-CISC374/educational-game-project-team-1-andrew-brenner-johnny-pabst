@@ -24,9 +24,9 @@ export default class bugrunScene extends Phaser.Scene {
   spray: Phaser.Sound.BaseSound;
   munch: Phaser.Sound.BaseSound;
   death: Phaser.Sound.BaseSound;
-  messageBox: Phaser.GameObjects.Sprite;
-  closeButton: Phaser.GameObjects.Sprite;
-  boss: Phaser.GameObjects.Sprite;
+  messageBox: Phaser.GameObjects.Image;
+  closeButton: Phaser.GameObjects.Image;
+  boss: Phaser.GameObjects.Image;
   modalMsg: Phaser.GameObjects.Text;
   timeTimer: Phaser.Time.TimerEvent;
   feedZoneTimer: Phaser.Time.TimerEvent;
@@ -194,9 +194,9 @@ export default class bugrunScene extends Phaser.Scene {
   * message: the text in the pop-up box
   */
   createMessageBox(message: string){
-    this.messageBox = this.add.sprite(this.scale.width / 2, this.scale.height / 2, "messageBox");
-    this.closeButton = this.add.sprite(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-    this.boss = this.add.sprite(this.scale.width / 4 - 20, this.scale.height / 2 - 20, "buzzCapone");
+    this.messageBox = this.add.image(this.scale.width / 2, this.scale.height / 2, "messageBox");
+    this.closeButton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
+    this.boss = this.add.image(this.scale.width / 4 - 20, this.scale.height / 2 - 20, "buzzCapone");
     this.modalMsg = this.add.text(this.scale.width / 4 + 75, this.scale.height / 3 + 20, message, { font: "20px Arial", fill: "#000000", align: "left" });
     this.closeButton.setInteractive();
     this.closeButton.on('pointerdown', this.destroyMessageBox, this);

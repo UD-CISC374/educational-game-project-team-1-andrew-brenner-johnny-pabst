@@ -55,6 +55,10 @@ export default class PreloadScene extends Phaser.Scene {
       frameWidth: 163,
       frameHeight: 158
     });
+    this.load.spritesheet("sadBird", "./assets/spritesheets/sadBird.png", {
+      frameWidth: 200,
+      frameHeight: 200
+    });
   }
 
   
@@ -182,6 +186,15 @@ export default class PreloadScene extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers("blackWalnut", {
         start: 0,
         end: 5
+      }),
+      frameRate: 20,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "sadBird",
+      frames: this.anims.generateFrameNumbers("sadBird", {
+        start: 0,
+        end: 9
       }),
       frameRate: 20,
       repeat: -1
