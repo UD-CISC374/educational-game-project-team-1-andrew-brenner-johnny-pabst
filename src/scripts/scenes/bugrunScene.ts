@@ -13,7 +13,7 @@ export default class bugrunScene extends Phaser.Scene {
   otherFlies: Phaser.Physics.Arcade.Group;
   timeInSeconds: number;
   timeText: Phaser.GameObjects.Text;
-  timeNum: number = 60;
+  timeNum: number;
   score: number;
   scoreText: Phaser.GameObjects.Text;
   OBSTACLE_VELOCITY: number = 120;
@@ -68,6 +68,7 @@ export default class bugrunScene extends Phaser.Scene {
     this.death = this.sound.add("death");
 
     //create timer
+    this.timeNum = 60;
     this.timeText = this.add.text(0, this.scale.height - 36, 'Time Remaining: ' + this.timeNum, { font: "32px Arial", fill: "#ffffff", align: "left" });
 
     //create score
@@ -306,7 +307,7 @@ export default class bugrunScene extends Phaser.Scene {
 
   //updates actual timer
   updateTimeText(){
-    //console.log(this.timeNum);
+    console.log(this.timeNum);
     if (this.timeNum > 0) {
       this.timeNum--;
       this.timeText.text = "Time Remaining: " + this.timeNum;
