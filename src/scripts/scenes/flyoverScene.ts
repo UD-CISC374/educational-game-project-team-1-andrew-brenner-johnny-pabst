@@ -198,7 +198,7 @@ export default class flyoverScene extends Phaser.Scene {
           break;
         }
         case "Grape Vine": {
-          birdMessage = "No grapes means no more PB&J :("
+          birdMessage = "No grapes means no more PB&J's :("
           break;
         }
         case "Tree of Heaven": {
