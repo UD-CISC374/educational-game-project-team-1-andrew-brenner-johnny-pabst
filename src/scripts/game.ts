@@ -12,11 +12,12 @@ const DEFAULT_HEIGHT = 800;
 
 export const gameSettings = {
     playerSpeed: 200,
+    totalScore: 0
 }
 
 export var flags = {
     flyoverTutDone: false,
-    bugRunTutDone: false,
+    bugRunTutDone: true,
     appleTreeDead: false,
     cherryTreeDead: false,
     grapeVineDead: false,

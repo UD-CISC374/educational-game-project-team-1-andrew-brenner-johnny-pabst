@@ -32,6 +32,7 @@ export default class flyoverScene extends Phaser.Scene {
   labelText: Phaser.GameObjects.Text;
   sadBird: Phaser.GameObjects.Sprite;
   endGameLabel: Phaser.GameObjects.BitmapText;
+  scoreText: Phaser.GameObjects.Text;
 
   constructor() {
     super({ key: 'flyoverScene' });
@@ -62,7 +63,11 @@ export default class flyoverScene extends Phaser.Scene {
     this.player.play("playerFly");
     this.player.setCollideWorldBounds(true);
 
-    //create flyover trees
+    // create score label
+    this.scoreText = this.add.text(0, this.scale.height - 36, 'Total Score: ' + gameSettings.totalScore, { font: "32px Arial", fill: "#ffffff", align: "left" });
+
+
+    // create flyover trees
     this.hosts = this.physics.add.group();
     if(flags.cherryTreeDead){ // Cherry Tree
       this.cherryTreeDead = this.add.image(110,525,"deadCherryTree");

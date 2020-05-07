@@ -34,6 +34,7 @@ export default class bugrunScene extends Phaser.Scene {
   otherFliesTimer: Phaser.Time.TimerEvent;
   prayingMantisTimer: Phaser.Time.TimerEvent;
   pesticideTimer: Phaser.Time.TimerEvent;
+  stopped: boolean = false;
 
 
   constructor() {
@@ -71,7 +72,7 @@ export default class bugrunScene extends Phaser.Scene {
 
     //create score
     this.score = 0;
-    this.scoreText = this.add.text(0, this.scale.height - 72, 'Score: 0', { font: "32px Arial", fill: "#ffffff", align: "left" });
+    this.scoreText = this.add.text(0, this.scale.height - 72, 'Bugrun Score: ' + this.score, { font: "32px Arial", fill: "#ffffff", align: "left" });
 
     // create player
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "player");
@@ -144,8 +145,10 @@ export default class bugrunScene extends Phaser.Scene {
 
     // player collides with other flies
     this.physics.add.collider(this.player, this.otherFlies);
-    // praying Mantis collides into player
-    this.physics.add.overlap(this.player, this.obstacles, this.killBug, undefined, this);
+    // praying Mantis & pesticide overlaps with player
+    this.physics.add.overlap(this.player, this.obstacles, this.killBug, function(player, obstacle){
+      obstacle.destroy();;
+    }, this);
     //player latches onto feed spot
     this.physics.add.overlap(this.player, this.feedSpots, this.eatFood, undefined, this);
     //player lays eggs on egg zone
@@ -153,7 +156,6 @@ export default class bugrunScene extends Phaser.Scene {
 
     //obstacles destroy other flies
     this.physics.add.overlap(this.obstacles, this.otherFlies, function(obstacle, fly){
-      obstacle.removeInteractive();
       fly.destroy();
     }, undefined, this);
     // adding bottom bounds
@@ -319,20 +321,25 @@ export default class bugrunScene extends Phaser.Scene {
   /**
    * stopAll
    * removes all timers spawning obstacles and freezes all obstacles currently on-screen
+   * adds current bugrun score to total score
    */
   stopAll(){
-    this.sound.remove(this.music);
-    this.resetPlayer();
-    this.feedZoneTimer.remove();
-    this.eggZoneTimer.remove();
-    this.otherFliesTimer.remove();
-    this.prayingMantisTimer.remove();
-    this.pesticideTimer.remove();
-    this.obstacles.setVelocity(0,0);
-    this.otherFlies.setVelocity(0,0);
-    this.feedSpots.setVelocity(0,0);
-    this.eggZones.setVelocity(0,0);
-    this.eggGroup.setVelocity(0,0);
+    if(!this.stopped){
+      gameSettings.totalScore += this.score; // add bugrun score to total
+      this.sound.remove(this.music);
+      this.resetPlayer();
+      this.feedZoneTimer.remove();
+      this.eggZoneTimer.remove();
+      this.otherFliesTimer.remove();
+      this.prayingMantisTimer.remove();
+      this.pesticideTimer.remove();
+      this.obstacles.setVelocity(0,0);
+      this.otherFlies.setVelocity(0,0);
+      this.feedSpots.setVelocity(0,0);
+      this.eggZones.setVelocity(0,0);
+      this.eggGroup.setVelocity(0,0);
+      this.stopped = true;
+    }
   }
 
 

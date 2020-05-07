@@ -106,7 +106,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
 
     //create score
     this.score = 0;
-    this.scoreText = this.add.text(0, this.scale.height - 72, 'Score: 0', { font: "32px Arial", fill: "#ffffff", align: "left" });
+    this.scoreText = this.add.text(0, this.scale.height - 72, 'Bugrun Score: ' + this.score, { font: "32px Arial", fill: "#ffffff", align: "left" });
 
     // create player
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "player");
