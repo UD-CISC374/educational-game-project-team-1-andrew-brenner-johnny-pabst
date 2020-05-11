@@ -6,6 +6,7 @@ export default class flyoverScene extends Phaser.Scene {
   background: Phaser.GameObjects.Image;
   player: Phaser.Physics.Arcade.Sprite;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
+  spacebar: Phaser.Input.Keyboard.Key;
   hosts: Phaser.Physics.Arcade.Group;
   messageBox: Phaser.GameObjects.Image;
   closeButton: Phaser.GameObjects.Image;
@@ -33,6 +34,8 @@ export default class flyoverScene extends Phaser.Scene {
   sadBird: Phaser.GameObjects.Sprite;
   endGameLabel: Phaser.GameObjects.BitmapText;
   scoreText: Phaser.GameObjects.Text;
+  msgOpen: boolean;
+  tutOpen: boolean;
 
   constructor() {
     super({ key: 'flyoverScene' });
@@ -62,6 +65,10 @@ export default class flyoverScene extends Phaser.Scene {
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "playerFly");
     this.player.play("playerFly");
     this.player.setCollideWorldBounds(true);
+
+    // setup keyboard input
+    this.cursorKeys = this.input.keyboard.createCursorKeys();
+    this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     // create score label
     this.scoreText = this.add.text(0, this.scale.height - 36, 'Total Score: ' + gameSettings.totalScore, { font: "32px Arial", fill: "#ffffff", align: "left" });
@@ -156,11 +163,6 @@ export default class flyoverScene extends Phaser.Scene {
      }
     }, this);
 
-
-
-    // setup keyboard input
-    this.cursorKeys = this.input.keyboard.createCursorKeys();
-
     
     if(!flags.flyoverTutDone){
       //create popup
@@ -173,6 +175,7 @@ export default class flyoverScene extends Phaser.Scene {
       this.closeButton.on('pointerdown', this.destroyTutorial, this);
       this.closeButton.on('pointerup', this.mouseFix, this);
       this.closeButton.on('pointerout', this.mouseFix, this);
+      this.tutOpen = true;
       flags.flyoverTutDone = true;
     } else{
       // tutorial has been completed, create pop-up depending on the last bug run completed
@@ -187,6 +190,7 @@ export default class flyoverScene extends Phaser.Scene {
       this.closeButton.on('pointerdown', this.destroyPopUp, this);
       this.closeButton.on('pointerup', this.mouseFix, this);
       this.closeButton.on('pointerout', this.mouseFix, this);
+      this.msgOpen = true;
       let birdMessage: string = "";
       switch(flags.latestHost){
         case "Apple Tree": {
@@ -239,6 +243,7 @@ export default class flyoverScene extends Phaser.Scene {
     this.tutorialMsg.destroy();
     this.messageBox.destroy();
     this.closeButton.destroy();
+    this.tutOpen = false;
   }
   //fixes click event crash
   mouseFix(){}
@@ -249,6 +254,7 @@ export default class flyoverScene extends Phaser.Scene {
     this.tutorialMsg.destroy();
     this.messageBox.destroy();
     this.closeButton.destroy();
+    this.msgOpen = false;
   }
 
   endGame(){
@@ -274,6 +280,12 @@ export default class flyoverScene extends Phaser.Scene {
 
   update() {
     this.movePlayerManager();
+
+    if(this.tutOpen && Phaser.Input.Keyboard.JustDown(this.spacebar)){
+      this.destroyTutorial();
+    } else if(this.msgOpen && Phaser.Input.Keyboard.JustDown(this.spacebar)){
+      this.destroyPopUp();
+    }
   }
 
 

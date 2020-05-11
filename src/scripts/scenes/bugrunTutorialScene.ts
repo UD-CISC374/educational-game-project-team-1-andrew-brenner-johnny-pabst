@@ -40,7 +40,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
 
 
   // FLAGS for tutorial Stages
-  messageRead: boolean = false;
+  msgOpen: boolean;
   feedSpotTutCompleted: boolean = false;
   eggZoneTutCompleted: boolean = false;
   mantisTutCompleted: boolean = false;
@@ -176,7 +176,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
 
   update() {
     
-    if(this.messageRead){ // message box has been closed
+    if(!this.msgOpen){ // message box has been closed
       this.background.tilePositionY -= 2; // scroll background
       this.movePlayerManager(); // listen for player movement
       
@@ -199,6 +199,11 @@ export default class bugrunTutorialScene extends Phaser.Scene {
 
     } else{ // message box is open
       this.player.setVelocity(0,0);
+      if(Phaser.Input.Keyboard.JustDown(this.spacebar)){
+        this.destroyMessageBox();
+      }
+
+
     }
   } 
 
@@ -403,7 +408,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     this.closeButton.on('pointerdown', this.destroyMessageBox, this);
     this.closeButton.on('pointerup', this.mouseFix, this);
     this.closeButton.on('pointerout', this.mouseFix, this);
-    this.messageRead = false;
+    this.msgOpen = true;
   }
 
   //spawn in feed spot randomly
@@ -495,7 +500,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     this.messageBox.destroy();
     this.closeButton.destroy();
     this.boss.destroy();
-    this.messageRead = true;
+    this.msgOpen = false;
   }
 
   //fixes click event crash

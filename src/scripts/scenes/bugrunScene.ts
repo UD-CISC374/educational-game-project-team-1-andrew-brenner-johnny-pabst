@@ -35,6 +35,7 @@ export default class bugrunScene extends Phaser.Scene {
   prayingMantisTimer: Phaser.Time.TimerEvent;
   pesticideTimer: Phaser.Time.TimerEvent;
   stopped: boolean = false;
+  msgOpen: boolean;
 
 
   constructor() {
@@ -190,6 +191,10 @@ export default class bugrunScene extends Phaser.Scene {
   update() {
     this.background.tilePositionY -= 2; // scroll background
     this.movePlayerManager(); // listen for player movement
+
+    if(this.msgOpen && Phaser.Input.Keyboard.JustDown(this.spacebar)){
+      this.destroyMessageBox();
+    }
   } 
 
   /**
@@ -205,6 +210,7 @@ export default class bugrunScene extends Phaser.Scene {
     this.closeButton.on('pointerdown', this.destroyMessageBox, this);
     this.closeButton.on('pointerup', this.mouseFix, this);
     this.closeButton.on('pointerout', this.mouseFix, this);
+    this.msgOpen = true;
    }
 
      //close message box
@@ -214,6 +220,7 @@ export default class bugrunScene extends Phaser.Scene {
     this.messageBox.destroy();
     this.closeButton.destroy();
     this.boss.destroy();
+    this.msgOpen = false;
     this.scene.start('flyoverScene');
   }
 
