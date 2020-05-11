@@ -1,5 +1,4 @@
 import { gameSettings } from "../game";
-import { flags } from "../game";
 
 export default class bugrunScene extends Phaser.Scene {
   background: Phaser.GameObjects.TileSprite;
