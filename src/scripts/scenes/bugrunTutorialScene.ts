@@ -62,6 +62,8 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   otherFliesTutCompleted: boolean = false;
   otherFliesMsgRead: boolean = false;
   otherFliesSpawning: boolean = false;
+  playerInvincible: boolean;
+  stopped: boolean = false;
   
 
 
@@ -118,7 +120,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     // Initial popup
-    this.createMessageBox("Hey, kid.\nThe gang really likes this host that you picked out.\nLet\'s have some fun here, shall we?\nNow that you're on the tree, it's time to EAT!\n\n Our goal here is simple:\nTake over this tree with as MANY flies as possible.");
+    this.createMessageBox("Hey, kid.\nThe gang really likes this host that you picked out.\nLet\'s have some fun here, shall we?\nNow that you're on the tree, it's time to EAT!\n\nOur goal here is simple:\nTake over this tree with as MANY flies as possible.");
 
 
 
@@ -138,7 +140,9 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     // player collides with other flies
     this.physics.add.collider(this.player, this.otherFlies);
     // praying Mantis collides into player
-    this.physics.add.overlap(this.player, this.obstacles, this.killBug, undefined, this);
+    this.physics.add.overlap(this.player, this.obstacles, this.killBug, function(player, obstacle){
+      obstacle.destroy();
+    }, this);
     //player latches onto feed spot
     this.physics.add.overlap(this.player, this.feedSpots, this.eatFood, undefined, this);
     //player lays eggs on egg zone
@@ -251,7 +255,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
   eggZoneTut(){
     // pop-up immediatedly after feedZone tut is completed
     if(!this.newFlyMsgRead){
-      this.createMessageBox("Nice job, kid! This host will be ours in no time!\nWhile that one feeds on the tree,\ntake control of another Spotted Lanternfly!\n\n Let's keep goin\'!");
+      this.createMessageBox("Nice job, kid! This host will be ours in no time!\nWhile that one feeds on the tree,\ntake control of another Spotted Lanternfly!\n\nLet's keep goin\'!");
       this.newFlyMsgRead = true;
     // Part 1
     } else if(!this.eggZoneSpawned){ 
@@ -383,13 +387,22 @@ export default class bugrunTutorialScene extends Phaser.Scene {
       if(this.otherFliesCount > 45){
         this.spawnFliesTimer.remove();
         this.otherFliesTutCompleted = true;
-        flags.bugRunTutDone = true; 
+        flags.bugRunTutDone = true;
+        this.stopAll(); 
         this.createMessageBox("Okay, I think you're ready for the Big Leagues, kid!\nLet's FEAST!");
       }
     }
   }
 
 
+
+  resetMantisTut(){
+    this.mantisSpawned = false;
+    this.mantisFrozen = false;
+    this.mantisMoving = false;
+    this.pesticideSpawned = false;
+    this.pesticideMoving = false;
+  }
   
 
 
@@ -551,16 +564,19 @@ export default class bugrunTutorialScene extends Phaser.Scene {
 
   //despawn bug and delay before reset
   killBug(){
-    this.player.disableBody(true, true);
-    this.death.play();
-    //console.log("collision");
-    this.updateScore(-15);
-    this.time.addEvent({
-      delay:1000,
-      callback: this.resetPlayer,
-      callbackScope: this,
-      loop: false
-    });
+    if(!this.playerInvincible){
+      this.player.disableBody(true, true);
+      this.death.play();
+      //console.log("collision");
+      this.updateScore(-15);
+      this.time.addEvent({
+        delay:1000,
+        callback: this.resetPlayer,
+        callbackScope: this,
+        loop: false
+      });
+      this.resetMantisTut();
+    }
   }
 
   //latch onto foodspot when pressed spacebar
@@ -604,6 +620,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     let x = this.scale.width - 400;
     let y = this.scale.height - 30;
     this.player.enableBody(true,x,y,true,true);
+    this.playerInvincible = true;
 
     this.player.alpha = 0.5;
 
@@ -611,10 +628,11 @@ export default class bugrunTutorialScene extends Phaser.Scene {
       targets: this.player,
       y: this.scale.height - 75,
       ease: 'Power1',
-      duration: 1500,
+      duration: 2000,
       repeat:0,
       onComplete: () => {
         this.player.alpha = 1;
+        this.playerInvincible = false;
       },
       callbackScope: this
     });
@@ -654,6 +672,19 @@ export default class bugrunTutorialScene extends Phaser.Scene {
       }
     }
   } 
+
+
+  stopAll(){
+    if(!this.stopped){
+      this.resetPlayer();
+      this.obstacles.setVelocity(0,0);
+      this.otherFlies.setVelocity(0,0);
+      this.feedSpots.setVelocity(0,0);
+      this.eggZones.setVelocity(0,0);
+      this.eggGroup.setVelocity(0,0);
+      this.stopped = true;
+    }
+  }
 
 
 

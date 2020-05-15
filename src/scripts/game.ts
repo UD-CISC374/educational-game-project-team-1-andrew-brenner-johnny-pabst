@@ -11,12 +11,13 @@ const DEFAULT_HEIGHT = 800;
 
 
 
-export const gameSettings = {
+export var gameSettings = {
     playerSpeed: 200,
     totalScore: 0
 }
 
 export var flags = {
+    levelsCompleted: 0,
     flyoverTutDone: false,
     bugRunTutDone: false,
     appleTreeDead: false,

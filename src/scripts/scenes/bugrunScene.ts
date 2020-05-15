@@ -1,4 +1,4 @@
-import { gameSettings } from "../game";
+import { gameSettings, flags } from "../game";
 
 export default class bugrunScene extends Phaser.Scene {
   background: Phaser.GameObjects.TileSprite;
@@ -33,8 +33,18 @@ export default class bugrunScene extends Phaser.Scene {
   otherFliesTimer: Phaser.Time.TimerEvent;
   prayingMantisTimer: Phaser.Time.TimerEvent;
   pesticideTimer: Phaser.Time.TimerEvent;
-  stopped: boolean = false;
   msgOpen: boolean;
+  stopped: boolean;
+  mantisDelay: number;
+  pesticideDelay: number;
+  feedZoneDelay: number;
+  eggZoneDelay: number;
+  fliesDelay: number;
+  numFlies: number;
+  feedZoneCount: number;
+  eggZoneCount: number;
+  playerInvincible: boolean;
+
 
 
   constructor() {
@@ -79,6 +89,9 @@ export default class bugrunScene extends Phaser.Scene {
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "player");
     this.player.play("playerFly");
     this.player.setCollideWorldBounds(true);
+    this.playerInvincible = false;
+    this.stopped = false;
+
 
     // setup keyboard input
     this.cursorKeys = this.input.keyboard.createCursorKeys();
@@ -94,7 +107,71 @@ export default class bugrunScene extends Phaser.Scene {
     this.eggZones = this.physics.add.group();
     //create group for eggs
     this.eggGroup = this.physics.add.group();
-    
+
+    console.log(flags.latestHost);
+    //** Set up variables depending on level **
+    // First Cherry Tree -> Mantis, no Pesticide, avg flies
+    // Second Black Walnut -> Pesticide, no Mantis, avg flies
+    // Third & Fourth unlocked..
+    // GrapeVine -> Mad flies, low pests & mantises
+    // AppleTree -> Mad pests & mantises, LOW bugs
+    // BOSS Level TOH -> Godspeed :)
+    if(flags.latestHost == "cherryTree"){ 
+      // No Pesticide, light flies
+      this.numFlies = 3; // normal
+      this.fliesDelay = 2000 // half the amount
+      this.mantisDelay = 8000; // normal 
+      this.pesticideDelay = 65000; // Does not spawn
+      this.feedZoneDelay = 9000; //  
+      this.eggZoneDelay = 11000;
+      this.feedZoneCount = 2;
+      this.eggZoneCount = 1;
+
+    } else if(flags.latestHost == "blackWalnut"){
+      // No Mantis, light flies
+      this.numFlies = 2; // less than level 1
+      this.fliesDelay = 2000 // every 2 seconds
+      this.mantisDelay = 65000; // does not spawn 
+      this.pesticideDelay = 11000; // spawns 5 times total
+      this.feedZoneDelay = 8000; // slightly more than level 1
+      this.eggZoneDelay = 9000; // slightly more than level 1
+      this.feedZoneCount = 1;
+      this.eggZoneCount = 2;
+    } else if(flags.latestHost == "grapeVine"){
+      // LOTS of flies, few pesticice and Mantis
+      this.numFlies = 3;
+      this.fliesDelay = 1000;
+      this.mantisDelay = 15000;
+      this.pesticideDelay = 21000;
+      this.feedZoneDelay = 9000;
+      this.eggZoneDelay = 11000;
+      this.feedZoneCount = 2;
+      this.eggZoneCount = 2;
+    } else if(flags.latestHost == "appleTree"){
+      // LOTS of pesticide and Mantis, Few flies
+      this.numFlies = 2;
+      this.fliesDelay = 2000;
+      this.mantisDelay = 10000;
+      this.pesticideDelay = 14000;
+      this.feedZoneDelay = 8000;
+      this.eggZoneDelay = 6000;
+      this.feedZoneCount = 1;
+      this.eggZoneCount = 1;
+    } else if(flags.latestHost == "treeOfHeaven"){
+      // Boss Level
+      this.numFlies = 3;
+      this.fliesDelay = 1000;
+      this.mantisDelay = 10000;
+      this.pesticideDelay = 14000;
+      this.feedZoneDelay = 7000;
+      this.eggZoneDelay = 9000;
+      this.feedZoneCount = 2;
+      this.eggZoneCount = 2;
+    }
+
+
+
+
     // ** TIMED EVENTS **
     //timer
     this.timeTimer = this.time.addEvent({
@@ -107,48 +184,56 @@ export default class bugrunScene extends Phaser.Scene {
 
     // spawning feed spots
     this.feedZoneTimer = this.time.addEvent({
-      delay:18000,
+      delay:this.feedZoneDelay,
       callback:this.spawnFeedZone,
       callbackScope:this,
       loop: true
     })
     // spawning egg Zones
     this.eggZoneTimer = this.time.addEvent({
-      delay:15000,
+      delay:this.eggZoneDelay,
       callback:this.spawnEggZone,
       callbackScope:this,
       loop: true
     })
     // spawning other flies
     this.otherFliesTimer = this.time.addEvent({
-      delay:1000,
+      delay:this.fliesDelay,
       callback:this.spawnFlies,
       callbackScope:this,
       loop: true
     })
         // spawning praying mantis
     this.prayingMantisTimer = this.time.addEvent({
-      delay:10000,
+      delay:this.mantisDelay,
       callback:this.spawnMantis,
       callbackScope:this,
       loop: true
     })
     //spawn pesticide
     this.pesticideTimer = this.time.addEvent({
-      delay:9000,
+      delay:this.pesticideDelay,
       callback:this.spawnPesticide,
       callbackScope:this,
       loop: true
     })
 
+    if(flags.latestHost == "cherryTree"){
+      this.pesticideTimer.destroy();
+      // No pesticide on first level
+    } else if(flags.latestHost == "blackWalnut"){
+      this.prayingMantisTimer.destroy();
+      // No praying Mantis on second level
+    }
 
 
 
+    // **  Collisions **
     // player collides with other flies
     this.physics.add.collider(this.player, this.otherFlies);
     // praying Mantis & pesticide overlaps with player
     this.physics.add.overlap(this.player, this.obstacles, this.killBug, function(player, obstacle){
-      obstacle.destroy();;
+      obstacle.destroy();
     }, this);
     //player latches onto feed spot
     this.physics.add.overlap(this.player, this.feedSpots, this.eatFood, undefined, this);
@@ -231,8 +316,7 @@ export default class bugrunScene extends Phaser.Scene {
 
   //spawn in feed spot randomly
   spawnFeedZone(){
-    var feedSpotCount = 2;
-    for (var i = 0; i < feedSpotCount; i++){
+    for (var i = 0; i < this.feedZoneCount; i++){
       var feedSpot = this.physics.add.image(100,105,"feedSpot");
       this.feedSpots.add(feedSpot);
       feedSpot.setRandomPosition(0,-50,this.scale.width, 0);
@@ -241,8 +325,7 @@ export default class bugrunScene extends Phaser.Scene {
   }
   //spawn in egg zone randomly
   spawnEggZone(){
-    var eggZoneCount = 1;
-    for (var i = 0; i < eggZoneCount; i++){
+    for (var i = 0; i < this.eggZoneCount; i++){
       var eggZone = this.physics.add.image(100,105,"eggZone");
       this.eggZones.add(eggZone);
       eggZone.setRandomPosition(0,-50,this.scale.width, 0);
@@ -252,8 +335,7 @@ export default class bugrunScene extends Phaser.Scene {
 
   //flyspawner
   spawnFlies(){
-    var flyCount = 3;
-    for (var i =0; i < flyCount; i++){
+    for (var i =0; i < this.numFlies; i++){
       var fly = this.physics.add.sprite(41,45,"dummy");
       this.otherFlies.add(fly);
       fly.setRandomPosition(0,-50,this.scale.width, 0);
@@ -313,7 +395,6 @@ export default class bugrunScene extends Phaser.Scene {
 
   //updates actual timer
   updateTimeText(){
-    console.log(this.timeNum);
     if (this.timeNum > 0) {
       this.timeNum--;
       this.timeText.text = "Time Remaining: " + this.timeNum;
@@ -321,7 +402,7 @@ export default class bugrunScene extends Phaser.Scene {
     else{
       this.sound.remove(this.music);
       this.stopAll();
-      this.createMessageBox("Way to go kid!\n This tree is just about dead now.\n Let's find a new one.");
+      this.createMessageBox(" Way to go kid!\n This tree is just about dead now.\n Let's find a new one.");
     }
   }
 
@@ -333,6 +414,7 @@ export default class bugrunScene extends Phaser.Scene {
   stopAll(){
     if(!this.stopped){
       gameSettings.totalScore += this.score; // add bugrun score to total
+      flags.levelsCompleted = flags.levelsCompleted + 1;
       this.sound.remove(this.music);
       this.resetPlayer();
       this.feedZoneTimer.remove();
@@ -380,23 +462,24 @@ export default class bugrunScene extends Phaser.Scene {
     pointsPopup.destroy();
   }
 
-  //despawn bug and delay before reset
+  //respawn bug and delay before reset
   killBug(){
-    this.player.disableBody(true, true);
-    //console.log("collision");
-    this.death.play();
-    this.updateScore(-15);
-    this.time.addEvent({
-      delay:1000,
-      callback: this.resetPlayer,
-      callbackScope: this,
-      loop: false
-    });
+    if(!this.playerInvincible){
+      this.player.disableBody(true, true);
+      this.death.play();
+      this.updateScore(-15);
+      this.time.addEvent({
+        delay:1000,
+        callback: this.resetPlayer,
+        callbackScope: this,
+        loop: false
+      });
+    }
   }
 
   //latch onto foodspot when pressed spacebar
   eatFood(){
-    if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active){
+    if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active && !this.stopped){
       console.log("EAT");
       this.munch.play();
       this.updateScore(100);
@@ -414,7 +497,7 @@ export default class bugrunScene extends Phaser.Scene {
   }
   //lays eggs when in feed zone
   layEggs(){
-    if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active){
+    if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active && !this.stopped){
       console.log("EGG");
       this.pop.play();
       this.updateScore(20);
@@ -429,13 +512,12 @@ export default class bugrunScene extends Phaser.Scene {
 
   //reset player position
   resetPlayer(){
+    this.playerInvincible = true;
     let x = this.scale.width - 400;
     let y = this.scale.height-50;
 
     this.player.alpha = 0.5;
     this.player.enableBody(true,x,y,true,true);
-
-    this.player.alpha = 0.5;
 
     var tween = this.tweens.add({
       targets: this.player,
@@ -445,6 +527,7 @@ export default class bugrunScene extends Phaser.Scene {
       repeat:0,
       onComplete: () => {
         this.player.alpha = 1;
+        this.playerInvincible = false;
       },
       callbackScope: this
     });
@@ -464,10 +547,8 @@ export default class bugrunScene extends Phaser.Scene {
         // left and right
       if(this.cursorKeys.left.isDown){
         this.player.setVelocityX(-gameSettings.playerSpeed);
-        //console.log("left");
       } else if(this.cursorKeys.right.isDown){
         this.player.setVelocityX(gameSettings.playerSpeed);
-        // console.log("right");
       } else {
         this.player.setVelocityX(0); // stop movement when key is released
       }
@@ -475,17 +556,12 @@ export default class bugrunScene extends Phaser.Scene {
       // up and down
       if(this.cursorKeys.up.isDown){
         this.player.setVelocityY(-gameSettings.playerSpeed);
-        //console.log("up");
       } else if(this.cursorKeys.down.isDown){
         this.player.setVelocityY(gameSettings.playerSpeed);
-        //console.log("down");
       } else{
         this.player.setVelocityY(0); // stop movement when key is released
       }
     }
-  } 
-
-
-
+  }
 }
 
