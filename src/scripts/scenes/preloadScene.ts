@@ -85,6 +85,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("titleScreen", "./assets/images/titleScreen.png");
     this.load.image("titleStart", "./assets/images/titleStart.png");
     this.load.image("lock", "./assets/images/lock.png");
+    this.load.image("endCredits", "./assets/images/testEndCred.png");
   }
 
   //loads all sound effects and background music

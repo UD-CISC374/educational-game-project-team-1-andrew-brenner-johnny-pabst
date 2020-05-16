@@ -301,7 +301,8 @@ export default class flyoverScene extends Phaser.Scene {
 
   endGame(){
     // Launch endScene
-    this.endGameLabel = this.add.bitmapText(this.scale.width / 5, this.scale.height / 10, "font", "You Win!", 300, 1);
+    this.scene.start('endScene');
+    //this.endGameLabel = this.add.bitmapText(this.scale.width / 5, this.scale.height / 10, "font", "You Win!", 300, 1);
   }
 
 
