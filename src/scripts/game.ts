@@ -14,7 +14,7 @@ const DEFAULT_HEIGHT = 800;
 
 export var gameSettings = {
     playerSpeed: 200,
-    totalScore: 0
+    totalScore: 0 
 }
 
 export var flags = {

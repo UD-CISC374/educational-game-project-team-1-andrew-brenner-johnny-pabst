@@ -85,7 +85,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("titleScreen", "./assets/images/titleScreen.png");
     this.load.image("titleStart", "./assets/images/titleStart.png");
     this.load.image("lock", "./assets/images/lock.png");
-    this.load.image("endCredits", "./assets/images/testEndCred.png");
+    this.load.image("endCredits", "./assets/images/endCred1.png");
   }
 
   //loads all sound effects and background music
@@ -102,10 +102,11 @@ export default class PreloadScene extends Phaser.Scene {
 
   create() {
     this.create_spritesheets();
-    this.scene.start('titleScene');
+    //this.scene.start('titleScene');
     //this.scene.start('flyoverScene');
     //this.scene.start('bugrunScene');
     //this.scene.start('bugrunTutorialScene'); 
+    this.scene.start('endScene');
   }
 
 

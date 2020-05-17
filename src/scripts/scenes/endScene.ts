@@ -24,7 +24,7 @@ export default class endScene extends Phaser.Scene {
     }
     
     update(){
-        this.background.tilePositionY -= 2; // scroll background
+        this.background.tilePositionY += 0.8; // scroll background
         // If spacebar is pressed -> start game
         if(Phaser.Input.Keyboard.JustDown(this.spacebar)){
             this.background.destroy();
@@ -32,6 +32,7 @@ export default class endScene extends Phaser.Scene {
             this.restartGame();
           }
     }
+
 
     restartGame(){
         this.scene.start("titleScene");
