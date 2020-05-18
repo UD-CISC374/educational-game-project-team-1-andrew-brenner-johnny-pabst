@@ -51,6 +51,7 @@ export default class bugrunScene extends Phaser.Scene {
   goalReached: Phaser.Sound.BaseSound;
   goal: boolean;
   gameOver: Phaser.Sound.BaseSound;
+  timeOver: boolean;
 
 
 
@@ -97,6 +98,8 @@ export default class bugrunScene extends Phaser.Scene {
     this.score = 0;
     this.scoreText = this.add.text(0, this.scale.height - 72, 'Score: ' + this.score, { font: "32px Arial", fill: "#ffffff", align: "left" });
     var goal = false;
+    //timer finish variable
+    var timerOver = false;
 
     // create player
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "player");
@@ -287,6 +290,11 @@ export default class bugrunScene extends Phaser.Scene {
     this.playerBottomBounds = this.physics.add.image(0, this.scale.height, "bottomBounds");
     this.playerBottomBounds.setImmovable(true);
     this.physics.add.collider(this.playerBottomBounds, this.player, this.killBug, undefined, this);
+  
+    //special message box for start of Tree of Heaven level
+    if (flags.latestHost == "treeOfHeaven"){
+      this.createMessageBox(" Alright, kid. The final tree.\n The Tree of Heaven, this one's our favorite\n My mouth is waterin'...\n Do your thing, kid.");
+    }
   }
 
 
@@ -327,12 +335,13 @@ export default class bugrunScene extends Phaser.Scene {
     if (this.score >= this.requiredScore){
       this.scene.start('flyoverScene');
     }
-    else {
+    else if (this.timeOver) {
+      this.timeOver = false;
       this.scene.start('bugrunScene');
     }
     //this.scene.start('flyoverScene');
   }
-
+  
   //fixes click event crash
   mouseFix(){}
 
@@ -425,6 +434,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.timeText.text = "Time Remaining: " + this.timeNum;
     }
     else{
+      this.timeOver = true;
       this.sound.remove(this.music);
       this.stopAll();
       //this.createMessageBox(" Way to go kid!\n This tree is just about dead now.\n Let's find a new one.");
@@ -457,7 +467,12 @@ export default class bugrunScene extends Phaser.Scene {
         gameSettings.totalScore += this.score; // add bugrun score to total
         flags.levelsCompleted = flags.levelsCompleted + 1;
         this.victory.play();
-        this.createMessageBox(" Way to go kid!\n This tree is just about dead now.\n Let's find a new one.");
+        if (flags.latestHost == "treeOfHeaven"){
+          this.createMessageBox(" HAHAHAHAHA! WE DID IT!\n We've taken over the farm completely...\n");
+        }
+        else{
+          this.createMessageBox(" Way to go kid!\n This tree is just about dead now.\n Let's find a new one.");
+        }
         // this.scene.start('flyoverScene');
       }
       else{
