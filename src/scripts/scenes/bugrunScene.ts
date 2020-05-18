@@ -52,6 +52,8 @@ export default class bugrunScene extends Phaser.Scene {
   goal: boolean;
   gameOver: Phaser.Sound.BaseSound;
   timeOver: boolean;
+  i: number;
+  j:number;
 
 
 
@@ -60,6 +62,8 @@ export default class bugrunScene extends Phaser.Scene {
   }
 
   create() {
+    this.i = 0;
+    this.j = 0;
     // create background
     this.background = this.add.tileSprite(0,0, this.scale.width, this.scale.height, "bugrunBackground");
     this.background.setOrigin(0,0);
@@ -91,22 +95,30 @@ export default class bugrunScene extends Phaser.Scene {
     this.gameOver = this.sound.add("gameover");
 
     //create timer
-    this.timeNum = 60;
+    this.timeNum = 5;
     this.timeText = this.add.text(0, this.scale.height - 36, 'Time Remaining: ' + this.timeNum, { font: "32px Arial", fill: "#ffffff", align: "left" });
+    //timer finish variable
+    this.timeOver = false;
 
     //create score
     this.score = 0;
     this.scoreText = this.add.text(0, this.scale.height - 72, 'Score: ' + this.score, { font: "32px Arial", fill: "#ffffff", align: "left" });
-    var goal = false;
-    //timer finish variable
-    var timeOver = false;
+    
+    //create goal score label
+    this.goalLabel = this.add.text(0, this.scale.height - 108, 'Goal: ' + this.requiredScore, { font: "32px Arial", fill: "#ffffff", align: "left" });
+    this.goal = false; // score goal reached
+
+    
 
     // create player
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "player");
     this.player.play("playerFly");
     this.player.setCollideWorldBounds(true);
+
+    // set flags
     this.playerInvincible = false;
     this.stopped = false;
+    this.msgOpen = false;
 
 
     // setup keyboard input
@@ -190,9 +202,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.requiredScore = 2000;
     }
 
-    //create goal score label
-    this.goalLabel = this.add.text(0, this.scale.height - 108, 'Goal: ' + this.requiredScore, { font: "32px Arial", fill: "#ffffff", align: "left" });
-
+    
 
     // ** TIMED EVENTS **
     //timer
@@ -303,7 +313,7 @@ export default class bugrunScene extends Phaser.Scene {
     this.background.tilePositionY -= 2; // scroll background
     this.movePlayerManager(); // listen for player movement
 
-    if(this.msgOpen && Phaser.Input.Keyboard.JustDown(this.spacebar)){
+    if(this.msgOpen && this.spacebar.isDown){
       this.destroyMessageBox();
     }
   } 
@@ -326,7 +336,6 @@ export default class bugrunScene extends Phaser.Scene {
 
      //close message box
   destroyMessageBox(){
-    console.log("Message box removed");
     this.modalMsg.destroy();
     this.messageBox.destroy();
     this.closeButton.destroy();
@@ -335,8 +344,7 @@ export default class bugrunScene extends Phaser.Scene {
     if (this.score >= this.requiredScore){
       this.timeOver = false;
       this.scene.start('flyoverScene');
-    }
-    else if (this.timeOver) {
+    } else if (this.timeOver) {
       this.timeOver = false;
       this.scene.start('bugrunScene');
     }
@@ -438,7 +446,6 @@ export default class bugrunScene extends Phaser.Scene {
       this.timeOver = true;
       this.sound.remove(this.music);
       this.stopAll();
-      //this.createMessageBox(" Way to go kid!\n This tree is just about dead now.\n Let's find a new one.");
     }
   }
 
@@ -463,6 +470,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.feedSpots.setVelocity(0,0);
       this.eggZones.setVelocity(0,0);
       this.eggGroup.setVelocity(0,0);
+      this.physics.world.colliders.destroy();
       this.stopped = true;
       if(this.score >= this.requiredScore){
         gameSettings.totalScore += this.score; // add bugrun score to total
@@ -543,8 +551,7 @@ export default class bugrunScene extends Phaser.Scene {
 
   //latch onto foodspot when pressed spacebar
   eatFood(){
-    if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active && !this.stopped){
-      console.log("EAT");
+    if (Phaser.Input.Keyboard.JustDown(this.spacebar) && !this.stopped){
       this.munch.play();
       this.updateScore(100);
       this.player.disableBody(true,true);
@@ -561,8 +568,7 @@ export default class bugrunScene extends Phaser.Scene {
   }
   //lays eggs when in feed zone
   layEggs(){
-    if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.active && !this.stopped){
-      console.log("EGG");
+    if (Phaser.Input.Keyboard.JustDown(this.spacebar) && !this.stopped){
       this.pop.play();
       this.updateScore(20);
       for (var i = 0; i <= 3; i++){

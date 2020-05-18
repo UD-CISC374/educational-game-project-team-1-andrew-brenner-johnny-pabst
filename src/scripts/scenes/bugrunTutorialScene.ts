@@ -518,19 +518,6 @@ export default class bugrunTutorialScene extends Phaser.Scene {
 
   //fixes click event crash
   mouseFix(){}
-  
-
-  //updates actual timer
-  updateTimeText(){
-    //console.log(this.timeNum);
-    if (this.timeNum > 0) {
-      this.timeNum--;
-      this.timeText.text = "Time Remaining: " + this.timeNum;
-    }
-    else{
-      this.scene.start("flyoverScene");
-    }
-  }
 
   updateScore(num: number){
     if (num < 0){
