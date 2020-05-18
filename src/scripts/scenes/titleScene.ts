@@ -4,6 +4,7 @@ export default class titleScene extends Phaser.Scene {
     startButton: Phaser.GameObjects.Image;
     cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
     spacebar: Phaser.Input.Keyboard.Key;
+    music: Phaser.Sound.BaseSound;
 
     constructor() {
         super({ key: 'titleScene' });
@@ -14,6 +15,20 @@ export default class titleScene extends Phaser.Scene {
         this.background.setOrigin(0,0);
         this.cursorKeys = this.input.keyboard.createCursorKeys();
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        //load in music
+        this.music = this.sound.add("titleTheme");
+        var musicConfig = {
+        mute: false,
+        volume: 1,
+        rate:1,
+        detune:0,
+        seek:0,
+        loop: false,
+        delay: 0
+        }
+        
+        this.music.play(musicConfig);
     
         //create startButton
         this.startButton = this.add.image(400, this.scale.height / 2 + 300, "titleStart");
@@ -33,6 +48,7 @@ export default class titleScene extends Phaser.Scene {
     }
 
     startGame(){
+        this.sound.remove(this.music);
         this.scene.start("flyoverScene");
     }
     //prevents click crash

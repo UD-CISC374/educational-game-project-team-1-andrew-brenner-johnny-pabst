@@ -7,6 +7,7 @@ export default class endScene extends Phaser.Scene {
     cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
     spacebar: Phaser.Input.Keyboard.Key;
     placeResetTimer: Phaser.Time.TimerEvent;
+    music: Phaser.Sound.BaseSound;
 
     constructor() {
         super({ key: 'endScene' });
@@ -17,6 +18,20 @@ export default class endScene extends Phaser.Scene {
         this.background.setOrigin(0,0);
         this.cursorKeys = this.input.keyboard.createCursorKeys();
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        //load in music
+        this.music = this.sound.add("endCredMusic");
+        var musicConfig = {
+        mute: false,
+        volume: .75,
+        rate:1,
+        detune:0,
+        seek:0,
+        loop: false,
+        delay: 0
+        }
+        
+        this.music.play(musicConfig);
     
         //create startButton
         this.placeResetTimer = this.time.addEvent({
@@ -53,6 +68,7 @@ export default class endScene extends Phaser.Scene {
         flags.blackWalnutDead = false;
         flags.latestHost = "";
         gameSettings.totalScore = 0;
+        this.sound.remove(this.music);
         this.scene.start("titleScene");
     }
     placeReset(){

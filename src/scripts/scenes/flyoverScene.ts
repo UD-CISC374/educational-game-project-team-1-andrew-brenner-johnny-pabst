@@ -53,6 +53,8 @@ export default class flyoverScene extends Phaser.Scene {
   treeOfHeavenX: number = 705;
   treeOfHeavenY: number = 565;
   musicVolume: number;
+  windVolume: number;
+  wind: Phaser.Sound.BaseSound;
 
 
 
@@ -70,6 +72,7 @@ export default class flyoverScene extends Phaser.Scene {
     //load in music
     //volume of farm sounds gets lower depending on progress
     this.musicVolume = 1 - (flags.levelsCompleted * 1/4);
+    this.windVolume = flags.levelsCompleted * 1/4;
     this.music = this.sound.add("farmSounds");
     var musicConfig = {
       mute: false,
@@ -82,6 +85,20 @@ export default class flyoverScene extends Phaser.Scene {
     }
     
     this.music.play(musicConfig);
+
+    //volume of wind gets louder as you progress, it replaces farm sounds when its all done
+    this.wind = this.sound.add("wind");
+    var windConfig = {
+      mute: false,
+      volume: this.windVolume,
+      rate:1,
+      detune:0,
+      seek:0,
+      loop: false,
+      delay: 0
+    }
+    
+    this.wind.play(windConfig);
     
     // create player
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "playerFly");
@@ -304,7 +321,9 @@ export default class flyoverScene extends Phaser.Scene {
   }
 
   endGame(){
-    // Launch endScene
+    // Launch endScene and remove music
+    this.sound.remove(this.music);
+    this.sound.remove(this.wind);
     this.scene.start('endScene');
     //this.endGameLabel = this.add.bitmapText(this.scale.width / 5, this.scale.height / 10, "font", "You Win!", 300, 1);
   }
@@ -318,6 +337,7 @@ export default class flyoverScene extends Phaser.Scene {
    */
   enterRunScene() {
     this.sound.remove(this.music);
+    this.sound.remove(this.wind);
     if(!flags.bugRunTutDone){ // tutorial has not yet been completed
       this.scene.start('bugrunTutorialScene');
     } else {

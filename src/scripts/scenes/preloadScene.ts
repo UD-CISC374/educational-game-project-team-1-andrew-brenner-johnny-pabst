@@ -96,12 +96,19 @@ export default class PreloadScene extends Phaser.Scene {
   //loads all sound effects and background music
   load_audio(){
     this.load.audio("bugBoogie", "./assets/sounds/bumbleBoogie.mp3");
-    this.load.audio("tutorialJam", "./assets/sounds/tutorialJam.ogg");
+    this.load.audio("tutorialJam", "./assets/sounds/newTutorialTrack.ogg");
     this.load.audio("farmSounds", "./assets/sounds/farmSounds.ogg");
     this.load.audio("pop", "./assets/sounds/pop.ogg");
     this.load.audio("spray", "./assets/sounds/spray.ogg");
     this.load.audio("munch", "./assets/sounds/munch.ogg");
-    this.load.audio("death", "./assets/sounds/death.ogg")
+    this.load.audio("death", "./assets/sounds/newDeath.mp3");
+    this.load.audio("victory", "./assets/sounds/victory.wav");
+    this.load.audio("wind", "./assets/sounds/wind.wav");
+    this.load.audio("titleTheme", "./assets/sounds/themeMusic.wav");
+    this.load.audio("endCredMusic", "./assets/sounds/endSong.mp3");
+    this.load.audio("goalReached", "./assets/sounds/goalReached.mp3");
+    this.load.audio("gameover", "./assets/sounds/gameover.ogg");
+    
   }
 
 

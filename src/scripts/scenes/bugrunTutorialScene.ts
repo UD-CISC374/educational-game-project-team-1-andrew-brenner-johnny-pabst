@@ -86,7 +86,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     this.music = this.sound.add("tutorialJam");
     var musicConfig = {
       mute: false,
-      volume: 1,
+      volume: .75,
       rate:1,
       detune:0,
       seek:0,
@@ -108,7 +108,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
 
     //create score
     this.score = 0;
-    this.scoreText = this.add.text(0, this.scale.height - 72, 'Bugrun Score: ' + this.score, { font: "32px Arial", fill: "#ffffff", align: "left" });
+    this.scoreText = this.add.text(0, this.scale.height - 72, 'Score: ' + this.score, { font: "32px Arial", fill: "#ffffff", align: "left" });
 
     // create player
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "player");

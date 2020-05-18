@@ -47,6 +47,10 @@ export default class bugrunScene extends Phaser.Scene {
   musicTempo: number;
   requiredScore: number;
   goalLabel: Phaser.GameObjects.Text;
+  victory: Phaser.Sound.BaseSound;
+  goalReached: Phaser.Sound.BaseSound;
+  goal: boolean;
+  gameOver: Phaser.Sound.BaseSound;
 
 
 
@@ -81,6 +85,9 @@ export default class bugrunScene extends Phaser.Scene {
     this.munch = this.sound.add("munch");
     this.spray = this.sound.add("spray");
     this.death = this.sound.add("death");
+    this.victory = this.sound.add("victory");
+    this.goalReached = this.sound.add("goalReached");
+    this.gameOver = this.sound.add("gameover");
 
     //create timer
     this.timeNum = 60;
@@ -88,7 +95,8 @@ export default class bugrunScene extends Phaser.Scene {
 
     //create score
     this.score = 0;
-    this.scoreText = this.add.text(0, this.scale.height - 72, 'Bugrun Score: ' + this.score, { font: "32px Arial", fill: "#ffffff", align: "left" });
+    this.scoreText = this.add.text(0, this.scale.height - 72, 'Score: ' + this.score, { font: "32px Arial", fill: "#ffffff", align: "left" });
+    var goal = false;
 
     // create player
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "player");
@@ -448,10 +456,12 @@ export default class bugrunScene extends Phaser.Scene {
       if(this.score >= this.requiredScore){
         gameSettings.totalScore += this.score; // add bugrun score to total
         flags.levelsCompleted = flags.levelsCompleted + 1;
+        this.victory.play();
         this.createMessageBox(" Way to go kid!\n This tree is just about dead now.\n Let's find a new one.");
         // this.scene.start('flyoverScene');
       }
       else{
+        this.gameOver.play();
         this.createMessageBox(" No Kid!\n Ya' didn't do enough to take over the tree.\n Ya' see that number next to 'Goal'?\n Yeah, we need that...\n Let's try this again, shall we?");
       }
     }
@@ -479,7 +489,20 @@ export default class bugrunScene extends Phaser.Scene {
     }
     if (this.score + num >= 0){
       this.score += num;
-      this.scoreText.text = "Score: " + this.score;
+      if (this.score >= this.requiredScore){
+        if (!this.goal){
+          this.goalReached.play();
+        }
+        this.goal = true;
+        this.scoreText.setColor("#00ff00");
+        this.scoreText.text = "Score: " + this.score;
+      }
+      else{
+        this.goal = false;
+        this.scoreText.setColor("#ffffff");
+        this.scoreText.text = "Score: " + this.score;
+      }
+      //this.scoreText.text = "Score: " + this.score;
     }
 
   }
