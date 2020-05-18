@@ -333,6 +333,7 @@ export default class bugrunScene extends Phaser.Scene {
     this.boss.destroy();
     this.msgOpen = false;
     if (this.score >= this.requiredScore){
+      this.timeOver = false;
       this.scene.start('flyoverScene');
     }
     else if (this.timeOver) {
