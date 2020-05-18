@@ -103,11 +103,11 @@ export default class PreloadScene extends Phaser.Scene {
 
   create() {
     this.create_spritesheets();
-    //this.scene.start('titleScene');
+    this.scene.start('titleScene');
     //this.scene.start('flyoverScene');
     //this.scene.start('bugrunScene');
     //this.scene.start('bugrunTutorialScene'); 
-    this.scene.start('endScene');
+    //this.scene.start('endScene');
   }
 
 
@@ -173,7 +173,7 @@ export default class PreloadScene extends Phaser.Scene {
         start: 0,
         end: 7
       }),
-      frameRate: 20,
+      frameRate: 10,
       repeat: -1
     });
     this.anims.create({

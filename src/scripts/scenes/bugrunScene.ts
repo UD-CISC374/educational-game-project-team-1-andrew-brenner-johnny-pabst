@@ -45,6 +45,8 @@ export default class bugrunScene extends Phaser.Scene {
   eggZoneCount: number;
   playerInvincible: boolean;
   musicTempo: number;
+  requiredScore: number;
+  goalLabel: Phaser.GameObjects.Text;
 
 
 
@@ -129,6 +131,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.eggZoneDelay = 11000;
       this.feedZoneCount = 2;
       this.eggZoneCount = 1;
+      this.requiredScore = 500;
 
     } else if(flags.latestHost == "blackWalnut"){
       // No Mantis, light flies
@@ -140,6 +143,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.eggZoneDelay = 9000; // slightly more than level 1
       this.feedZoneCount = 1;
       this.eggZoneCount = 2;
+      this.requiredScore = 1000;
     } else if(flags.latestHost == "grapeVine"){
       // LOTS of flies, few pesticice and Mantis
       this.numFlies = 3;
@@ -150,6 +154,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.eggZoneDelay = 11000;
       this.feedZoneCount = 2;
       this.eggZoneCount = 2;
+      this.requiredScore = 1500;
     } else if(flags.latestHost == "appleTree"){
       // LOTS of pesticide and Mantis, Few flies
       this.numFlies = 2;
@@ -160,6 +165,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.eggZoneDelay = 6000;
       this.feedZoneCount = 1;
       this.eggZoneCount = 1;
+      this.requiredScore = 1750;
     } else if(flags.latestHost == "treeOfHeaven"){
       // Boss Level
       this.numFlies = 3;
@@ -170,9 +176,11 @@ export default class bugrunScene extends Phaser.Scene {
       this.eggZoneDelay = 9000;
       this.feedZoneCount = 2;
       this.eggZoneCount = 2;
+      this.requiredScore = 2000;
     }
 
-
+    //create goal score label
+    this.goalLabel = this.add.text(0, this.scale.height - 108, 'Goal: ' + this.requiredScore, { font: "32px Arial", fill: "#ffffff", align: "left" });
 
 
     // ** TIMED EVENTS **
@@ -308,7 +316,13 @@ export default class bugrunScene extends Phaser.Scene {
     this.closeButton.destroy();
     this.boss.destroy();
     this.msgOpen = false;
-    this.scene.start('flyoverScene');
+    if (this.score >= this.requiredScore){
+      this.scene.start('flyoverScene');
+    }
+    else {
+      this.scene.start('bugrunScene');
+    }
+    //this.scene.start('flyoverScene');
   }
 
   //fixes click event crash
@@ -405,7 +419,7 @@ export default class bugrunScene extends Phaser.Scene {
     else{
       this.sound.remove(this.music);
       this.stopAll();
-      this.createMessageBox(" Way to go kid!\n This tree is just about dead now.\n Let's find a new one.");
+      //this.createMessageBox(" Way to go kid!\n This tree is just about dead now.\n Let's find a new one.");
     }
   }
 
@@ -416,8 +430,8 @@ export default class bugrunScene extends Phaser.Scene {
    */
   stopAll(){
     if(!this.stopped){
-      gameSettings.totalScore += this.score; // add bugrun score to total
-      flags.levelsCompleted = flags.levelsCompleted + 1;
+      // gameSettings.totalScore += this.score; // add bugrun score to total
+      // flags.levelsCompleted = flags.levelsCompleted + 1;
       this.sound.remove(this.music);
       this.resetPlayer();
       this.feedZoneTimer.remove();
@@ -431,9 +445,17 @@ export default class bugrunScene extends Phaser.Scene {
       this.eggZones.setVelocity(0,0);
       this.eggGroup.setVelocity(0,0);
       this.stopped = true;
+      if(this.score >= this.requiredScore){
+        gameSettings.totalScore += this.score; // add bugrun score to total
+        flags.levelsCompleted = flags.levelsCompleted + 1;
+        this.createMessageBox(" Way to go kid!\n This tree is just about dead now.\n Let's find a new one.");
+        // this.scene.start('flyoverScene');
+      }
+      else{
+        this.createMessageBox(" No Kid!\n Ya' didn't do enough to take over the tree.\n Ya' see that number next to 'Goal'?\n Yeah, we need that...\n Let's try this again, shall we?");
+      }
     }
   }
-
 
   updateScore(num: number){
     if (num < 0){
