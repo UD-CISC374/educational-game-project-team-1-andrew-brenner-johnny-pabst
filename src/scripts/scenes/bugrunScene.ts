@@ -99,7 +99,7 @@ export default class bugrunScene extends Phaser.Scene {
     this.scoreText = this.add.text(0, this.scale.height - 72, 'Score: ' + this.score, { font: "32px Arial", fill: "#ffffff", align: "left" });
     var goal = false;
     //timer finish variable
-    var timerOver = false;
+    var timeOver = false;
 
     // create player
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "player");
@@ -142,7 +142,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.eggZoneDelay = 11000;
       this.feedZoneCount = 2;
       this.eggZoneCount = 1;
-      this.requiredScore = 500;
+      this.requiredScore = 1000;
 
     } else if(flags.latestHost == "blackWalnut"){
       // No Mantis, light flies
