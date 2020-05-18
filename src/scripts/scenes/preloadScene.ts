@@ -60,6 +60,10 @@ export default class PreloadScene extends Phaser.Scene {
       frameWidth: 300,
       frameHeight: 300
     });
+    this.load.spritesheet("sadFarmer", "./assets/spritesheets/sadFarmer.png", {
+      frameWidth: 300,
+      frameHeight: 300
+    });
   }
 
   
@@ -201,6 +205,15 @@ export default class PreloadScene extends Phaser.Scene {
         end: 9
       }),
       frameRate: 20,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "sadFarmer",
+      frames: this.anims.generateFrameNumbers("sadFarmer", {
+        start: 0,
+        end: 4
+      }),
+      frameRate: 10,
       repeat: -1
     });
   }

@@ -32,7 +32,8 @@ export default class flyoverScene extends Phaser.Scene {
   blackWalnut: Phaser.GameObjects.Sprite;
   treeLabel: Phaser.GameObjects.Image;
   labelText: Phaser.GameObjects.Text;
-  sadBird: Phaser.GameObjects.Sprite;
+  //sadBird: Phaser.GameObjects.Sprite;
+  sadFarmer: Phaser.GameObjects.Sprite;
   endGameLabel: Phaser.GameObjects.BitmapText;
   scoreText: Phaser.GameObjects.Text;
   msgOpen: boolean;
@@ -228,8 +229,8 @@ export default class flyoverScene extends Phaser.Scene {
       //create popup
       this.messageBox = this.add.image(this.scale.width / 2, this.scale.height / 2, "messageBox");
       this.closeButton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-      this.sadBird = this.add.sprite(this.scale.width / 4 - 20, this.scale.height / 2 - 20, "sadBird");
-      this.sadBird.play("sadBird");
+      this.sadFarmer = this.add.sprite(this.scale.width / 4 - 30, this.scale.height / 2 - 10, "sadFarmer");
+      this.sadFarmer.play("sadFarmer");
       this.tutorialBox = this.physics.add.group();
       this.closeButton.setInteractive();
       this.closeButton.on('pointerdown', this.destroyPopUp, this);
@@ -295,7 +296,7 @@ export default class flyoverScene extends Phaser.Scene {
 
   destroyPopUp(){
     console.log("pop-up gone");
-    this.sadBird.destroy();
+    this.sadFarmer.destroy();
     this.tutorialMsg.destroy();
     this.messageBox.destroy();
     this.closeButton.destroy();
