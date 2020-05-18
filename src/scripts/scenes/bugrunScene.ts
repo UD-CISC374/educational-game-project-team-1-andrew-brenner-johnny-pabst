@@ -44,6 +44,7 @@ export default class bugrunScene extends Phaser.Scene {
   feedZoneCount: number;
   eggZoneCount: number;
   playerInvincible: boolean;
+  musicTempo: number;
 
 
 
@@ -58,11 +59,13 @@ export default class bugrunScene extends Phaser.Scene {
 
 
     //load in music
+    //music tempo determined by levelscompleted flag
+    this.musicTempo = 1 + (flags.levelsCompleted * 1/8);
     this.music = this.sound.add("bugBoogie");
     var musicConfig = {
       mute: false,
       volume: 1,
-      rate:1,
+      rate:this.musicTempo,
       detune:0,
       seek:0,
       loop: false,

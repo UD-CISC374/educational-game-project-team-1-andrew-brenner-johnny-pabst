@@ -51,6 +51,7 @@ export default class flyoverScene extends Phaser.Scene {
   appleTreeY: number = 350;
   treeOfHeavenX: number = 705;
   treeOfHeavenY: number = 565;
+  musicVolume: number;
 
 
 
@@ -66,10 +67,12 @@ export default class flyoverScene extends Phaser.Scene {
     this.background.setOrigin(0,0);
 
     //load in music
+    //volume of farm sounds gets lower depending on progress
+    this.musicVolume = 1 - (flags.levelsCompleted * 1/4);
     this.music = this.sound.add("farmSounds");
     var musicConfig = {
       mute: false,
-      volume: 1,
+      volume: this.musicVolume,
       rate:1,
       detune:0,
       seek:0,
