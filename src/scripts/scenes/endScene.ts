@@ -1,3 +1,4 @@
+import { gameSettings } from "../game";
 import { flags } from "../game";
 
 export default class endScene extends Phaser.Scene {
@@ -51,6 +52,7 @@ export default class endScene extends Phaser.Scene {
         flags.treeOfHeavenDead = false;
         flags.blackWalnutDead = false;
         flags.latestHost = "";
+        gameSettings.totalScore = 0;
         this.scene.start("titleScene");
     }
     placeReset(){
