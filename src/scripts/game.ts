@@ -18,14 +18,14 @@ export var gameSettings = {
 }
 
 export var flags = {
-    levelsCompleted: 3,
-    flyoverTutDone: true,
-    bugRunTutDone: true,
-    appleTreeDead: true,
-    cherryTreeDead: true,
+    levelsCompleted: 0,
+    flyoverTutDone: false,
+    bugRunTutDone: false,
+    appleTreeDead: false,
+    cherryTreeDead: false,
     grapeVineDead: false,
     treeOfHeavenDead: false,
-    blackWalnutDead: true,
+    blackWalnutDead: false,
     latestHost: ""
 }
 
