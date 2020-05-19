@@ -269,7 +269,7 @@ export default class flyoverScene extends Phaser.Scene {
           break;
         }
         case "treeOfHeaven": {
-          farmerMessage = "How could you?\nThe Tree of Heaven was my favorite.";
+          farmerMessage = "How could you?\n You've destroyed my entire farm!\n I have nothing left now...";
           break;
         }
         case "blackWalnut": {
