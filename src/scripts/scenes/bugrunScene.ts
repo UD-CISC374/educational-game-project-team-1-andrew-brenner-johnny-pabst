@@ -136,7 +136,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.eggZoneDelay = 11000;
       this.feedZoneCount = 2;
       this.eggZoneCount = 1;
-      this.requiredScore = 1000;
+      this.requiredScore = 600;
 
     } else if(flags.latestHost == "blackWalnut"){
       // No Mantis, light flies
@@ -148,7 +148,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.eggZoneDelay = 9000; // slightly more than level 1
       this.feedZoneCount = 1;
       this.eggZoneCount = 2;
-      this.requiredScore = 1000;
+      this.requiredScore = 600;
     } else if(flags.latestHost == "grapeVine"){
       // LOTS of flies, few pesticice and Mantis
       this.numFlies = 3;
@@ -159,7 +159,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.eggZoneDelay = 11000;
       this.feedZoneCount = 2;
       this.eggZoneCount = 2;
-      this.requiredScore = 1500;
+      this.requiredScore = 800;
     } else if(flags.latestHost == "appleTree"){
       // LOTS of pesticide and Mantis, Few flies
       this.numFlies = 2;
@@ -170,7 +170,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.eggZoneDelay = 6000;
       this.feedZoneCount = 1;
       this.eggZoneCount = 1;
-      this.requiredScore = 1750;
+      this.requiredScore = 800;
     } else if(flags.latestHost == "treeOfHeaven"){
       // Boss Level
       this.numFlies = 3;
@@ -181,7 +181,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.eggZoneDelay = 9000;
       this.feedZoneCount = 2;
       this.eggZoneCount = 2;
-      this.requiredScore = 2000;
+      this.requiredScore = 1000;
     }
 
 
@@ -239,6 +239,13 @@ export default class bugrunScene extends Phaser.Scene {
       // No praying Mantis on second level
     }
 
+    //create score
+    this.score = 0;
+    this.scoreText = this.add.text(0, this.scale.height - 108, 'Score: ' + this.score, { font: "32px Arial", fill: "#ffffff", align: "left" });
+
+    //create goal score label
+    this.goalLabel = this.add.text(0, this.scale.height - 72, 'Goal: ' + this.requiredScore, { font: "32px Arial", fill: "#ffffff", align: "left" });
+    this.goal = false; // score goal reached
 
     //create timer
     this.timeNum = 60;
@@ -246,15 +253,9 @@ export default class bugrunScene extends Phaser.Scene {
     //timer finish variable
     this.timeOver = false;
 
-    //create score
-    this.score = 0;
-    this.scoreText = this.add.text(0, this.scale.height - 72, 'Score: ' + this.score, { font: "32px Arial", fill: "#ffffff", align: "left" });
     
-    //create goal score label
-    this.goalLabel = this.add.text(0, this.scale.height - 108, 'Goal: ' + this.requiredScore, { font: "32px Arial", fill: "#ffffff", align: "left" });
-    this.goal = false; // score goal reached
     
-
+  
 
 
     // **  Collisions **

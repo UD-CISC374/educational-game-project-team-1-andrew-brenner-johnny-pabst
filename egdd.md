@@ -1,6 +1,6 @@
 # Flight of the Spotted Lanternfly
-# Johnny Pabst
-# Andrew Brenner
+* Johnny Pabst
+* Andrew Brenner
 
 ## Elevator Pitch
 

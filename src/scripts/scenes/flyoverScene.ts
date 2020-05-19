@@ -246,7 +246,7 @@ export default class flyoverScene extends Phaser.Scene {
       //create popup
       this.messageBox = this.add.image(this.scale.width / 2, this.scale.height / 2, "messageBox");
       this.closeButton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-      this.sadFarmer = this.add.sprite(this.scale.width / 4 - 30, this.scale.height / 2 - 10, "sadFarmer");
+      this.sadFarmer = this.add.sprite(this.scale.width / 4 - 30, this.scale.height / 2 - 20, "sadFarmer");
       this.sadFarmer.play("sadFarmer");
       this.tutorialBox = this.physics.add.group();
       this.closeButton.setInteractive();
@@ -254,34 +254,34 @@ export default class flyoverScene extends Phaser.Scene {
       this.closeButton.on('pointerup', this.mouseFix, this);
       this.closeButton.on('pointerout', this.mouseFix, this);
       this.msgOpen = true;
-      let birdMessage: string = "";
+      let farmerMessage: string = "";
       switch(flags.latestHost){
         case "appleTree": {
-          birdMessage = "Oh my!\nNot the Apples!\nThat was just plain evil.";
+          farmerMessage = "Oh my!\nNot the Apples!\nThat was just plain evil.";
           break;
         }
         case "cherryTree": {
-          birdMessage = "What have you done!?\nNow what am I supposed to\nput on top of my ice cream?"
+          farmerMessage = "What have you done!?\nNow what am I supposed to\nput on top of my ice cream?"
           break;
         }
         case "grapeVine": {
-          birdMessage = "No grapes means no more PB&J's :("
+          farmerMessage = "No grapes means no more PB&J's :("
           break;
         }
         case "treeOfHeaven": {
-          birdMessage = "How could you?\nThe Tree of Heaven was my favorite.";
+          farmerMessage = "How could you?\nThe Tree of Heaven was my favorite.";
           break;
         }
         case "blackWalnut": {
-          birdMessage = "Aw nuts!\nNow the Black Walnut Tree!?\n";
+          farmerMessage = "Aw nuts!\nNow the Black Walnut Tree!?\n";
           break;
         }
         default: {
-          birdMessage = "Oh no!\n ";
+          farmerMessage = "Oh no!\n ";
           break;
         }
       }
-      this.tutorialMsg = this.add.text(this.scale.width / 4 + 65, this.scale.height / 3 + 20, birdMessage, { font: "20px Arial", fill: "#000000", align: "left" });
+      this.tutorialMsg = this.add.text(this.scale.width / 3 + 65, this.scale.height / 3 + 20, farmerMessage, { font: "20px Arial", fill: "#000000", align: "left" });
     } // end if
 
     // If all levels are completed -> Game Over
