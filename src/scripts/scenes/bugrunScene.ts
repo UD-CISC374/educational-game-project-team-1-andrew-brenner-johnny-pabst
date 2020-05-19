@@ -136,7 +136,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.eggZoneDelay = 11000;
       this.feedZoneCount = 2;
       this.eggZoneCount = 1;
-      this.requiredScore = 600;
+      this.requiredScore = 500;
 
     } else if(flags.latestHost == "blackWalnut"){
       // No Mantis, light flies

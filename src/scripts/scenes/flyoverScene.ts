@@ -246,7 +246,7 @@ export default class flyoverScene extends Phaser.Scene {
       //create popup
       this.messageBox = this.add.image(this.scale.width / 2, this.scale.height / 2, "messageBox");
       this.closeButton = this.add.image(this.scale.width / 2, this.scale.height / 2 + 100, "closeButton");
-      this.sadFarmer = this.add.sprite(this.scale.width / 4 - 30, this.scale.height / 2 - 20, "sadFarmer");
+      this.sadFarmer = this.add.sprite(this.scale.width / 4 - 25, this.scale.height / 2 - 20, "sadFarmer");
       this.sadFarmer.play("sadFarmer");
       this.tutorialBox = this.physics.add.group();
       this.closeButton.setInteractive();
