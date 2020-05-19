@@ -116,7 +116,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/finalassets/images/titleScreen.png"
   },
   {
-    "revision": "4d73a6d47e1d24f3c3b18a9f7fa88cfe",
+    "revision": "e96f1a0483795f5412659a8f47301eae",
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/finalassets/images/titleStart.png"
   },
   {
@@ -126,6 +126,22 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "b7d75bb0d4c4981885190271379812d1",
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/finalassets/images/treeLabel.png"
+  },
+  {
+    "revision": "f6bedb11b315e0c2af191ff48490bcc0",
+    "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/finalassets/screenshots/largeBugrun.PNG"
+  },
+  {
+    "revision": "154def34837fbb76abf9c1667b8a3ff6",
+    "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/finalassets/screenshots/largeOverworld.PNG"
+  },
+  {
+    "revision": "09395ed1c23684dad23abb63b072a978",
+    "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/finalassets/screenshots/smallBugrun.PNG"
+  },
+  {
+    "revision": "6a0db2bc11042080a50deb315d9ce279",
+    "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/finalassets/screenshots/smallOverworld.PNG"
   },
   {
     "revision": "37598dab870bab72734fe7396a88ee4e",
