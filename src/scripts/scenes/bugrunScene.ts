@@ -95,7 +95,7 @@ export default class bugrunScene extends Phaser.Scene {
     this.gameOver = this.sound.add("gameover");
 
     //create timer
-    this.timeNum = 5;
+    this.timeNum = 60;
     this.timeText = this.add.text(0, this.scale.height - 36, 'Time Remaining: ' + this.timeNum, { font: "32px Arial", fill: "#ffffff", align: "left" });
     //timer finish variable
     this.timeOver = false;
