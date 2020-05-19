@@ -146,7 +146,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.pesticideDelay = 11000; // spawns 5 times total
       this.feedZoneDelay = 8000; // slightly more than level 1
       this.eggZoneDelay = 6000; // slightly more than level 1
-      this.feedZoneCount = 1;
+      this.feedZoneCount = 2; 
       this.eggZoneCount = 1;
       this.requiredScore = 600;
     } else if(flags.latestHost == "grapeVine"){
@@ -169,7 +169,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.feedZoneDelay = 8000;
       this.eggZoneDelay = 6000;
       this.feedZoneCount = 1;
-      this.eggZoneCount = 1;
+      this.eggZoneCount = 2;
       this.requiredScore = 800;
     } else if(flags.latestHost == "treeOfHeaven"){
       // Boss Level
@@ -177,8 +177,8 @@ export default class bugrunScene extends Phaser.Scene {
       this.fliesDelay = 1000;
       this.mantisDelay = 10000;
       this.pesticideDelay = 14000;
-      this.feedZoneDelay = 7000;
-      this.eggZoneDelay = 9000;
+      this.feedZoneDelay = 6000;
+      this.eggZoneDelay = 8000;
       this.feedZoneCount = 2;
       this.eggZoneCount = 2;
       this.requiredScore = 1000;
