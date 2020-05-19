@@ -284,10 +284,6 @@ export default class flyoverScene extends Phaser.Scene {
       this.tutorialMsg = this.add.text(this.scale.width / 3 + 65, this.scale.height / 3 + 20, farmerMessage, { font: "20px Arial", fill: "#000000", align: "left" });
     } // end if
 
-    // If all levels are completed -> Game Over
-    if(flags.appleTreeDead && flags.cherryTreeDead && flags.grapeVineDead && flags.treeOfHeavenDead && flags.blackWalnutDead){
-      this.endGame();
-    }
 
   } // end create()
 
@@ -318,6 +314,12 @@ export default class flyoverScene extends Phaser.Scene {
     this.messageBox.destroy();
     this.closeButton.destroy();
     this.msgOpen = false;
+
+    // If all levels are completed -> Game Over
+    if(flags.appleTreeDead && flags.cherryTreeDead && flags.grapeVineDead && flags.treeOfHeavenDead && flags.blackWalnutDead){
+      this.endGame();
+    }
+
   }
 
   endGame(){

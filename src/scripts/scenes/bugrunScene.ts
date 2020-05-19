@@ -136,7 +136,7 @@ export default class bugrunScene extends Phaser.Scene {
       this.eggZoneDelay = 11000;
       this.feedZoneCount = 2;
       this.eggZoneCount = 1;
-      this.requiredScore = 500;
+      this.requiredScore = 400;
 
     } else if(flags.latestHost == "blackWalnut"){
       // No Mantis, light flies
@@ -145,9 +145,9 @@ export default class bugrunScene extends Phaser.Scene {
       this.mantisDelay = 65000; // does not spawn 
       this.pesticideDelay = 11000; // spawns 5 times total
       this.feedZoneDelay = 8000; // slightly more than level 1
-      this.eggZoneDelay = 9000; // slightly more than level 1
+      this.eggZoneDelay = 6000; // slightly more than level 1
       this.feedZoneCount = 1;
-      this.eggZoneCount = 2;
+      this.eggZoneCount = 1;
       this.requiredScore = 600;
     } else if(flags.latestHost == "grapeVine"){
       // LOTS of flies, few pesticice and Mantis
@@ -405,7 +405,7 @@ export default class bugrunScene extends Phaser.Scene {
       mantis.setVelocity(-50, this.OBSTACLE_VELOCITY);
     }
 
-    mantis.body.setSize(200, 200); //adjusts bounding box (hitbox)
+    mantis.body.setSize(100, 100); //adjusts bounding box (hitbox)
   }
 
   //spawn pesticide

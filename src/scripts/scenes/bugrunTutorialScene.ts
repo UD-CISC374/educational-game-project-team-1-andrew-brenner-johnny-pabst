@@ -295,7 +295,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
    */
   mantisTut(){
     if(!this.eggZoneCongratsMsgRead){
-      this.createMessageBox("Great job!\nThe more eggs the better!\n");
+      this.createMessageBox("Great job kid!\nYou can press SPACEBAR quickly to lay more eggs.\nThe more eggs the better!\n");
       this.eggZoneCongratsMsgRead = true;
 
     // Part 1
