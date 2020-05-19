@@ -72,7 +72,7 @@ export default class endScene extends Phaser.Scene {
         this.scene.start("titleScene");
     }
     placeReset(){
-        this.resetButton = this.add.image(400, this.scale.height / 2 + 300, "resetButton");
+        this.resetButton = this.add.image(400, 100, "resetButton");
         this.resetButton.setInteractive();
         this.resetButton.on('pointerdown', this.restartGame, this);
         this.resetButton.on('pointerup', this.mouseFix, this);
