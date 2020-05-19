@@ -6,7 +6,7 @@
 *Flight of the Spotted Lanternfly is a game designed to educate middle school students about the dangers of the Spotted Lanternfly species, a fairly new invasive species currently affecting rural areas on the East Coast. In the game, you take the role of a Spotted Lanternfly, while witnessing the destruction first-hand that these swarms can cause by attacking host plants. Taken under the wing of the Spotted Lanternfly Crime Boss, Buzz Capone, you've been sent to infest the rural landscape.*
 
 ##Gameplay Video
-url
+https://www.youtube.com/watch?v=q1Ta0ZBOVQ8
 
 ##Screenshots
 ![overworld](/src/assets/screenshots/largeOverworld.png)
