@@ -15,7 +15,7 @@ export default class bugrunScene extends Phaser.Scene {
   timeNum: number;
   score: number;
   scoreText: Phaser.GameObjects.Text;
-  OBSTACLE_VELOCITY: number = 120;
+  OBSTACLE_VELOCITY: number;
   bottomBounds: Phaser.Physics.Arcade.Image;
   playerBottomBounds: Phaser.Physics.Arcade.Image;
   music: Phaser.Sound.BaseSound;
@@ -52,8 +52,6 @@ export default class bugrunScene extends Phaser.Scene {
   goal: boolean;
   gameOver: Phaser.Sound.BaseSound;
   timeOver: boolean;
-  i: number;
-  j:number;
 
 
 
@@ -62,12 +60,12 @@ export default class bugrunScene extends Phaser.Scene {
   }
 
   create() {
-    this.i = 0;
-    this.j = 0;
     // create background
     this.background = this.add.tileSprite(0,0, this.scale.width, this.scale.height, "bugrunBackground");
     this.background.setOrigin(0,0);
 
+    //set speed of all obstacles
+    this.OBSTACLE_VELOCITY = 120;
 
     //load in music
     //music tempo determined by levelscompleted flag
@@ -93,22 +91,6 @@ export default class bugrunScene extends Phaser.Scene {
     this.victory = this.sound.add("victory");
     this.goalReached = this.sound.add("goalReached");
     this.gameOver = this.sound.add("gameover");
-
-    //create timer
-    this.timeNum = 60;
-    this.timeText = this.add.text(0, this.scale.height - 36, 'Time Remaining: ' + this.timeNum, { font: "32px Arial", fill: "#ffffff", align: "left" });
-    //timer finish variable
-    this.timeOver = false;
-
-    //create score
-    this.score = 0;
-    this.scoreText = this.add.text(0, this.scale.height - 72, 'Score: ' + this.score, { font: "32px Arial", fill: "#ffffff", align: "left" });
-    
-    //create goal score label
-    this.goalLabel = this.add.text(0, this.scale.height - 108, 'Goal: ' + this.requiredScore, { font: "32px Arial", fill: "#ffffff", align: "left" });
-    this.goal = false; // score goal reached
-
-    
 
     // create player
     this.player = this.physics.add.sprite(this.scale.width / 2 - 8, this.scale.height - 64, "player");
@@ -202,7 +184,6 @@ export default class bugrunScene extends Phaser.Scene {
       this.requiredScore = 2000;
     }
 
-    
 
     // ** TIMED EVENTS **
     //timer
@@ -257,6 +238,22 @@ export default class bugrunScene extends Phaser.Scene {
       this.prayingMantisTimer.destroy();
       // No praying Mantis on second level
     }
+
+
+    //create timer
+    this.timeNum = 60;
+    this.timeText = this.add.text(0, this.scale.height - 36, 'Time Remaining: ' + this.timeNum, { font: "32px Arial", fill: "#ffffff", align: "left" });
+    //timer finish variable
+    this.timeOver = false;
+
+    //create score
+    this.score = 0;
+    this.scoreText = this.add.text(0, this.scale.height - 72, 'Score: ' + this.score, { font: "32px Arial", fill: "#ffffff", align: "left" });
+    
+    //create goal score label
+    this.goalLabel = this.add.text(0, this.scale.height - 108, 'Goal: ' + this.requiredScore, { font: "32px Arial", fill: "#ffffff", align: "left" });
+    this.goal = false; // score goal reached
+    
 
 
 
