@@ -18,9 +18,9 @@ export var gameSettings = {
 }
 
 export var flags = {
-    levelsCompleted: 0,
-    flyoverTutDone: false,
-    bugRunTutDone: false,
+    levelsCompleted: 4,
+    flyoverTutDone: true,
+    bugRunTutDone: true,
     appleTreeDead: false,
     cherryTreeDead: false,
     grapeVineDead: false,
