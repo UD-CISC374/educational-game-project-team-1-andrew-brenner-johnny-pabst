@@ -8,6 +8,10 @@
 ##Gameplay Video
 url
 
+##Screenshots
+![overworld](/src/assets/screenshots/largeOverworld.png)
+![overworld](/src/assets/screenshots/largeBugrun.png)
+
 ##Link to Play Game
 https://ud-cisc374.github.io/educational-game-project-team-1-andrew-brenner-johnny-pabst/final
 
