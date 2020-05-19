@@ -37,8 +37,8 @@ export default class PreloadScene extends Phaser.Scene {
       frameHeight: 400
     });
     this.load.spritesheet("pesticideZone","./assets/spritesheets/pesticideZone.png",{
-      frameWidth: 400,
-      frameHeight: 400
+      frameWidth: 500,
+      frameHeight: 500
     });
     this.load.spritesheet("arrow", "./assets/spritesheets/arrow.png", {
       frameWidth: 104,

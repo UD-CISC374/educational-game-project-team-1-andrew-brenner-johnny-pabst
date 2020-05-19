@@ -431,6 +431,7 @@ export default class bugrunScene extends Phaser.Scene {
     pesticide.play("pesticideZone");
     this.spray.play();
     this.obstacles.add(pesticide);
+    pesticide.body.setSize(375, 375);
     pesticide.setVelocity(0,this.OBSTACLE_VELOCITY);
   }
 
