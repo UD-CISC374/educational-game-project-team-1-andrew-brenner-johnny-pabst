@@ -16,19 +16,23 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/finalassets/font/font.png"
   },
   {
-    "revision": "53cefca2a0f75654486b180949686165",
+    "revision": "703847ae0d481481fc0bc4039d955a39",
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/finalassets/icons/favicon.ico"
   },
   {
-    "revision": "8ab30def0ad109a97117bd62db942d75",
+    "revision": "703847ae0d481481fc0bc4039d955a39",
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/finalassets/icons/icons-16.png"
   },
   {
-    "revision": "feee71db2bb3ba5d11b26658baf97783",
+    "revision": "3ebed855081a9202fc5971d4b762dd01",
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/finalassets/icons/icons-192.png"
   },
   {
-    "revision": "cb71713be71d0b8820c7ea6af9c5ddc6",
+    "revision": "d2e208530081040ef1753cfcfb14575c",
+    "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/finalassets/icons/icons-32.png"
+  },
+  {
+    "revision": "f987c6e2566f22e58fbc641cc48433d4",
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/finalassets/icons/icons-512.png"
   },
   {
@@ -264,7 +268,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/finalassets/spritesheets/treeOfHeaven.png"
   },
   {
-    "revision": "53cefca2a0f75654486b180949686165",
+    "revision": "703847ae0d481481fc0bc4039d955a39",
     "url": "/educational-game-project-team-1-andrew-brenner-johnny-pabst/finalfavicon.ico"
   },
   {
