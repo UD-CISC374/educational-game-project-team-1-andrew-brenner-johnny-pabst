@@ -243,9 +243,10 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     
     // Part 4
     } else if(this.feedSpot.y > 900){
-      // Keep spawning feedSpot until they get the eat it
-      this.feedSpot.setRandomPosition(0,-50,this.scale.width - 50, 0);
-      this.feedSpot.setVelocity(0,this.OBSTACLE_VELOCITY);
+      // Replay feedSpot tutorial until they eat it
+      this.feedSpotSpawned = false;
+      this.feedSpotFrozen = false;
+      this.feedSpotMoving = false;
     }
   }
 
@@ -285,8 +286,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     // Part 4
     } else if(this.eggZone.y > 900){
     // Keep spawning eggZone until they lay eggs on it
-      this.eggZone.setRandomPosition(0,-50,this.scale.width, 0);
-      this.eggZone.setVelocity(0,this.OBSTACLE_VELOCITY);
+      this.resetTutFlags();
     }
   }
 
@@ -396,12 +396,17 @@ export default class bugrunTutorialScene extends Phaser.Scene {
 
 
 
-  resetMantisTut(){
+  resetTutFlags(){
     this.mantisSpawned = false;
     this.mantisFrozen = false;
     this.mantisMoving = false;
     this.pesticideSpawned = false;
     this.pesticideMoving = false;
+    this.feedSpotSpawned = false;
+    this.feedSpotFrozen = false;
+    this.feedSpotMoving = false;
+    this.eggZoneSpawned = false;
+    this.eggZoneFrozen = false;
   }
   
 
@@ -549,7 +554,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
     pointsPopup.destroy();
   }
 
-  //despawn bug and delay before reset
+  //respawn bug and delay before reset
   killBug(){
     if(!this.playerInvincible){
       this.player.disableBody(true, true);
@@ -562,7 +567,7 @@ export default class bugrunTutorialScene extends Phaser.Scene {
         callbackScope: this,
         loop: false
       });
-      this.resetMantisTut();
+      this.resetTutFlags();
     }
   }
 
