@@ -226,7 +226,7 @@ export default class flyoverScene extends Phaser.Scene {
      }
     }, this);
 
-    
+
     if(!flags.flyoverTutDone){
       //create popup
       this.messageBox = this.add.image(this.scale.width / 2, this.scale.height / 2, "messageBox");
