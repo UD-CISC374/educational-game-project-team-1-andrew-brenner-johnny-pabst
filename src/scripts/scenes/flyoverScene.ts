@@ -351,9 +351,9 @@ export default class flyoverScene extends Phaser.Scene {
   update() {
     this.movePlayerManager();
 
-    if(this.tutOpen && Phaser.Input.Keyboard.JustDown(this.spacebar)){
+    if(this.tutOpen && this.spacebar.isDown){
       this.destroyTutorial();
-    } else if(this.msgOpen && Phaser.Input.Keyboard.JustDown(this.spacebar)){
+    } else if(this.msgOpen && this.spacebar.isDown){
       this.destroyPopUp();
     }
   }

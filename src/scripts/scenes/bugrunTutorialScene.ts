@@ -203,11 +203,9 @@ export default class bugrunTutorialScene extends Phaser.Scene {
 
     } else{ // message box is open
       this.player.setVelocity(0,0);
-      if(Phaser.Input.Keyboard.JustDown(this.spacebar)){
+      if(this.spacebar.isDown){
         this.destroyMessageBox();
       }
-
-
     }
   } 
 

@@ -40,7 +40,7 @@ export default class titleScene extends Phaser.Scene {
     
     update(){
         // If spacebar is pressed -> start game
-        if(Phaser.Input.Keyboard.JustDown(this.spacebar)){
+        if(this.spacebar.isDown){
             this.background.destroy();
             this.startButton.destroy();
             this.startGame();
