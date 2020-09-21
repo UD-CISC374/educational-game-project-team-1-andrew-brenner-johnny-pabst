@@ -9,14 +9,15 @@
 https://www.youtube.com/watch?v=q1Ta0ZBOVQ8
 
 ## Screenshots
-![overworld](/src/assets/screenshots/largeOverworld.png)
-![overworld](/src/assets/screenshots/largeBugrun.png)
+![Overworld](/src/assets/screenshots/largeOverworld.png)
+
+![BugRun](/src/assets/screenshots/largeBugrun.png)
 
 ## Link to Play Game
 https://ud-cisc374.github.io/educational-game-project-team-1-andrew-brenner-johnny-pabst/final
 
 ## Instructions
-*Pop-ups: Press the space bar or click using the mouse to advance through pop-ups
-*Move: Hold down arrow keys to move in the respective direction
-*Eat Sap: Press the space bar when overlapping the orange spot
-*Lay Eggs: Press the space bar when overlapping the green spot
+* Pop-ups: Press the space bar or click using the mouse to advance through pop-ups
+* Move: Hold down arrow keys to move in the respective direction
+* Eat Sap: Press the space bar when overlapping the orange spot
+* Lay Eggs: Press the space bar when overlapping the green spot
